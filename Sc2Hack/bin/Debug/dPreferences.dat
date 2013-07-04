@@ -1,0 +1,279 @@
+[Global]
+;Boolean
+DrawOnlyInForeground = False
+;Keys
+Hotkey Resize = NumPad0
+;Int32
+Data Refresh = 33
+;Int32
+Drawing Refresh = 32
+
+
+[Resource]
+;Int32
+PosX = 500
+;Int32
+PosY = 50
+;Int32
+Width = 600
+;Int32
+Height = 50
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;String
+FontName = Century Gothic
+;float
+Opacity = 0,75
+;String
+On/Off Text = /res
+;String
+Change Position Text = /rcp
+;String
+Change Size Text = /rcs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad1
+;Boolean
+Draw Background = True
+
+
+[Income]
+;Int32
+PosX = 503
+;Int32
+PosY = 152
+;Int32
+Width = 600
+;Int32
+Height = 50
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;String
+FontName = Century Gothic
+;float
+Opacity = 0,75
+;String
+On/Off Text = /inc
+;String
+Change Position Text = /icp
+;String
+Change Size Text = /ics
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad2
+;Boolean
+Draw Background = True
+
+
+[Apm]
+;Int32
+PosX = 500
+;Int32
+PosY = 50
+;Int32
+Width = 600
+;Int32
+Height = 50
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;String
+FontName = Century Gothic
+;float
+Opacity = 0,75
+;String
+On/Off Text = /apm
+;String
+Change Position Text = /acp
+;String
+Change Size Text = /acs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad7
+;Boolean
+Draw Background = True
+
+
+[Army]
+;Int32
+PosX = 500
+;Int32
+PosY = 300
+;Int32
+Width = 600
+;Int32
+Height = 50
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;String
+FontName = Century Gothic
+;float
+Opacity = 0,75
+;String
+On/Off Text = /arm
+;String
+Change Position Text = /amcp
+;String
+Change Size Text = /amcs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad8
+;Boolean
+Draw Background = True
+
+
+[Worker]
+;Int32
+PosX = 500
+;Int32
+PosY = 300
+;Int32
+Width = 200
+;Int32
+Height = 50
+;String
+FontName = Century Gothic
+;float
+Opacity = 0,75
+;String
+On/Off Text = /wor
+;String
+Change Position Text = /wcp
+;String
+Change Size Text = /wcs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad3
+;Boolean
+Draw Background = True
+
+
+[UnitTab]
+;Int32
+PosX = 50
+;Int32
+PosY = 50
+;Int32
+Width = 300
+;Int32
+Height = 50
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;float
+Opacity = 1
+;String
+On/Off Text = /uni
+;String
+Change Position Text = /ucp
+;String
+Change Size Text = /ucs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad9
+;Boolean
+Split Buildings/ Units = True
+
+
+[Maphack]
+;Int32
+PosX = 28
+;Int32
+PosY = 811
+;Int32
+Width = 261
+;Int32
+Height = 255
+;Boolean
+Remove Ai = False
+;Boolean
+Remove Neutral = True
+;Boolean
+Remove Allie = False
+;Boolean
+Remove Localplayer = False
+;float
+Opacity = 1
+;String
+On/Off Text = /map
+;String
+Change Position Text = /mcp
+;String
+Change Size Text = /mcs
+;Keys
+Hotkey 1 = ControlKey
+;Keys
+Hotkey 2 = Menu
+;Keys
+Hotkey 3 = NumPad5
+;Boolean
+Disable Destination Line = False
+;Color
+Destination Line Color = Orange
+;Boolean
+Color Def Structures = True
+
+
+[Maphack Units]
+;UnitId
+UnitId = ZuDrone
+;Color
+Unit Color = #004040
+;UnitId
+UnitId = PuStalker
+;Color
+Unit Color = #8000FF
+;UnitId
+UnitId = TuThor
+;Color
+Unit Color = #FF8000
+;UnitId
+UnitId = TuScv
+;Color
+Unit Color = Red
