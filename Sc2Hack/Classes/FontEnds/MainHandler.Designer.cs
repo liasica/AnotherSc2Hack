@@ -182,6 +182,7 @@
             this.imgUnits = new System.Windows.Forms.ImageList(this.components);
             this.lstMapUnits = new System.Windows.Forms.ListBox();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.chBxMaphackRemVisionArea = new System.Windows.Forms.CheckBox();
             this.chBxMaphackColorDefensiveStructuresYellow = new System.Windows.Forms.CheckBox();
             this.lblMapOpacity = new System.Windows.Forms.Label();
             this.chBxDisableDestinationLine = new System.Windows.Forms.CheckBox();
@@ -356,7 +357,6 @@
             this.tcCredits = new System.Windows.Forms.TabPage();
             this.label92 = new System.Windows.Forms.Label();
             this.btnProduction = new System.Windows.Forms.Button();
-            this.chBxMaphackRemVisionArea = new System.Windows.Forms.CheckBox();
             this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
             this.tcMainTab.SuspendLayout();
             this.tcGlobal.SuspendLayout();
@@ -2082,6 +2082,18 @@
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Basic Panel Options";
             // 
+            // chBxMaphackRemVisionArea
+            // 
+            this.chBxMaphackRemVisionArea.AutoSize = true;
+            this.chBxMaphackRemVisionArea.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chBxMaphackRemVisionArea.Location = new System.Drawing.Point(25, 240);
+            this.chBxMaphackRemVisionArea.Name = "chBxMaphackRemVisionArea";
+            this.chBxMaphackRemVisionArea.Size = new System.Drawing.Size(122, 17);
+            this.chBxMaphackRemVisionArea.TabIndex = 72;
+            this.chBxMaphackRemVisionArea.Text = "Remove Vision-Area";
+            this.chBxMaphackRemVisionArea.UseVisualStyleBackColor = true;
+            this.chBxMaphackRemVisionArea.CheckedChanged += new System.EventHandler(this.chBxMaphackRemVisionArea_CheckedChanged);
+            // 
             // chBxMaphackColorDefensiveStructuresYellow
             // 
             this.chBxMaphackColorDefensiveStructuresYellow.AutoSize = true;
@@ -3762,6 +3774,7 @@
             // 
             // btnEmailSend
             // 
+            this.btnEmailSend.Enabled = false;
             this.btnEmailSend.Location = new System.Drawing.Point(32, 339);
             this.btnEmailSend.Name = "btnEmailSend";
             this.btnEmailSend.Size = new System.Drawing.Size(446, 27);
@@ -3788,6 +3801,7 @@
             this.txtEmailBody.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtEmailBody.Size = new System.Drawing.Size(397, 216);
             this.txtEmailBody.TabIndex = 3;
+            this.txtEmailBody.TextChanged += new System.EventHandler(this.txtEmailBody_TextChanged);
             // 
             // txtEmailSubject
             // 
@@ -3796,6 +3810,7 @@
             this.txtEmailSubject.Name = "txtEmailSubject";
             this.txtEmailSubject.Size = new System.Drawing.Size(140, 20);
             this.txtEmailSubject.TabIndex = 2;
+            this.txtEmailSubject.TextChanged += new System.EventHandler(this.txtEmailSubject_TextChanged);
             // 
             // cmBxEmailSubject
             // 
@@ -3853,18 +3868,6 @@
             this.btnProduction.UseVisualStyleBackColor = true;
             this.btnProduction.Visible = false;
             this.btnProduction.Click += new System.EventHandler(this.btnProduction_Click);
-            // 
-            // chBxMaphackRemVisionArea
-            // 
-            this.chBxMaphackRemVisionArea.AutoSize = true;
-            this.chBxMaphackRemVisionArea.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chBxMaphackRemVisionArea.Location = new System.Drawing.Point(25, 240);
-            this.chBxMaphackRemVisionArea.Name = "chBxMaphackRemVisionArea";
-            this.chBxMaphackRemVisionArea.Size = new System.Drawing.Size(122, 17);
-            this.chBxMaphackRemVisionArea.TabIndex = 72;
-            this.chBxMaphackRemVisionArea.Text = "Remove Vision-Area";
-            this.chBxMaphackRemVisionArea.UseVisualStyleBackColor = true;
-            this.chBxMaphackRemVisionArea.CheckedChanged += new System.EventHandler(this.chBxMaphackRemVisionArea_CheckedChanged);
             // 
             // icbMapUnit
             // 

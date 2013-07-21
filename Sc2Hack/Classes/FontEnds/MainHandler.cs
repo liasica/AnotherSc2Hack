@@ -1288,31 +1288,6 @@ namespace Sc2Hack.Classes.FontEnds
                 return;
             }
 
-            var address = new MailAddress("ww1ww2worm@yahoo.com");
-
-            MailMessage msg;
-
-            if (cmBxEmailSubject.SelectedItem.Equals("Other"))
-            {
-                if (txtEmailSubject.Text.Length <= 0)
-                {
-                    txtEmailSubject.Text = "NoTitle";
-                }
-
-                msg = new MailMessage(address, address);
-                msg.Subject = txtEmailSubject.Text;
-            }
-
-            else
-            {
-                msg = new MailMessage(new MailAddress("ww1ww2worm@yahoo.com "), address);
-                msg.Subject = cmBxEmailSubject.SelectedItem.ToString();
-            }
-
-            msg.Body = txtEmailBody.Text;
-
-
-            var smtp = new SmtpClient("smtp.mail.yahoo.com");
             var ssSecure = new SecureString();
             ssSecure.AppendChar('s');
             ssSecure.AppendChar('u');
@@ -1325,19 +1300,28 @@ namespace Sc2Hack.Classes.FontEnds
             ssSecure.AppendChar('e');
             ssSecure.AppendChar('x');
 
-            smtp.Credentials = new NetworkCredential("ww1ww2worm", ssSecure);
-
-            try
-            {
-                smtp.Send(msg);
-            }
-            catch
-            {
-                MessageBox.Show("There was a bug sending the email!");
-                return;
-            }
+            Messages.SendEmail("smtp.mail.yahoo.com",
+                "ww1ww2worm", 
+                ssSecure,
+                new MailAddress("ww1ww2worm@yahoo.com"),
+                txtEmailSubject.Text,
+                txtEmailBody.Text,
+                "Nothing");
+          
 
             MessageBox.Show("The Email was sent successfully!", "Email sent");
+        }
+
+        private void txtEmailBody_TextChanged(object sender, EventArgs e)
+        {
+            btnEmailSend.Enabled = txtEmailBody.Text.Length > 0 &&
+                                   txtEmailSubject.Text.Length > 0;
+        }
+
+        private void txtEmailSubject_TextChanged(object sender, EventArgs e)
+        {
+            btnEmailSend.Enabled = txtEmailBody.Text.Length > 0 &&
+                                   txtEmailSubject.Text.Length > 0;
         }
 
         private void cmBxEmailSubject_SelectedIndexChanged(object sender, EventArgs e)
@@ -1347,6 +1331,12 @@ namespace Sc2Hack.Classes.FontEnds
 
             else
                 txtEmailSubject.Enabled = false;
+
+            /* Set title */
+            txtEmailSubject.Text = cmBxEmailSubject.Text;
+
+            /* Enable/ Disable mailbutton */
+            btnEmailSend.Enabled = txtEmailBody.Text.Length > 0;
         }
 
         /* Because I don't know how to send anonymous email to keep my privacy and the users.. */
@@ -2025,8 +2015,9 @@ namespace Sc2Hack.Classes.FontEnds
         #endregion
 
         
-        
 
         #endregion
+
+       
     }
 }
