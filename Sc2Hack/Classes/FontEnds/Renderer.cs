@@ -2651,7 +2651,6 @@ namespace Sc2Hack.Classes.FontEnds
             }
         }
 
-        private bool btemp = true;
         /* Draw the curretn Resources */
         private void DrawResources(BufferedGraphics g)
         {
@@ -3522,11 +3521,16 @@ namespace Sc2Hack.Classes.FontEnds
 
             #region Draw Bounds
 
-            /* Draw Rectangle */
-            g.Graphics.DrawRectangle(Constants.PBound, 0, 0, Width - Constants.PBound.Width, Height - Constants.PBound.Width);
+            if (!_hMainHandler.PSettings.MaphackRemoveVisionArea)
+            {
+                /* Draw Rectangle */
+                g.Graphics.DrawRectangle(Constants.PBound, 0, 0, Width - Constants.PBound.Width,
+                                         Height - Constants.PBound.Width);
 
-            /* Draw Playable Area */
-            g.Graphics.DrawRectangle(Constants.PArea, iX, iY, Width - iX * 2 - Constants.PArea.Width, Height - iY * 2 - Constants.PArea.Width);
+                /* Draw Playable Area */
+                g.Graphics.DrawRectangle(Constants.PArea, iX, iY, Width - iX*2 - Constants.PArea.Width,
+                                         Height - iY*2 - Constants.PArea.Width);
+            }
 
             #endregion
 

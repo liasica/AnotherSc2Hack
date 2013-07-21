@@ -4,7 +4,7 @@ DrawOnlyInForeground = False
 ;Keys
 Hotkey Resize = NumPad0
 ;Int32
-Data Refresh = 33
+Data Refresh = 1
 ;Int32
 Drawing Refresh = 32
 
@@ -258,6 +258,8 @@ Disable Destination Line = False
 Destination Line Color = Orange
 ;Boolean
 Color Def Structures = True
+;Boolean
+Remove Vision Area = True
 
 
 [Maphack Units]

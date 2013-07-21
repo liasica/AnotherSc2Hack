@@ -426,6 +426,7 @@ namespace Sc2Hack.Classes.BackEnds
                     MaphackRemoveObserver = true,
                     MaphackRemoveNeutral = true,
                     MaphackRemoveLocalplayer = false,
+                    MaphackRemoveVisionArea = true,
                     MaphackDestinationColor = Color.Orange,
                     MaphackPositionX = 28,
                     MaphackPositionY = 811,
@@ -2243,6 +2244,18 @@ namespace Sc2Hack.Classes.BackEnds
                     pSettings.MaphackColorDefensivestructuresYellow = bColorDefensiveStructures;
                 }
 
+                /* Remove Vision Area */
+                if (strInnerValue.StartsWith("Remove Vision Area"))
+                {
+                    strInnerValue = strInnerValue.Substring("Remove Vision Area".Length,
+                                                            strInnerValue.Length - "Remove Vision Area".Length);
+
+                    bool bRemoveVisionArea;
+                    Boolean.TryParse(strInnerValue, out bRemoveVisionArea);
+
+                    pSettings.MaphackRemoveVisionArea = bRemoveVisionArea;
+                }
+
                 #endregion
 
                 #region Int32 values
@@ -2806,6 +2819,8 @@ namespace Sc2Hack.Classes.BackEnds
             sw.WriteLine("Destination Line Color = " + ColorTranslator.ToHtml(pSettings.MaphackDestinationColor));
             sw.WriteLine(";Boolean");
             sw.WriteLine("Color Def Structures = " + pSettings.MaphackColorDefensivestructuresYellow);
+            sw.WriteLine(";Boolean");
+            sw.WriteLine("Remove Vision Area = " + pSettings.MaphackRemoveVisionArea);
 
             #endregion
 

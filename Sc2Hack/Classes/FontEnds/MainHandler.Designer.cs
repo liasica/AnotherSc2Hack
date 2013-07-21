@@ -40,6 +40,8 @@
             this.btnWorker = new System.Windows.Forms.Button();
             this.tcMainTab = new System.Windows.Forms.TabControl();
             this.tcGlobal = new System.Windows.Forms.TabPage();
+            this.groupBox36 = new System.Windows.Forms.GroupBox();
+            this.rtbPublicInformation = new System.Windows.Forms.RichTextBox();
             this.txtGlobalAdjustKey = new System.Windows.Forms.TextBox();
             this.label91 = new System.Windows.Forms.Label();
             this.chBxForegroundDraw = new System.Windows.Forms.CheckBox();
@@ -341,6 +343,8 @@
             this.tcDebug = new System.Windows.Forms.TabPage();
             this.btnExportFile = new System.Windows.Forms.Button();
             this.tcBugs = new System.Windows.Forms.TabPage();
+            this.groupBox35 = new System.Windows.Forms.GroupBox();
+            this.btnCreateNewPost = new System.Windows.Forms.Button();
             this.groupBox25 = new System.Windows.Forms.GroupBox();
             this.label95 = new System.Windows.Forms.Label();
             this.btnEmailSend = new System.Windows.Forms.Button();
@@ -352,13 +356,11 @@
             this.tcCredits = new System.Windows.Forms.TabPage();
             this.label92 = new System.Windows.Forms.Label();
             this.btnProduction = new System.Windows.Forms.Button();
-            this.btnCreateNewPost = new System.Windows.Forms.Button();
-            this.groupBox35 = new System.Windows.Forms.GroupBox();
-            this.groupBox36 = new System.Windows.Forms.GroupBox();
-            this.rtbPublicInformation = new System.Windows.Forms.RichTextBox();
+            this.chBxMaphackRemVisionArea = new System.Windows.Forms.CheckBox();
             this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
             this.tcMainTab.SuspendLayout();
             this.tcGlobal.SuspendLayout();
+            this.groupBox36.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tcResources.SuspendLayout();
@@ -408,10 +410,9 @@
             this.groupBox27.SuspendLayout();
             this.tcDebug.SuspendLayout();
             this.tcBugs.SuspendLayout();
+            this.groupBox35.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.tcCredits.SuspendLayout();
-            this.groupBox35.SuspendLayout();
-            this.groupBox36.SuspendLayout();
             this.SuspendLayout();
             // 
             // tmrGatherInformation
@@ -544,6 +545,25 @@
             this.tcGlobal.Size = new System.Drawing.Size(940, 441);
             this.tcGlobal.TabIndex = 7;
             this.tcGlobal.Text = "Global";
+            // 
+            // groupBox36
+            // 
+            this.groupBox36.Controls.Add(this.rtbPublicInformation);
+            this.groupBox36.Location = new System.Drawing.Point(667, 176);
+            this.groupBox36.Name = "groupBox36";
+            this.groupBox36.Size = new System.Drawing.Size(249, 192);
+            this.groupBox36.TabIndex = 11;
+            this.groupBox36.TabStop = false;
+            this.groupBox36.Text = "Public Information";
+            // 
+            // rtbPublicInformation
+            // 
+            this.rtbPublicInformation.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.rtbPublicInformation.Location = new System.Drawing.Point(20, 33);
+            this.rtbPublicInformation.Name = "rtbPublicInformation";
+            this.rtbPublicInformation.Size = new System.Drawing.Size(209, 142);
+            this.rtbPublicInformation.TabIndex = 0;
+            this.rtbPublicInformation.Text = "";
             // 
             // txtGlobalAdjustKey
             // 
@@ -1794,7 +1814,7 @@
             this.tcMaphack.Controls.Add(this.groupBox7);
             this.tcMaphack.Location = new System.Drawing.Point(4, 22);
             this.tcMaphack.Name = "tcMaphack";
-            this.tcMaphack.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tcMaphack.Padding = new System.Windows.Forms.Padding(3);
             this.tcMaphack.Size = new System.Drawing.Size(940, 441);
             this.tcMaphack.TabIndex = 0;
             this.tcMaphack.Text = "Maphack";
@@ -2039,6 +2059,7 @@
             // 
             // groupBox20
             // 
+            this.groupBox20.Controls.Add(this.chBxMaphackRemVisionArea);
             this.groupBox20.Controls.Add(this.chBxMaphackColorDefensiveStructuresYellow);
             this.groupBox20.Controls.Add(this.lblMapOpacity);
             this.groupBox20.Controls.Add(this.chBxDisableDestinationLine);
@@ -2056,7 +2077,7 @@
             this.groupBox20.Controls.Add(this.label34);
             this.groupBox20.Location = new System.Drawing.Point(30, 18);
             this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(291, 290);
+            this.groupBox20.Size = new System.Drawing.Size(291, 338);
             this.groupBox20.TabIndex = 67;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Basic Panel Options";
@@ -2076,7 +2097,7 @@
             // lblMapOpacity
             // 
             this.lblMapOpacity.AutoSize = true;
-            this.lblMapOpacity.Location = new System.Drawing.Point(150, 272);
+            this.lblMapOpacity.Location = new System.Drawing.Point(150, 302);
             this.lblMapOpacity.Name = "lblMapOpacity";
             this.lblMapOpacity.Size = new System.Drawing.Size(35, 13);
             this.lblMapOpacity.TabIndex = 70;
@@ -2096,7 +2117,7 @@
             // 
             // tbMapOpacity
             // 
-            this.tbMapOpacity.Location = new System.Drawing.Point(153, 240);
+            this.tbMapOpacity.Location = new System.Drawing.Point(153, 270);
             this.tbMapOpacity.Maximum = 100;
             this.tbMapOpacity.Name = "tbMapOpacity";
             this.tbMapOpacity.Size = new System.Drawing.Size(121, 45);
@@ -2209,7 +2230,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(25, 240);
+            this.label34.Location = new System.Drawing.Point(25, 270);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(46, 13);
             this.label34.TabIndex = 44;
@@ -2223,7 +2244,7 @@
             this.groupBox13.Controls.Add(this.label79);
             this.groupBox13.Controls.Add(this.label80);
             this.groupBox13.Controls.Add(this.label81);
-            this.groupBox13.Location = new System.Drawing.Point(331, 187);
+            this.groupBox13.Location = new System.Drawing.Point(331, 235);
             this.groupBox13.Name = "groupBox13";
             this.groupBox13.Size = new System.Drawing.Size(246, 121);
             this.groupBox13.TabIndex = 66;
@@ -3148,7 +3169,7 @@
             this.tcUnitTab.Controls.Add(this.groupBox10);
             this.tcUnitTab.Location = new System.Drawing.Point(4, 22);
             this.tcUnitTab.Name = "tcUnitTab";
-            this.tcUnitTab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tcUnitTab.Padding = new System.Windows.Forms.Padding(3);
             this.tcUnitTab.Size = new System.Drawing.Size(940, 441);
             this.tcUnitTab.TabIndex = 1;
             this.tcUnitTab.Text = "UnitTab";
@@ -3694,6 +3715,26 @@
             this.tcBugs.TabIndex = 9;
             this.tcBugs.Text = "Bugs";
             // 
+            // groupBox35
+            // 
+            this.groupBox35.Controls.Add(this.btnCreateNewPost);
+            this.groupBox35.Location = new System.Drawing.Point(530, 22);
+            this.groupBox35.Name = "groupBox35";
+            this.groupBox35.Size = new System.Drawing.Size(163, 69);
+            this.groupBox35.TabIndex = 2;
+            this.groupBox35.TabStop = false;
+            this.groupBox35.Text = "Create post on D3Scene";
+            // 
+            // btnCreateNewPost
+            // 
+            this.btnCreateNewPost.Location = new System.Drawing.Point(33, 28);
+            this.btnCreateNewPost.Name = "btnCreateNewPost";
+            this.btnCreateNewPost.Size = new System.Drawing.Size(87, 23);
+            this.btnCreateNewPost.TabIndex = 1;
+            this.btnCreateNewPost.Text = "Open Thread";
+            this.btnCreateNewPost.UseVisualStyleBackColor = true;
+            this.btnCreateNewPost.Click += new System.EventHandler(this.btnCreateNewPost_Click);
+            // 
             // groupBox25
             // 
             this.groupBox25.Controls.Add(this.label95);
@@ -3813,44 +3854,17 @@
             this.btnProduction.Visible = false;
             this.btnProduction.Click += new System.EventHandler(this.btnProduction_Click);
             // 
-            // btnCreateNewPost
+            // chBxMaphackRemVisionArea
             // 
-            this.btnCreateNewPost.Location = new System.Drawing.Point(33, 28);
-            this.btnCreateNewPost.Name = "btnCreateNewPost";
-            this.btnCreateNewPost.Size = new System.Drawing.Size(87, 23);
-            this.btnCreateNewPost.TabIndex = 1;
-            this.btnCreateNewPost.Text = "Open Thread";
-            this.btnCreateNewPost.UseVisualStyleBackColor = true;
-            this.btnCreateNewPost.Click += new System.EventHandler(this.btnCreateNewPost_Click);
-            // 
-            // groupBox35
-            // 
-            this.groupBox35.Controls.Add(this.btnCreateNewPost);
-            this.groupBox35.Location = new System.Drawing.Point(530, 22);
-            this.groupBox35.Name = "groupBox35";
-            this.groupBox35.Size = new System.Drawing.Size(163, 69);
-            this.groupBox35.TabIndex = 2;
-            this.groupBox35.TabStop = false;
-            this.groupBox35.Text = "Create post on D3Scene";
-            // 
-            // groupBox36
-            // 
-            this.groupBox36.Controls.Add(this.rtbPublicInformation);
-            this.groupBox36.Location = new System.Drawing.Point(667, 176);
-            this.groupBox36.Name = "groupBox36";
-            this.groupBox36.Size = new System.Drawing.Size(249, 192);
-            this.groupBox36.TabIndex = 11;
-            this.groupBox36.TabStop = false;
-            this.groupBox36.Text = "Public Information";
-            // 
-            // rtbPublicInformation
-            // 
-            this.rtbPublicInformation.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.rtbPublicInformation.Location = new System.Drawing.Point(20, 33);
-            this.rtbPublicInformation.Name = "rtbPublicInformation";
-            this.rtbPublicInformation.Size = new System.Drawing.Size(209, 142);
-            this.rtbPublicInformation.TabIndex = 0;
-            this.rtbPublicInformation.Text = "";
+            this.chBxMaphackRemVisionArea.AutoSize = true;
+            this.chBxMaphackRemVisionArea.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chBxMaphackRemVisionArea.Location = new System.Drawing.Point(25, 240);
+            this.chBxMaphackRemVisionArea.Name = "chBxMaphackRemVisionArea";
+            this.chBxMaphackRemVisionArea.Size = new System.Drawing.Size(122, 17);
+            this.chBxMaphackRemVisionArea.TabIndex = 72;
+            this.chBxMaphackRemVisionArea.Text = "Remove Vision-Area";
+            this.chBxMaphackRemVisionArea.UseVisualStyleBackColor = true;
+            this.chBxMaphackRemVisionArea.CheckedChanged += new System.EventHandler(this.chBxMaphackRemVisionArea_CheckedChanged);
             // 
             // icbMapUnit
             // 
@@ -3889,6 +3903,7 @@
             this.tcMainTab.ResumeLayout(false);
             this.tcGlobal.ResumeLayout(false);
             this.tcGlobal.PerformLayout();
+            this.groupBox36.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -3970,12 +3985,11 @@
             this.groupBox27.PerformLayout();
             this.tcDebug.ResumeLayout(false);
             this.tcBugs.ResumeLayout(false);
+            this.groupBox35.ResumeLayout(false);
             this.groupBox25.ResumeLayout(false);
             this.groupBox25.PerformLayout();
             this.tcCredits.ResumeLayout(false);
             this.tcCredits.PerformLayout();
-            this.groupBox35.ResumeLayout(false);
-            this.groupBox36.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4309,5 +4323,6 @@
         private System.Windows.Forms.GroupBox groupBox35;
         private System.Windows.Forms.GroupBox groupBox36;
         private System.Windows.Forms.RichTextBox rtbPublicInformation;
+        private System.Windows.Forms.CheckBox chBxMaphackRemVisionArea;
     }
 }

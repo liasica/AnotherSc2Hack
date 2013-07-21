@@ -29,6 +29,7 @@ namespace Sc2Hack.Classes.BackEnds
                 CThreadState = true;
 
                 _thrWorker = new Thread(RefreshData);
+                _thrWorker.Priority = ThreadPriority.Highest;
                 _thrWorker.Name = "Worker \"RefreshData()\"";
                 _thrWorker.Start();
             }
@@ -88,17 +89,139 @@ namespace Sc2Hack.Classes.BackEnds
                 #endregion
 
                 
+                //DoMassiveTestScan();
                 DoMassiveScan();
 
-                var stuff = GetGUnitProductionTime(1);
+                //var stuff = GetGUnitProductionTime(1);
 
                 Thread.Sleep(CSleepTime);
             }
         }
 
+        /* Test purpose */
+        private void DoMassiveTestScan()
+        {
+            
+            /* Unit Buffer */
+            var length = GetGUnitReadUnitCount();
+
+            var thrWorkers = new Thread[Environment.ProcessorCount];
+            for (var i = 0; i < thrWorkers.Length; i++)
+            {
+                thrWorkers[i] = new Thread(DoKernelCalls);
+                thrWorkers[i].Start(length / Environment.ProcessorCount);
+            }
+        }
+
+        /* Test purpose */
+        private void DoKernelCalls(object lenght)
+        {
+            var length = (int) lenght;
+
+            var size = length / Environment.ProcessorCount * _of.UnitSize;
+            var chunk = InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.StructUnit, size);
+
+
+            if (chunk.Length <= 0)
+                return;
+
+
+
+            var realUnitCount = chunk.Length / _of.UnitSize;
+
+            if (realUnitCount <= 1)
+                _lUnitAssigner.Clear();
+
+
+            var lUnit = new List<PredefinedTypes.Unit>();
+            for (var i = 0; i < realUnitCount; i++)
+            {
+                _bSkip = false;
+
+                var u = new PredefinedTypes.Unit();
+
+                u.PositionX = BitConverter.ToInt32(chunk, _of.RawUnitPosX + (i * _of.UnitSize));
+                u.PositionY = BitConverter.ToInt32(chunk, _of.RawUnitPosY + (i * _of.UnitSize));
+                u.DestinationPositionX = BitConverter.ToInt32(chunk, _of.RawUnitDestinationX + (i * _of.UnitSize));
+                u.DestinationPositionY = BitConverter.ToInt32(chunk, _of.RawUnitDestinationY + (i * _of.UnitSize));
+                u.DamageTaken = BitConverter.ToInt32(chunk, _of.RawUnitDamageTaken + (i * _of.UnitSize));
+                u.TargetFilter = BitConverter.ToUInt64(chunk, _of.RawUnitTargetFilter + (i * _of.UnitSize));
+                u.State = BitConverter.ToInt32(chunk, _of.RawUnitState + (i * _of.UnitSize));
+                u.Owner = chunk[_of.RawUnitOwner + (i * _of.UnitSize)];
+                u.Movestate = BitConverter.ToInt32(chunk, _of.RawUnitMovestate + (i * _of.UnitSize));
+                u.Energy = BitConverter.ToInt32(chunk, _of.RawUnitEnergy + (i * _of.UnitSize));
+                u.BuildingState = BitConverter.ToInt16(chunk, _of.RawUnitBuildingState + (i * _of.UnitSize));
+                u.ModelPointer = BitConverter.ToInt32(chunk, _of.RawUnitModel + (i * _of.UnitSize));
+                u.IsAlive = (u.TargetFilter & (UInt64)PredefinedTypes.TargetFilterFlag.Dead) == 0;
+                u.IsUnderConstruction = (u.TargetFilter & (UInt64)PredefinedTypes.TargetFilterFlag.UnderConstruction) > 0;
+                u.IsStructure = (u.TargetFilter & (UInt64)PredefinedTypes.TargetFilterFlag.Structure) > 0;
+
+
+
+                for (var j = 0; j < _lUnitAssigner.Count; j++)
+                {
+                    if (_lUnitAssigner[j].Pointer == u.ModelPointer)
+                    {
+                        u.CustomStruct = _lUnitAssigner[j].CustomStruct;
+                        lUnit.Add(u);
+                        _bSkip = true;
+                        break;
+                    }
+                }
+
+                if (_bSkip)
+                    continue;
+
+                /* Assign a new Unit- assigner */
+                var ua = new PredefinedTypes.UnitAssigner
+                {
+                    Pointer = u.ModelPointer,
+                    CustomStruct = GetGUnitStruct(i)
+                };
+
+
+                _lUnitAssigner.Add(ua);
+
+                lUnit.Add(u);
+            }
+
+            Unit = lUnit;
+        }
+
+        /* Test purpose */
+        public static byte[] ObjectToByteArray(object _Object)
+        {
+            try
+            {
+                // create new memory stream
+                System.IO.MemoryStream _MemoryStream = new System.IO.MemoryStream();
+
+                // create new BinaryFormatter
+                System.Runtime.Serialization.Formatters.Binary.BinaryFormatter _BinaryFormatter
+                            = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                // Serializes an object, or graph of connected objects, to the given stream.
+                _BinaryFormatter.Serialize(_MemoryStream, _Object);
+
+                // convert stream to byte array and return
+                return _MemoryStream.ToArray();
+            }
+            catch (Exception _Exception)
+            {
+                // Error
+                Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
+            }
+
+            // Error occured, return null
+            return null;
+        }
+
         /* Check if a gigantic search is better */
         private void DoMassiveScan()
         {
+            //_swmainwatch.Reset();
+            //_swmainwatch.Start();
+
             #region Read all byteBuffers and store them
 
             /* Player Buffer */
@@ -127,6 +250,12 @@ namespace Sc2Hack.Classes.BackEnds
             var structureChunk = InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.StructureStruct, structurelenght);
 
             #endregion
+
+            //_swmainwatch.Stop();
+            //Debug.WriteLine("Time to read the entire buffer: " + _swmainwatch.ElapsedMilliseconds + " ms");
+
+            //_swmainwatch.Reset();
+            //_swmainwatch.Start();
 
             #region Playerinformation
 
@@ -192,6 +321,12 @@ namespace Sc2Hack.Classes.BackEnds
             Player = lPlayer1;
 
             #endregion
+
+            //_swmainwatch.Stop();
+            //Debug.WriteLine("Time to map the Playerstruct: " + _swmainwatch.ElapsedMilliseconds + " ms");
+
+            //_swmainwatch.Reset();
+            //_swmainwatch.Start();
 
             #region UnitInformation
 
@@ -262,6 +397,12 @@ namespace Sc2Hack.Classes.BackEnds
 
             #endregion
 
+            //_swmainwatch.Stop();
+            //Debug.WriteLine("Time to map the Unitstruct: " + _swmainwatch.ElapsedMilliseconds + " ms");
+
+            //_swmainwatch.Reset();
+            //_swmainwatch.Start();
+
             #region MapInformation
 
             var map = new PredefinedTypes.Map
@@ -279,11 +420,17 @@ namespace Sc2Hack.Classes.BackEnds
 
             #endregion
 
+            //_swmainwatch.Stop();
+            //Debug.WriteLine("Time to map the Mapstruct: " + _swmainwatch.ElapsedMilliseconds + " ms");
+
             #region StructureStruct
 
 
 
             #endregion
+
+            //_swmainwatch.Reset();
+            //_swmainwatch.Start();
 
             #region Gameinformation
 
@@ -303,6 +450,9 @@ namespace Sc2Hack.Classes.BackEnds
             Gameinfo = gInfo;
 
             #endregion
+
+            //_swmainwatch.Stop();
+            //Debug.WriteLine("Time to map the Gameinfo struct: " + _swmainwatch.ElapsedMilliseconds + " ms");
 
 
         }

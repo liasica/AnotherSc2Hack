@@ -975,6 +975,12 @@ namespace Sc2Hack.Classes.FontEnds
             PSettings.MaphackColorDefensivestructuresYellow = chBxMaphackColorDefensiveStructuresYellow.Checked;
         }
 
+        private void chBxMaphackRemVisionArea_CheckedChanged(object sender, EventArgs e)
+        {
+            PSettings.MaphackRemoveVisionArea = chBxMaphackRemVisionArea.Checked;
+        }
+
+
         #endregion
 
         #region Trainer
@@ -1539,6 +1545,7 @@ namespace Sc2Hack.Classes.FontEnds
             txtMapHotkey3.Text = PSettings.MaphackHotkey3.ToString();
             chBxDisableDestinationLine.Checked = PSettings.MaphackDisableDestinationLine;
             chBxMaphackColorDefensiveStructuresYellow.Checked = PSettings.MaphackColorDefensivestructuresYellow;
+            chBxMaphackRemVisionArea.Checked = PSettings.MaphackRemoveVisionArea;
 
             /* UnitIds */
             if (PSettings.MaphackUnitIds != null &&
@@ -2017,6 +2024,7 @@ namespace Sc2Hack.Classes.FontEnds
 
         #endregion
 
+        
         
 
         #endregion

@@ -1,0 +1,12 @@
+C:\Git\Projects\Sc2Hack\Sc2Hack\bin\Debug\AnotherSc2Hack.exe.config
+C:\Git\Projects\Sc2Hack\Sc2Hack\bin\Debug\AnotherSc2Hack.exe
+C:\Git\Projects\Sc2Hack\Sc2Hack\bin\Debug\AnotherSc2Hack.pdb
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.Classes.FontEnds.CustomToolTip.resources
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.Classes.FontEnds.DebugForm.resources
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.Classes.FontEnds.MainHandler.resources
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.Classes.FontEnds.Renderer.resources
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.Properties.Resources.resources
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.csproj.GenerateResource.Cache
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\AnotherSc2Hack.exe
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\AnotherSc2Hack.pdb
+C:\Git\Projects\Sc2Hack\Sc2Hack\obj\Debug\Sc2Hack.csprojResolveAssemblyReference.cache
