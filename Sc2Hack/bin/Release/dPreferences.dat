@@ -29,7 +29,7 @@ Remove Localplayer = False
 ;String
 FontName = Century Gothic
 ;float
-Opacity = 0,7
+Opacity = 0,75
 ;String
 On/Off Text = /res
 ;String
@@ -48,9 +48,9 @@ Draw Background = True
 
 [Income]
 ;Int32
-PosX = 247
+PosX = 1116
 ;Int32
-PosY = 241
+PosY = 336
 ;Int32
 Width = 600
 ;Int32
@@ -85,7 +85,7 @@ Draw Background = True
 
 [Apm]
 ;Int32
-PosX = 1172
+PosX = 980
 ;Int32
 PosY = 50
 ;Int32
@@ -122,9 +122,9 @@ Draw Background = True
 
 [Army]
 ;Int32
-PosX = 452
+PosX = 687
 ;Int32
-PosY = 508
+PosY = 692
 ;Int32
 Width = 600
 ;Int32
@@ -159,9 +159,9 @@ Draw Background = True
 
 [Worker]
 ;Int32
-PosX = 1161
+PosX = 537
 ;Int32
-PosY = 880
+PosY = 322
 ;Int32
 Width = 200
 ;Int32
@@ -188,13 +188,13 @@ Draw Background = True
 
 [UnitTab]
 ;Int32
-PosX = 1049
+PosX = 50
 ;Int32
-PosY = 200
+PosY = 50
 ;Int32
-Width = 826
+Width = 300
 ;Int32
-Height = 310
+Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
@@ -264,18 +264,18 @@ Remove Vision Area = True
 
 [Maphack Units]
 ;UnitId
-UnitId = PuHightemplar
+UnitId = ZuDrone
+;Color
+Unit Color = #004040
+;UnitId
+UnitId = PuStalker
+;Color
+Unit Color = #8000FF
+;UnitId
+UnitId = TuThor
+;Color
+Unit Color = #FF8000
+;UnitId
+UnitId = TuScv
 ;Color
 Unit Color = Red
-;UnitId
-UnitId = ZuOverlord
-;Color
-Unit Color = Fuchsia
-;UnitId
-UnitId = TuWidowMine
-;Color
-Unit Color = Lime
-;UnitId
-UnitId = PuArchon
-;Color
-Unit Color = Aqua

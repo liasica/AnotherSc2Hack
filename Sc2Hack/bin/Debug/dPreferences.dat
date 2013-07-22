@@ -4,9 +4,9 @@ DrawOnlyInForeground = False
 ;Keys
 Hotkey Resize = NumPad0
 ;Int32
-Data Refresh = 1
+Data Refresh = 33
 ;Int32
-Drawing Refresh = 32
+Drawing Refresh = 33
 
 
 [Resource]
@@ -21,7 +21,7 @@ Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean
@@ -58,7 +58,7 @@ Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean
@@ -95,7 +95,7 @@ Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean
@@ -132,7 +132,7 @@ Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean
@@ -198,7 +198,7 @@ Height = 50
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean
@@ -233,7 +233,7 @@ Height = 255
 ;Boolean
 Remove Ai = False
 ;Boolean
-Remove Neutral = True
+Remove Neutral = False
 ;Boolean
 Remove Allie = False
 ;Boolean

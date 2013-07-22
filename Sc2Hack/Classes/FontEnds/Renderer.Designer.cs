@@ -60,6 +60,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer tmrRefreshGraphic;
+        public System.Windows.Forms.Timer tmrRefreshGraphic;
     }
 }

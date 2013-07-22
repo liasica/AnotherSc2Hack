@@ -31,6 +31,8 @@ namespace Sc2Hack.Classes.FontEnds
         private Renderer _rProduction;
         private Renderer _rTrainer;
 
+        private List<Renderer> _lRenderer = new List<Renderer>(); 
+
         private const String StrOnlinePath =
             "https://dl.dropboxusercontent.com/u/62845853/AnotherSc2Hack/UpdateFiles/Sc2Hack_Version";
 
@@ -90,6 +92,17 @@ namespace Sc2Hack.Classes.FontEnds
             /* Set title for Panels */
             Text = HelpFunctions.SetWindowTitle();
 
+
+            /* Render forms into Renderlist */
+            _lRenderer.Add(_rApm);
+            _lRenderer.Add(_rArmy);
+            _lRenderer.Add(_rIncome);
+            _lRenderer.Add(_rMaphack);
+            _lRenderer.Add(_rProduction);
+            _lRenderer.Add(_rResources);
+            _lRenderer.Add(_rTrainer);
+            _lRenderer.Add(_rUnit);
+            _lRenderer.Add(_rWorker);
         }
 
         public override sealed string Text
@@ -1092,9 +1105,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                 PSettings.GlobalDataRefresh = iDummy;
                 _gInformation.CSleepTime = iDummy;
+                tmrGatherInformation.Interval = iDummy;
             }
         }
-
+        
         private void txtDrawingInterval_TextChanged(object sender, EventArgs e)
         {
             if (txtDrawingInterval.Text.Length <= 0)
@@ -1110,12 +1124,23 @@ namespace Sc2Hack.Classes.FontEnds
                 }
 
                 PSettings.GlobalDrawingRefresh = iDummy;
+
+                /* Adjust drawing refreshrate */
+                SetDrawingRefresh(_rApm, iDummy);
+                SetDrawingRefresh(_rArmy, iDummy);
+                SetDrawingRefresh(_rIncome, iDummy);
+                SetDrawingRefresh(_rMaphack, iDummy);
+                SetDrawingRefresh(_rProduction, iDummy);
+                SetDrawingRefresh(_rResources, iDummy);
+                SetDrawingRefresh(_rTrainer, iDummy);
+                SetDrawingRefresh(_rUnit, iDummy);
+                SetDrawingRefresh(_rWorker, iDummy);
+
             }
         }
 
         private void MainHandler_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //HelpFunctions.SetPreferences(PSettings);
             HelpFunctions.WritePreferences(PSettings);
 
             tmrGatherInformation.Enabled = false;
@@ -1125,7 +1150,7 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void MainHandler_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _gInformation.HandleThread(false);
+            Environment.Exit(0);
         }
 
         private void tmrGatherInformation_Tick(object sender, EventArgs e)
@@ -1138,8 +1163,6 @@ namespace Sc2Hack.Classes.FontEnds
             ThrowInformationToPanels(_rMaphack);
             ThrowInformationToPanels(_rUnit);
             ThrowInformationToPanels(_rProduction);
-
-            ChangeTextboxInformation();
 
             #region Launch Panels
 
@@ -1161,6 +1184,7 @@ namespace Sc2Hack.Classes.FontEnds
                 _bProcessSet = false;
 
                 tmrGatherInformation.Interval = 300;
+                Debug.WriteLine("Process not found - 300ms Delay!");
             }
 
 
@@ -1176,18 +1200,13 @@ namespace Sc2Hack.Classes.FontEnds
                     _gInformation = new GameInfo();
 
                     ChangeVisibleState(true);
-                    tmrGatherInformation.Interval = 10;
+                    tmrGatherInformation.Interval = PSettings.GlobalDataRefresh;
+
+                    Debug.WriteLine("Process found - " + PSettings.GlobalDataRefresh + "ms Delay!");
                 }
             }
 
             #endregion
-
-            #region Custom tooltips
-
-            
-
-            #endregion
-
         }
 
         private void chBxForegroundDraw_CheckedChanged(object sender, EventArgs e)
@@ -1438,6 +1457,18 @@ namespace Sc2Hack.Classes.FontEnds
             txtUniHeight.Text = PSettings.UnitTabHeigth.ToString();
         }
 
+        /* SetDrawingrefresh- rate */
+        private void SetDrawingRefresh(Renderer renderForm, int iDummy)
+        {
+            if (renderForm != null &&
+                renderForm.Created)
+            {
+                renderForm.tmrRefreshGraphic.Interval = iDummy;
+            }
+
+        }
+
+
         #region Help Methods for local Controls
 
         /* Load all control- settings into the form */
@@ -1581,6 +1612,7 @@ namespace Sc2Hack.Classes.FontEnds
             chBxForegroundDraw.Checked = PSettings.GlobalDrawOnlyInForeground;
             txtGlobalAdjustKey.Text = PSettings.GlobalChangeSizeAndPosition.ToString();
             
+            
             /* - Non settings - */
             lblMainApplication.Text = "[" + Application.ProductName + "] - Ver.: " +
                                       System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
@@ -1592,6 +1624,9 @@ namespace Sc2Hack.Classes.FontEnds
                 lblUpdaterApplication.Text = "[" + fvInfo.ProductName + "] - Ver.: " +
                                              fvInfo.FileVersion;
             }
+
+            /* Load the final positions and textboxes */
+            ChangeTextboxInformation();
         }
 
         #region Maphack

@@ -4259,64 +4259,64 @@
         private System.Windows.Forms.ListBox lstMapUnits;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.GroupBox groupBox24;
-        private System.Windows.Forms.TextBox txtResHeight;
-        private System.Windows.Forms.TextBox txtResWidth;
-        private System.Windows.Forms.TextBox txtResPosY;
-        private System.Windows.Forms.TextBox txtResPosX;
+        public System.Windows.Forms.TextBox txtResHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtResWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtResPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtResPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.GroupBox groupBox29;
-        private System.Windows.Forms.TextBox txtIncHeight;
-        private System.Windows.Forms.TextBox txtIncWidth;
-        private System.Windows.Forms.TextBox txtIncPosY;
-        private System.Windows.Forms.TextBox txtIncPosX;
+        public System.Windows.Forms.TextBox txtIncHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtIncWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtIncPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtIncPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label96;
         private System.Windows.Forms.Label label97;
         private System.Windows.Forms.Label label98;
         private System.Windows.Forms.Label label99;
         private System.Windows.Forms.GroupBox groupBox30;
-        private System.Windows.Forms.TextBox txtWorHeight;
-        private System.Windows.Forms.TextBox txtWorWidth;
-        private System.Windows.Forms.TextBox txtWorPosY;
-        private System.Windows.Forms.TextBox txtWorPosX;
+        public System.Windows.Forms.TextBox txtWorHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtWorWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtWorPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtWorPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label100;
         private System.Windows.Forms.Label label101;
         private System.Windows.Forms.Label label102;
         private System.Windows.Forms.Label label103;
         private System.Windows.Forms.GroupBox groupBox31;
-        private System.Windows.Forms.TextBox txtMapHeight;
-        private System.Windows.Forms.TextBox txtMapWidth;
-        private System.Windows.Forms.TextBox txtMapPosY;
-        private System.Windows.Forms.TextBox txtMapPosX;
+        public System.Windows.Forms.TextBox txtMapHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtMapWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtMapPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtMapPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label104;
         private System.Windows.Forms.Label label105;
         private System.Windows.Forms.Label label106;
         private System.Windows.Forms.Label label107;
         private System.Windows.Forms.GroupBox groupBox32;
-        private System.Windows.Forms.TextBox txtApmHeight;
-        private System.Windows.Forms.TextBox txtApmWidth;
-        private System.Windows.Forms.TextBox txtApmPosY;
-        private System.Windows.Forms.TextBox txtApmPosX;
+        public System.Windows.Forms.TextBox txtApmHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtApmWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtApmPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtApmPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label108;
         private System.Windows.Forms.Label label109;
         private System.Windows.Forms.Label label110;
         private System.Windows.Forms.Label label111;
         private System.Windows.Forms.GroupBox groupBox33;
-        private System.Windows.Forms.TextBox txtArmHeight;
-        private System.Windows.Forms.TextBox txtArmWidth;
-        private System.Windows.Forms.TextBox txtArmPosY;
-        private System.Windows.Forms.TextBox txtArmPosX;
+        public System.Windows.Forms.TextBox txtArmHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtArmWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtArmPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtArmPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label112;
         private System.Windows.Forms.Label label113;
         private System.Windows.Forms.Label label114;
         private System.Windows.Forms.Label label115;
         private System.Windows.Forms.GroupBox groupBox34;
-        private System.Windows.Forms.TextBox txtUniHeight;
-        private System.Windows.Forms.TextBox txtUniWidth;
-        private System.Windows.Forms.TextBox txtUniPosY;
-        private System.Windows.Forms.TextBox txtUniPosX;
+        public System.Windows.Forms.TextBox txtUniHeight;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtUniWidth;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtUniPosY;       /* Only call when it has been changed! */
+        public System.Windows.Forms.TextBox txtUniPosX;       /* Only call when it has been changed! */
         private System.Windows.Forms.Label label116;
         private System.Windows.Forms.Label label117;
         private System.Windows.Forms.Label label118;

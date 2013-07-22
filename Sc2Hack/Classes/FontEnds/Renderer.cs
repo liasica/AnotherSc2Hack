@@ -31,6 +31,8 @@ namespace Sc2Hack.Classes.FontEnds
         private Boolean _bSurpressForeground = false;
         private Stopwatch _swMainWatch = new Stopwatch();
 
+
+
         #endregion
 
         #region Public
@@ -4758,13 +4760,18 @@ namespace Sc2Hack.Classes.FontEnds
         {
             Invalidate();
 
+
             ChangeWindowStyle();
 
-            tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
 
             GetKeyboardInput();
             AdjustPanelPosition();
             AdjustPanelSize();
+
+            //GInfo = _gInfomation.Gameinfo;
+            //GMap = _gInfomation.Map;
+            //LPlayer = _gInfomation.Player;
+            //LUnit = _gInfomation.Unit;
         }
 
         /* Load Preferences into the controls */
@@ -4892,6 +4899,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtResPosX.Text = _hMainHandler.PSettings.ResourcePositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtResPosY.Text = _hMainHandler.PSettings.ResourcePositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -4934,6 +4945,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtIncPosX.Text = _hMainHandler.PSettings.IncomePositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtIncPosY.Text = _hMainHandler.PSettings.IncomePositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -4976,6 +4991,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtWorPosX.Text = _hMainHandler.PSettings.WorkerPositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtWorPosY.Text = _hMainHandler.PSettings.WorkerPositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5018,6 +5037,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtApmPosX.Text = _hMainHandler.PSettings.ApmPositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtApmPosY.Text = _hMainHandler.PSettings.ApmPositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5060,6 +5083,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtArmPosX.Text = _hMainHandler.PSettings.ArmyPositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtArmPosY.Text = _hMainHandler.PSettings.ArmyPositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5102,6 +5129,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtMapPosX.Text = _hMainHandler.PSettings.MaphackPositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtMapPosY.Text = _hMainHandler.PSettings.MaphackPositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5144,6 +5175,10 @@ namespace Sc2Hack.Classes.FontEnds
                     _bSetPosition = false;
                     _strBackup = string.Empty;
                     tmrRefreshGraphic.Interval = _hMainHandler.PSettings.GlobalDrawingRefresh;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtUniPosX.Text = _hMainHandler.PSettings.UnitTabPositionX.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtUniPosY.Text = _hMainHandler.PSettings.UnitTabPositionY.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5173,6 +5208,8 @@ namespace Sc2Hack.Classes.FontEnds
 
                     else
                         _hMainHandler.PSettings.ResourceHeight = 5;
+
+                    
                 }
 
                 var strInput = _strBackupSize;
@@ -5201,6 +5238,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtResWidth.Text = _hMainHandler.PSettings.ResourceWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtResHeight.Text = _hMainHandler.PSettings.ResourceHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5252,6 +5293,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtIncWidth.Text = _hMainHandler.PSettings.IncomeWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtIncHeight.Text = _hMainHandler.PSettings.IncomeHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5301,6 +5346,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtWorWidth.Text = _hMainHandler.PSettings.WorkerWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtWorHeight.Text = _hMainHandler.PSettings.WorkerHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5352,6 +5401,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtApmWidth.Text = _hMainHandler.PSettings.ApmWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtApmHeight.Text = _hMainHandler.PSettings.ApmHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5402,6 +5455,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtArmWidth.Text = _hMainHandler.PSettings.ArmyWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtArmHeight.Text = _hMainHandler.PSettings.ArmyHeight.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5452,6 +5509,10 @@ namespace Sc2Hack.Classes.FontEnds
                     
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtMapWidth.Text = _hMainHandler.PSettings.MaphackWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtMapHeight.Text = _hMainHandler.PSettings.MaphackHeigth.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5500,6 +5561,10 @@ namespace Sc2Hack.Classes.FontEnds
 
                     _bSetSize = false;
                     _strBackupSize = string.Empty;
+
+                    /* Transfer to Mainform */
+                    _hMainHandler.txtUniWidth.Text = _hMainHandler.PSettings.UnitTabWidth.ToString(CultureInfo.InvariantCulture);
+                    _hMainHandler.txtUniHeight.Text = _hMainHandler.PSettings.UnitTabHeigth.ToString(CultureInfo.InvariantCulture);
                 }
             }
 
@@ -5655,6 +5720,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.UnitTabHeigth = Height;
                 _hMainHandler.PSettings.UnitTabWidth = Width;
                 _hMainHandler.PSettings.UnitTabOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtUniPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtUniPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtUniWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtUniHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Maphack))
@@ -5664,6 +5735,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.MaphackHeigth = Height;
                 _hMainHandler.PSettings.MaphackWidth = Width;
                 _hMainHandler.PSettings.MaphackOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtMapPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtMapPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtMapWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtMapHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Resources))
@@ -5673,6 +5750,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.ResourceWidth = Width;
                 _hMainHandler.PSettings.ResourceHeight = Height/HelpFunctions.GetValidPlayerCount(LPlayer);
                 _hMainHandler.PSettings.ResourceOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtResPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtResPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtResWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtResHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Income))
@@ -5682,6 +5765,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.IncomeWidth = Width;
                 _hMainHandler.PSettings.IncomeHeight = Height / HelpFunctions.GetValidPlayerCount(LPlayer);
                 _hMainHandler.PSettings.IncomeOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtIncPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtIncPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtIncWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtIncHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Army))
@@ -5691,6 +5780,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.ArmyWidth = Width;
                 _hMainHandler.PSettings.ArmyHeight = Height / HelpFunctions.GetValidPlayerCount(LPlayer);
                 _hMainHandler.PSettings.ArmyOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtArmPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtArmPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtArmWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtArmHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Apm))
@@ -5700,6 +5795,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.ApmWidth = Width;
                 _hMainHandler.PSettings.ApmHeight = Height / HelpFunctions.GetValidPlayerCount(LPlayer);
                 _hMainHandler.PSettings.ApmOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtApmPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtApmPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtApmWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtApmHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             else if (_rRenderForm.Equals(PredefinedTypes.RenderForm.Worker))
@@ -5709,6 +5810,12 @@ namespace Sc2Hack.Classes.FontEnds
                 _hMainHandler.PSettings.WorkerWidth = Width;
                 _hMainHandler.PSettings.WorkerHeight = Height; 
                 _hMainHandler.PSettings.WorkerOpacity = Opacity;
+
+                /* Transfer to Mainform */
+                _hMainHandler.txtWorPosX.Text = Location.X.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtWorPosY.Text = Location.Y.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtWorWidth.Text = Width.ToString(CultureInfo.InvariantCulture);
+                _hMainHandler.txtWorHeight.Text = Height.ToString(CultureInfo.InvariantCulture);
             }
 
             _bChangingPosition = false;
