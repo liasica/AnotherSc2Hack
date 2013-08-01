@@ -30,6 +30,7 @@ namespace Sc2Hack.Classes.FontEnds
         private Boolean _bDraw = true;
         private Boolean _bSurpressForeground = false;
         private Stopwatch _swMainWatch = new Stopwatch();
+        private Boolean _bInvalidate = true;
 
 
 
@@ -3610,12 +3611,12 @@ namespace Sc2Hack.Classes.FontEnds
 
                     /* Dead Units */
                     if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                        clDestination = Color.Transparent;
+                        continue;
 
                     
                     /* Moving- state */
                     if (LUnit[i].Movestate.Equals(0))
-                        clDestination = Color.Transparent;
+                        continue;
 
 
 
@@ -3648,7 +3649,7 @@ namespace Sc2Hack.Classes.FontEnds
                 var clUnitBound = Color.Black;
 
                 if (LUnit[i].Owner >= (LPlayer.Count))
-                    clUnitBound = Color.Transparent;
+                    continue; //clUnitBound = Color.Transparent;
 
                 #region Scalling (Unitposition)
 
@@ -3702,8 +3703,8 @@ namespace Sc2Hack.Classes.FontEnds
 
 
                 /* Dead Units */
-                if ((LUnit[i].TargetFilter & (ulong)PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                    clUnitBound = Color.Transparent;
+                if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
+                    continue; // clUnitBound = Color.Transparent;
                 
 
 
@@ -3754,8 +3755,12 @@ namespace Sc2Hack.Classes.FontEnds
 
             for (var i = 0; i < LUnit.Count; i++)
             {
-                Color clUnit = LUnit[i].Owner > LPlayer.Count ? Color.Transparent : LPlayer[LUnit[i].Owner].Color;
-              
+                //Color clUnit = LUnit[i].Owner > LPlayer.Count ? Color.Transparent : LPlayer[LUnit[i].Owner].Color;
+                
+                if (LUnit[i].Owner > LPlayer.Count)
+                    continue;
+
+                Color clUnit = LPlayer[LUnit[i].Owner].Color;
 
 
 
@@ -3772,6 +3777,9 @@ namespace Sc2Hack.Classes.FontEnds
                                  LPlayer[LPlayer[0].Localplayer].Team &&
                                  !LPlayer[LUnit[i].Owner].IsLocalplayer)
                             clUnit = Color.Yellow;
+
+                        else if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            clUnit = Color.White;
 
                         else
                             clUnit = Color.Red;
@@ -3833,7 +3841,7 @@ namespace Sc2Hack.Classes.FontEnds
                 /* Dead Units */
                 if ((LUnit[i].TargetFilter & (ulong)PredefinedTypes.TargetFilterFlag.Dead) > 0)
                 {
-                    clUnit = Color.Transparent;
+                    continue; //clUnit = Color.Transparent;
                 }
 
 
@@ -3878,14 +3886,11 @@ namespace Sc2Hack.Classes.FontEnds
 
                 for (var i = 0; i < LUnit.Count; i++)
                 {
-                    var clUnitBound = Color.Black;
                     var clUnitBoundBorder = Color.Black;
 
                     if (LUnit[i].Owner >= (LPlayer.Count))
-                    {
-                        clUnitBound = Color.Transparent;
-                        clUnitBoundBorder = Color.Transparent;
-                    }
+                        continue; //clUnitBoundBorder = Color.Transparent;
+                    
 
                     #region Scalling (Unitposition)
 
@@ -3907,10 +3912,8 @@ namespace Sc2Hack.Classes.FontEnds
                     if (_hMainHandler.PSettings.MaphackRemoveAi)
                     {
                         if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
-                        {
-                            clUnitBound = Color.Transparent;
-                            clUnitBoundBorder = Color.Transparent;
-                        }
+                            continue; //clUnitBoundBorder = Color.Transparent;
+                       
                     }
 
                     /* Allie */
@@ -3921,10 +3924,8 @@ namespace Sc2Hack.Classes.FontEnds
                             if (LPlayer[LUnit[i].Owner].Team ==
                                 LPlayer[LPlayer[0].Localplayer].Team &&
                                 !LPlayer[LUnit[i].Owner].IsLocalplayer)
-                            {
-                                clUnitBound = Color.Transparent;
-                                clUnitBoundBorder = Color.Transparent;
-                            }
+                                continue; //clUnitBoundBorder = Color.Transparent;
+                            
                         }
                     }
 
@@ -3932,29 +3933,23 @@ namespace Sc2Hack.Classes.FontEnds
                     if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
                     {
                         if (LUnit[i].Owner == LPlayer[0].Localplayer)
-                        {
-                            clUnitBound = Color.Transparent;
-                            clUnitBoundBorder = Color.Transparent;
-                        }
+                            continue; //clUnitBoundBorder = Color.Transparent;
+                        
                     }
 
                     /* Neutral Units */
                     if (_hMainHandler.PSettings.MaphackRemoveNeutral)
                     {
                         if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
-                        {
-                            clUnitBound = Color.Transparent;
-                            clUnitBoundBorder = Color.Transparent;
-                        }
+                            continue; //clUnitBoundBorder = Color.Transparent;
+                        
                     }
 
 
                     /* Dead Units */
-                    if ((LUnit[i].TargetFilter & (ulong)PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                    {
-                        clUnitBound = Color.Transparent;
-                        clUnitBoundBorder = Color.Transparent;
-                    }
+                    if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
+                        continue; //clUnitBoundBorder = Color.Transparent;
+                    
 
 
 
@@ -4040,22 +4035,22 @@ namespace Sc2Hack.Classes.FontEnds
                             LUnit[i].CustomStruct.Id == (int) PredefinedTypes.UnitId.ZbSporeCrawlerUnrooted ||
                             LUnit[i].CustomStruct.Id == (int) PredefinedTypes.UnitId.PbCannon)
                         {
-                            clUnitBound = Color.Yellow;
+                            var clUnitBound = Color.Yellow;
 
 
                             if ((LUnit[i].TargetFilter & (UInt64) PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                            {
-                                clUnitBound = Color.Transparent;
-                                clUnitBoundBorder = Color.Transparent;
-                            }
+                                continue;
+                                //clUnitBound = Color.Transparent;
+                                //clUnitBoundBorder = Color.Transparent;
+                            
 
                             if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
                             {
                                 if (LUnit[i].Owner == LPlayer[0].Localplayer)
-                                {
-                                    clUnitBound = Color.Transparent;
-                                    clUnitBoundBorder = Color.Transparent;
-                                }
+                                    continue;
+                                    //clUnitBound = Color.Transparent;
+                                    //clUnitBoundBorder = Color.Transparent;
+                                
                             }
 
                             g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBound), 1.5f),
@@ -4076,122 +4071,123 @@ namespace Sc2Hack.Classes.FontEnds
 
             #region Draw Player camera
 
-
-            for (var i = 0; i < LPlayer.Count; i++)
+            if (!_hMainHandler.PSettings.MaphackRemoveCamera)
             {
-                var clPlayercolor = LPlayer[i].Color;
-
-                #region Teamcolor
-
-                if (GInfo.IsTeamcolor)
+                for (var i = 0; i < LPlayer.Count; i++)
                 {
-                    if (LPlayer[0].Localplayer < LPlayer.Count)
+                    var clPlayercolor = LPlayer[i].Color;
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
                     {
-                        if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
+                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Green;
 
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
+                            else if (LPlayer[i].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Yellow;
 
-                        else
-                            clPlayercolor = Color.Red;
+                            else
+                                clPlayercolor = Color.Red;
+                        }
                     }
-                }
 
-                #endregion
+                    #endregion
 
-                #region Escape Sequences
+                    #region Escape Sequences
 
-                /* Ai - Works */
-                if (_hMainHandler.PSettings.MaphackRemoveAi)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
-                        continue;
-                }
-
-                /* Observer */
-                if (_hMainHandler.PSettings.MaphackRemoveObserver)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                        continue;
-                }
-
-                /* Referee */
-                if (_hMainHandler.PSettings.MaphackRemoveReferee)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                        continue;
-                }
-
-                /* Localplayer - Works */
-                if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
-                        continue;
-                }
-
-                /* Allie */
-                if (_hMainHandler.PSettings.MaphackRemoveAllie)
-                {
-                    if (LPlayer[0].Localplayer < LPlayer.Count)
+                    /* Ai - Works */
+                    if (_hMainHandler.PSettings.MaphackRemoveAi)
                     {
-                        if (LPlayer[i].Team ==
-                            LPlayer[LPlayer[i].Localplayer].Team &&
-                            !LPlayer[i].IsLocalplayer)
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
                             continue;
                     }
-                }
 
-                /* Neutral */
-                if (_hMainHandler.PSettings.MaphackRemoveNeutral)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                    /* Observer */
+                    if (_hMainHandler.PSettings.MaphackRemoveObserver)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
+                            continue;
+                    }
+
+                    /* Referee */
+                    if (_hMainHandler.PSettings.MaphackRemoveReferee)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
+                            continue;
+                    }
+
+                    /* Localplayer - Works */
+                    if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
+                    {
+                        if (LPlayer[i].IsLocalplayer)
+                            continue;
+                    }
+
+                    /* Allie */
+                    if (_hMainHandler.PSettings.MaphackRemoveAllie)
+                    {
+                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].Team ==
+                                LPlayer[LPlayer[i].Localplayer].Team &&
+                                !LPlayer[i].IsLocalplayer)
+                                continue;
+                        }
+                    }
+
+                    /* Neutral */
+                    if (_hMainHandler.PSettings.MaphackRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+                    /* Hosile */
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
                         continue;
+
+                    if (float.IsInfinity(iScale))
+                        continue;
+
+                    if (CheckIfGameheart(LPlayer[i]))
+                        continue;
+
+                    #endregion
+
+                    #region Drawing
+
+                    //The actrual position of the Cameras
+                    var iPlayerX = (LPlayer[i].CameraPositionX - GMap.Left)*iScale + iX;
+                    var iPlayerY = (GMap.Top - LPlayer[i].CameraPositionY)*iScale + iY;
+
+                    if (iPlayerX <= 0 || iPlayerX >= Width ||
+                        iPlayerY <= 0 || iPlayerY >= Height)
+                        continue;
+
+                    //if (iPlayerX <= 0 ||
+                    //    iPlayerY <= 0)
+                    //    continue;
+
+                    var ptPoints = new PointF[4];
+                    ptPoints[0] = new PointF((int) iPlayerX - 35, (int) iPlayerY - 24);
+                    ptPoints[1] = new PointF((int) iPlayerX + 35, (int) iPlayerY - 24);
+                    ptPoints[2] = new PointF((int) iPlayerX + 24, (int) iPlayerY + 10);
+                    ptPoints[3] = new PointF((int) iPlayerX - 24, (int) iPlayerY + 10);
+
+
+
+
+                    g.Graphics.DrawPolygon(new Pen(new SolidBrush(clPlayercolor), 2), ptPoints);
+
+                    #endregion
+
                 }
-
-                /* Hosile */
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
-                    continue;
-
-                if (float.IsInfinity(iScale))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                #endregion
-
-                #region Drawing
-
-                //The actrual position of the Cameras
-                var iPlayerX = (LPlayer[i].CameraPositionX - GMap.Left) * iScale + iX;
-                var iPlayerY = (GMap.Top - LPlayer[i].CameraPositionY) * iScale + iY;
-
-                if (iPlayerX <= 0 || iPlayerX >= Width ||
-                    iPlayerY <= 0 || iPlayerY >= Height)
-                    continue;
-
-                //if (iPlayerX <= 0 ||
-                //    iPlayerY <= 0)
-                //    continue;
-
-                var ptPoints = new PointF[4];
-                ptPoints[0] = new PointF((int)iPlayerX - 35, (int)iPlayerY - 24);
-                ptPoints[1] = new PointF((int)iPlayerX + 35, (int)iPlayerY - 24);
-                ptPoints[2] = new PointF((int)iPlayerX + 24, (int)iPlayerY + 10);
-                ptPoints[3] = new PointF((int)iPlayerX - 24, (int)iPlayerY + 10);
-
-
-
-
-                g.Graphics.DrawPolygon(new Pen(new SolidBrush(clPlayercolor), 2), ptPoints);
-
-                #endregion
-
             }
-
 
             #endregion
 
@@ -4758,7 +4754,11 @@ namespace Sc2Hack.Classes.FontEnds
         /* Refresges the drawing */
         private void tmrRefreshGraphic_Tick(object sender, EventArgs e)
         {
-            Invalidate();
+            if (_bInvalidate)
+            {
+                //Invalidate();
+                Refresh();
+            }
 
 
             ChangeWindowStyle();

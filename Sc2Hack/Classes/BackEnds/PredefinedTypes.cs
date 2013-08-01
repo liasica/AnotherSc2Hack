@@ -419,6 +419,7 @@ namespace Sc2Hack.Classes.BackEnds
             public Boolean MaphackRemoveNeutral;
             public Boolean MaphackRemoveLocalplayer;
             public Boolean MaphackRemoveVisionArea;
+            public Boolean MaphackRemoveCamera;
             public Color MaphackDestinationColor;
             public Int32 MaphackPositionX;
             public Int32 MaphackPositionY;

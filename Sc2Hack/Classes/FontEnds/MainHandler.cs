@@ -82,7 +82,7 @@ namespace Sc2Hack.Classes.FontEnds
             /* Stuff that gets downloaded.. */
             new Thread(InitSearch).Start();             //Thread for the Updater [Mainapplication]
             new Thread(InitSearchUpdater).Start();      //Thread for the Updater [Updater]
-            GetPublicInformation();                     //Get public information
+            new Thread(GetPublicInformation).Start();   //Thread for public information [Mainapplication]
             
 
             HelpFunctions.CheckIfWindowStyleIsFullscreen(_gInformation.CWindowStyle);
@@ -993,6 +993,11 @@ namespace Sc2Hack.Classes.FontEnds
             PSettings.MaphackRemoveVisionArea = chBxMaphackRemVisionArea.Checked;
         }
 
+        private void chBxMapRemCamera_CheckedChanged(object sender, EventArgs e)
+        {
+            PSettings.MaphackRemoveCamera = chBxMapRemCamera.Checked;
+        }
+
 
         #endregion
 
@@ -1265,21 +1270,56 @@ namespace Sc2Hack.Classes.FontEnds
             iPosYString += 30;
         }
 
-
         /* Initiate download... */
         private void GetPublicInformation()
         {
-            var wc = new WebClient();
-            wc.Proxy = null;
-            wc.DownloadStringAsync(new Uri(StrOnlinePublicInformation));
+            var wc = new WebClient {Proxy = null};
+            var ping = new Ping();
 
-            wc.DownloadStringCompleted += wc_PublicInformation_DownloadStringComplete;
+            try
+            {
+                var res = ping.Send("Dropbox.com", 10);
+
+                if (res == null || !res.Status.Equals(IPStatus.Success)) return;
+
+                wc.DownloadStringAsync(new Uri(StrOnlinePublicInformation));
+                wc.DownloadStringCompleted += wc_PublicInformation_DownloadStringComplete;
+            }
+
+            catch
+            {
+                MethodInvoker inv = delegate
+                    {
+                        rtbPublicInformation.Text = "No Connection!";
+                    };
+
+                try
+                {
+                    Invoke(inv);
+                }
+
+                catch
+                {
+                    /* Do nothing */
+                }
+            }
         }
 
         /* When the string is finally downloaded */
         private void wc_PublicInformation_DownloadStringComplete(object sender, DownloadStringCompletedEventArgs downloadStringCompletedEventArgs)
         {
-            rtbPublicInformation.Text = downloadStringCompletedEventArgs.Result;
+            /* Quick 'n' Dirty */
+            MethodInvoker inv = delegate
+                {
+                    rtbPublicInformation.Text = downloadStringCompletedEventArgs.Result;
+                };
+
+            try
+            {
+                Invoke(inv);
+            }
+
+            catch {}
         }
 
         #endregion
@@ -1468,7 +1508,6 @@ namespace Sc2Hack.Classes.FontEnds
 
         }
 
-
         #region Help Methods for local Controls
 
         /* Load all control- settings into the form */
@@ -1567,6 +1606,7 @@ namespace Sc2Hack.Classes.FontEnds
             chBxDisableDestinationLine.Checked = PSettings.MaphackDisableDestinationLine;
             chBxMaphackColorDefensiveStructuresYellow.Checked = PSettings.MaphackColorDefensivestructuresYellow;
             chBxMaphackRemVisionArea.Checked = PSettings.MaphackRemoveVisionArea;
+            chBxMapRemCamera.Checked = PSettings.MaphackRemoveCamera;
 
             /* UnitIds */
             if (PSettings.MaphackUnitIds != null &&
@@ -1808,8 +1848,33 @@ namespace Sc2Hack.Classes.FontEnds
 
             catch
             {
-                iCountTimeOuts++;
-                goto TryAnotherRound;
+                    var iCounter = 0;
+                TryAnotherInvoke:
+
+                    MethodInvoker inv =
+                    delegate
+                    {
+                        btnGetUpdate.ForeColor = Color.Red;
+                        btnGetUpdate.Text = "No Connection!";
+                        btnGetUpdate.Enabled = false;
+                    };
+
+                
+
+                    try
+                    {
+                        Invoke(inv);
+                    }
+                    catch
+                    {
+                        if (iCounter > 5)
+                        return;
+
+                        iCounter += 1;
+                        goto TryAnotherInvoke;
+                    }
+
+                    return;
             }
 
             if (myResult.Status != IPStatus.Success)
@@ -1827,6 +1892,20 @@ namespace Sc2Hack.Classes.FontEnds
 
             Debug.WriteLine("Initiate Webclient!");
 
+            /* Reset Title */
+            MethodInvoker invBtn = delegate
+                {
+                    btnGetUpdate.Text = "- Searching - ";
+                    btnGetUpdate.ForeColor = Color.Black;
+                    btnGetUpdate.Enabled = false;
+                };
+
+            try
+            {
+                Invoke(invBtn);
+            }
+
+            catch {}
 
             /* Connect to server */
             var privateWebClient = new WebClient();
@@ -2048,6 +2127,8 @@ namespace Sc2Hack.Classes.FontEnds
         }
 
         #endregion
+
+       
 
         
 

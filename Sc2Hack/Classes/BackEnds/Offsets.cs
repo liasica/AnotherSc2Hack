@@ -831,6 +831,177 @@ namespace Sc2Hack.Classes.BackEnds
 
             #endregion
 
+            #region HotS - 2.0.10.26585
+
+            else if (starcraft.MainModule.FileVersionInfo.FileVersion == "2.0.10.26585")
+            {
+                //Playerinfo
+                Struct = (int)starcraft.MainModule.BaseAddress + 0x035E6E00; //V
+                CameraX = Struct + 0x008; //V
+                CameraDistance = Struct + 0x00A; //V
+                CameraY = Struct + 0x00C; //V
+                Team = Struct + 0x01C; //V
+                Playertype = Struct + 0x01D; //V
+                Status = Struct + 0x01E; //V
+                Name = Struct + 0x060; //V
+                AccountId = Struct + 0x1C0; //V
+                Color = Struct + 0x160; //V
+                Apm = Struct + 0x598; //V
+                Epm = Struct + 0x5D8; //V
+                CurrentBuildings = Struct + 0x6B0; //Not needed?
+                Workers = Struct + 0x788; //V
+                SupplyMin = Struct + 0x860; //V
+                SupplyMax = Struct + 0x848; //V
+                MineralsCurrent = Struct + 0x8A0; //V
+                GasCurrent = Struct + 0x8A8; //V
+                MineralsIncome = Struct + 0x920; //V
+                GasIncome = Struct + 0x928; //V
+                MineralsArmy = Struct + 0xC08; //V
+                GasArmy = Struct + 0xC30; //V
+                Size = 0xDC0; //V
+
+                //Raw Playerdata
+                RawCameraX = 0x008;
+                RawCameraDistance = 0x00A;
+                RawCameraY = 0x00C;
+                RawTeam = 0x01C;
+                RawPlayertype = 0x01D;
+                RawStatus = 0x01E;
+                RawName = 0x060;
+                RawColor = 0x160;
+                RawAccountId = 0x1C0;
+                RawApm = 0x598;
+                RawEpm = 0x5D8;
+                RawCurrentBuildings = 0x6B0;    //?
+                RawWorkers = 0x788;
+                RawSupplyMin = 0x860;
+                RawSupplyMax = 0x848;
+                RawMinerals = 0x8A0;
+                RawGas = 0x8A8;
+                RawMineralsIncome = 0x920;
+                RawGasIncome = 0x928;
+                RawMineralsArmy = 0xC08;
+                RawGasArmy = 0xC30;
+                RawSize = 0xDC0;
+
+                //Race
+                Race = (int)starcraft.MainModule.BaseAddress + 0x02F6C850; //V
+                RaceSize = 0x10; //V
+
+                //ChatInput
+                ChatBase = (int)starcraft.MainModule.BaseAddress + 0x0031073C0; //V
+                ChatOff0 = 0x3B0;
+                ChatOff1 = 0x208;
+                ChatOff2 = 0x000;
+                ChatOff3 = 0x000;
+                ChatOff4 = 0x014;
+
+                //Localplayer
+                Localplayer4 = (int)starcraft.MainModule.BaseAddress + 0x011265D8; //? or 11265D9  or 1126E00
+
+
+                //Unitinfo
+                StructUnit = (int)starcraft.MainModule.BaseAddress + 0x03665140; //V
+                UnitPosX = StructUnit + 0x4C; //V
+                UnitPosY = StructUnit + 0x50; //V
+                UnitTargetFilter = StructUnit + 0x18; //?
+                UnitTotal = (int)starcraft.MainModule.BaseAddress + 0x036650E8; //?
+                UnitDestinationX = StructUnit + 0x80; //V
+                UnitDestinationY = StructUnit + 0x84; //V
+                UnitHp = StructUnit + 0x114; //V
+                UnitEnergy = StructUnit + 0x11C; //?
+                UnitOwner = StructUnit + 0x41; //?
+                UnitState = StructUnit + 0x2B; //?
+                UnitBeeingPuked = StructUnit + 0xDC; //?
+                UnitMoveState = StructUnit + 0x60; //V
+                UnitStringStruct = 0x7DC; //?
+                UnitString = 0x020; //?
+                UnitModel = StructUnit + 8; //?                              
+                UnitModelId = 0x06; //?
+                UnitModelSize = 0x39C + 0x10; //?
+                UnitMaxHealth = 0x368;//0x7F8;  //Not sure tho
+                UnitSize = 0x1C0; //?
+
+                //Raw Unitdata
+                RawUnitPosX = 0x4C;
+                RawUnitPosY = 0x50;
+                RawUnitDestinationX = 0x80;
+                RawUnitDestinationY = 0x84;
+                RawUnitTargetFilter = 0x18;
+                RawUnitDamageTaken = 0x114;
+                RawUnitEnergy = 0x11C;
+                RawUnitOwner = 0x41;
+                RawUnitState = 0x2B;
+                RawUnitMovestate = 0x60;
+                RawUnitBuildingState = 0x34; //?
+                RawUnitModel = 8; //?
+                RawUnitModelId = 6; //?
+                RawUnitStringStruct = 0x7DC; //?
+                RawUnitString = 0x020; //?
+                RawUnitModelSize = 0x39C; //?
+                RawUnitSize = 0x1C0; //?
+
+                /* Structure Struct - UNUSED */
+                StructureStruct = (int)starcraft.MainModule.BaseAddress + 0x0329029C;
+                StructureHarvesterCount = StructureStruct + 0x4C;
+                StructureCount = (int)starcraft.MainModule.BaseAddress + 0x03290288;
+                StructureSize = 0x94;
+
+                //Mapinfo 
+                StructMap = (int)starcraft.MainModule.BaseAddress + 0x03534E90; //V
+                MapLeft = StructMap + 0x128; //
+                MapBottom = StructMap + 0x12C; //
+                MapRight = StructMap + 0x130; //
+                MapTop = StructMap + 0x134; //
+                MapFileInfoName = 0x2A0;
+
+                //Raw Mapadata
+                RawMapLeft = 0x128;
+                RawMapBottom = 0x12C;
+                RawMapRight = 0x130;
+                RawMapTop = 0x134;
+
+                //Selected stuff - UNUSED
+                UiSelectionStruct = (int)starcraft.MainModule.BaseAddress + 0x215FB50; //
+                UiTotalSelectedUnits = UiSelectionStruct + 0x0; //
+                UiTotalSelectedTypes = UiSelectionStruct + 0x2; //
+                UiSelectedType = UiSelectionStruct + 0x4; //
+                UiSelectedIndex = UiSelectionStruct + 0x8; //
+                UiSize = 4; //147
+
+                UiRawTotalSelectedUnits = 0x0;
+                UiRawTotalSelectedTypes = 0x2;
+                UiRawSelectedType = 0x4;
+
+                /* Is in a loop, has to be like this */
+                UiRawSelectedIndex = 0x4;
+
+                //TeamColor 
+                TeamColor1 = (int)starcraft.MainModule.BaseAddress + 0x03108504; //V
+                TeamColor2 = (int)starcraft.MainModule.BaseAddress + 0x04FA7800; //V
+
+                //Ingame Timer 
+                TimerData = (int)starcraft.MainModule.BaseAddress + 0x031082F0; //V
+
+                //Pause 
+                PauseEnabled = (int)starcraft.MainModule.BaseAddress + 0x024C9E38; /* 0x022ab7b8
+                                               * 0x25ef0b8 
+                                               * 0x3de06e4 
+                                               * 0x3e0fc20 */
+
+                //Gamespeed 
+                Gamespeed = (int)starcraft.MainModule.BaseAddress + 0x04EEB184; //V
+
+                //Fps VALID
+                FramesPerSecond = (int)
+                                  starcraft.MainModule.BaseAddress + 0x03ED54DC; //
+
+                //Gametype NOT VALID
+                Gametype = 0x0176DCC8;
+            }
+
+            #endregion
+
             else
             {
                 MessageBox.Show("This tool is outdated.\n" +

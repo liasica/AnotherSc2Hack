@@ -337,7 +337,7 @@ namespace Sc2Hack.Classes.BackEnds
 
             var realUnitCount = chunk.Length/_of.UnitSize;
 
-            if (realUnitCount <= 1)
+            if (realUnitCount <= 0)
                 _lUnitAssigner.Clear();
 
 
@@ -1018,7 +1018,7 @@ namespace Sc2Hack.Classes.BackEnds
                     InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.UnitModelId + (int)iContentofUnitModelShifted, 2),
                     0);
 
-
+            
             /* Size - 4 Byte*/
             var size =
                 (float)BitConverter.ToInt32(
@@ -1046,20 +1046,25 @@ namespace Sc2Hack.Classes.BackEnds
                 BitConverter.ToInt32(
                     InteropCalls.Help_ReadProcessMemory(_hStarcraft, iStringStruct, 4),
                     0);
+
             /* Name */
             var sName =
-                Encoding.UTF8.GetString(InteropCalls.Help_ReadProcessMemory(_hStarcraft, iStringStruct + _of.RawUnitString,
-                                                                            iNameLenght));
+                Encoding.UTF8.GetString(InteropCalls.Help_ReadProcessMemory(_hStarcraft, iNameLenght + _of.RawUnitString,
+                                                                            /*iNameLenght*/50));
+
+            if (sName.Contains("\0"))
+                sName = sName.Substring(0, sName.IndexOf('\0'));
                
 
             var str = new PredefinedTypes.UnitModelStruct();
-            str.NameLenght = iNameLenght;
+            str.NameLenght = sName.Length;
             str.RawName = sName;
             str.Id = id;
             str.MaximumHealth = health;
             str.Size = size;
 
-            str.Name = iNameLenght > 0 ? sName.Substring(10) : sName;
+            if (sName.Contains("Unit/Name"))
+                str.Name = sName.Substring(10);
 
             return str;
         }
@@ -1183,6 +1188,7 @@ namespace Sc2Hack.Classes.BackEnds
         /* 4 Bytes */
         private Int32 GetGTimer()
         {
+            Debug.WriteLine("TimerData: " + (BitConverter.ToInt32(InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.TimerData, sizeof(Int32)), 0) / 4096).ToString());
             return
                 (BitConverter.ToInt32(InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.TimerData, sizeof (Int32)), 0) / 4096);
         }

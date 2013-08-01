@@ -427,6 +427,7 @@ namespace Sc2Hack.Classes.BackEnds
                     MaphackRemoveNeutral = true,
                     MaphackRemoveLocalplayer = false,
                     MaphackRemoveVisionArea = true,
+                    MaphackRemoveCamera = false,
                     MaphackDestinationColor = Color.Orange,
                     MaphackPositionX = 28,
                     MaphackPositionY = 811,
@@ -2256,6 +2257,18 @@ namespace Sc2Hack.Classes.BackEnds
                     pSettings.MaphackRemoveVisionArea = bRemoveVisionArea;
                 }
 
+                /* Remove Camera */
+                if (strInnerValue.StartsWith("Remove Camera"))
+                {
+                    strInnerValue = strInnerValue.Substring("Remove Camera".Length,
+                                                            strInnerValue.Length - "Remove Camera".Length);
+
+                    bool bRemoveCamera;
+                    Boolean.TryParse(strInnerValue, out bRemoveCamera);
+
+                    pSettings.MaphackRemoveCamera = bRemoveCamera;
+                }
+
                 #endregion
 
                 #region Int32 values
@@ -2821,6 +2834,8 @@ namespace Sc2Hack.Classes.BackEnds
             sw.WriteLine("Color Def Structures = " + pSettings.MaphackColorDefensivestructuresYellow);
             sw.WriteLine(";Boolean");
             sw.WriteLine("Remove Vision Area = " + pSettings.MaphackRemoveVisionArea);
+            sw.WriteLine(";Boolean");
+            sw.WriteLine("Remove Camera = " + pSettings.MaphackRemoveCamera);
 
             #endregion
 

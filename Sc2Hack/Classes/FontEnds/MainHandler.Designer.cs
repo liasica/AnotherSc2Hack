@@ -329,6 +329,15 @@
             this.label71 = new System.Windows.Forms.Label();
             this.label72 = new System.Windows.Forms.Label();
             this.tcTrainer = new System.Windows.Forms.TabPage();
+            this.gpTrainerBasics = new System.Windows.Forms.GroupBox();
+            this.txtTrainerMSupply = new System.Windows.Forms.TextBox();
+            this.label123 = new System.Windows.Forms.Label();
+            this.txtTrainerCSupply = new System.Windows.Forms.TextBox();
+            this.label122 = new System.Windows.Forms.Label();
+            this.txtTrainerGas = new System.Windows.Forms.TextBox();
+            this.label121 = new System.Windows.Forms.Label();
+            this.txtTrainerMinerals = new System.Windows.Forms.TextBox();
+            this.label120 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.groupBox27 = new System.Windows.Forms.GroupBox();
             this.txtTrainerHotkey3 = new System.Windows.Forms.TextBox();
@@ -341,6 +350,7 @@
             this.rdBtnTrainerInstant = new System.Windows.Forms.RadioButton();
             this.chBxTrainerStealUnits = new System.Windows.Forms.CheckBox();
             this.groupBox26 = new System.Windows.Forms.GroupBox();
+            this.lstTrainerPlayerlist = new System.Windows.Forms.ListBox();
             this.tcDebug = new System.Windows.Forms.TabPage();
             this.btnExportFile = new System.Windows.Forms.Button();
             this.tcBugs = new System.Windows.Forms.TabPage();
@@ -358,6 +368,7 @@
             this.label92 = new System.Windows.Forms.Label();
             this.btnProduction = new System.Windows.Forms.Button();
             this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
+            this.chBxMapRemCamera = new System.Windows.Forms.CheckBox();
             this.tcMainTab.SuspendLayout();
             this.tcGlobal.SuspendLayout();
             this.groupBox36.SuspendLayout();
@@ -407,7 +418,9 @@
             this.groupBox16.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.tcTrainer.SuspendLayout();
+            this.gpTrainerBasics.SuspendLayout();
             this.groupBox27.SuspendLayout();
+            this.groupBox26.SuspendLayout();
             this.tcDebug.SuspendLayout();
             this.tcBugs.SuspendLayout();
             this.groupBox35.SuspendLayout();
@@ -563,7 +576,7 @@
             this.rtbPublicInformation.Name = "rtbPublicInformation";
             this.rtbPublicInformation.Size = new System.Drawing.Size(209, 142);
             this.rtbPublicInformation.TabIndex = 0;
-            this.rtbPublicInformation.Text = "";
+            this.rtbPublicInformation.Text = "Nothing set :(";
             // 
             // txtGlobalAdjustKey
             // 
@@ -638,11 +651,12 @@
             this.btnGetUpdate.Enabled = false;
             this.btnGetUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGetUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGetUpdate.ForeColor = System.Drawing.Color.Black;
             this.btnGetUpdate.Location = new System.Drawing.Point(66, 19);
             this.btnGetUpdate.Name = "btnGetUpdate";
             this.btnGetUpdate.Size = new System.Drawing.Size(127, 23);
             this.btnGetUpdate.TabIndex = 1;
-            this.btnGetUpdate.Text = "- Searching -";
+            this.btnGetUpdate.Text = "Nothing set :(";
             this.btnGetUpdate.UseVisualStyleBackColor = true;
             this.btnGetUpdate.Click += new System.EventHandler(this.btnGetUpdate_Click);
             // 
@@ -2059,6 +2073,7 @@
             // 
             // groupBox20
             // 
+            this.groupBox20.Controls.Add(this.chBxMapRemCamera);
             this.groupBox20.Controls.Add(this.chBxMaphackRemVisionArea);
             this.groupBox20.Controls.Add(this.chBxMaphackColorDefensiveStructuresYellow);
             this.groupBox20.Controls.Add(this.lblMapOpacity);
@@ -2077,7 +2092,7 @@
             this.groupBox20.Controls.Add(this.label34);
             this.groupBox20.Location = new System.Drawing.Point(30, 18);
             this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(291, 338);
+            this.groupBox20.Size = new System.Drawing.Size(291, 367);
             this.groupBox20.TabIndex = 67;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Basic Panel Options";
@@ -2109,7 +2124,7 @@
             // lblMapOpacity
             // 
             this.lblMapOpacity.AutoSize = true;
-            this.lblMapOpacity.Location = new System.Drawing.Point(150, 302);
+            this.lblMapOpacity.Location = new System.Drawing.Point(150, 332);
             this.lblMapOpacity.Name = "lblMapOpacity";
             this.lblMapOpacity.Size = new System.Drawing.Size(35, 13);
             this.lblMapOpacity.TabIndex = 70;
@@ -2129,7 +2144,7 @@
             // 
             // tbMapOpacity
             // 
-            this.tbMapOpacity.Location = new System.Drawing.Point(153, 270);
+            this.tbMapOpacity.Location = new System.Drawing.Point(153, 300);
             this.tbMapOpacity.Maximum = 100;
             this.tbMapOpacity.Name = "tbMapOpacity";
             this.tbMapOpacity.Size = new System.Drawing.Size(121, 45);
@@ -2242,7 +2257,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(25, 270);
+            this.label34.Location = new System.Drawing.Point(25, 300);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(46, 13);
             this.label34.TabIndex = 44;
@@ -3560,6 +3575,7 @@
             // tcTrainer
             // 
             this.tcTrainer.BackColor = System.Drawing.SystemColors.Control;
+            this.tcTrainer.Controls.Add(this.gpTrainerBasics);
             this.tcTrainer.Controls.Add(this.label33);
             this.tcTrainer.Controls.Add(this.groupBox27);
             this.tcTrainer.Controls.Add(this.groupBox26);
@@ -3569,11 +3585,93 @@
             this.tcTrainer.TabIndex = 10;
             this.tcTrainer.Text = "Trainer";
             // 
+            // gpTrainerBasics
+            // 
+            this.gpTrainerBasics.Controls.Add(this.txtTrainerMSupply);
+            this.gpTrainerBasics.Controls.Add(this.label123);
+            this.gpTrainerBasics.Controls.Add(this.txtTrainerCSupply);
+            this.gpTrainerBasics.Controls.Add(this.label122);
+            this.gpTrainerBasics.Controls.Add(this.txtTrainerGas);
+            this.gpTrainerBasics.Controls.Add(this.label121);
+            this.gpTrainerBasics.Controls.Add(this.txtTrainerMinerals);
+            this.gpTrainerBasics.Controls.Add(this.label120);
+            this.gpTrainerBasics.Enabled = false;
+            this.gpTrainerBasics.Location = new System.Drawing.Point(211, 18);
+            this.gpTrainerBasics.Name = "gpTrainerBasics";
+            this.gpTrainerBasics.Size = new System.Drawing.Size(238, 147);
+            this.gpTrainerBasics.TabIndex = 3;
+            this.gpTrainerBasics.TabStop = false;
+            this.gpTrainerBasics.Text = "Basics";
+            // 
+            // txtTrainerMSupply
+            // 
+            this.txtTrainerMSupply.Location = new System.Drawing.Point(109, 104);
+            this.txtTrainerMSupply.Name = "txtTrainerMSupply";
+            this.txtTrainerMSupply.Size = new System.Drawing.Size(100, 20);
+            this.txtTrainerMSupply.TabIndex = 7;
+            // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(25, 106);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(68, 13);
+            this.label123.TabIndex = 6;
+            this.label123.Text = "Max. Supply:";
+            // 
+            // txtTrainerCSupply
+            // 
+            this.txtTrainerCSupply.Location = new System.Drawing.Point(109, 78);
+            this.txtTrainerCSupply.Name = "txtTrainerCSupply";
+            this.txtTrainerCSupply.Size = new System.Drawing.Size(100, 20);
+            this.txtTrainerCSupply.TabIndex = 5;
+            // 
+            // label122
+            // 
+            this.label122.AutoSize = true;
+            this.label122.Location = new System.Drawing.Point(25, 80);
+            this.label122.Name = "label122";
+            this.label122.Size = new System.Drawing.Size(79, 13);
+            this.label122.TabIndex = 4;
+            this.label122.Text = "Current Supply:";
+            // 
+            // txtTrainerGas
+            // 
+            this.txtTrainerGas.Location = new System.Drawing.Point(109, 52);
+            this.txtTrainerGas.Name = "txtTrainerGas";
+            this.txtTrainerGas.Size = new System.Drawing.Size(100, 20);
+            this.txtTrainerGas.TabIndex = 3;
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(25, 54);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(29, 13);
+            this.label121.TabIndex = 2;
+            this.label121.Text = "Gas:";
+            // 
+            // txtTrainerMinerals
+            // 
+            this.txtTrainerMinerals.Location = new System.Drawing.Point(109, 26);
+            this.txtTrainerMinerals.Name = "txtTrainerMinerals";
+            this.txtTrainerMinerals.Size = new System.Drawing.Size(100, 20);
+            this.txtTrainerMinerals.TabIndex = 1;
+            // 
+            // label120
+            // 
+            this.label120.AutoSize = true;
+            this.label120.Location = new System.Drawing.Point(25, 28);
+            this.label120.Name = "label120";
+            this.label120.Size = new System.Drawing.Size(49, 13);
+            this.label120.TabIndex = 0;
+            this.label120.Text = "Minerals:";
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label33.Location = new System.Drawing.Point(407, 190);
+            this.label33.Location = new System.Drawing.Point(397, 220);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(95, 23);
             this.label33.TabIndex = 2;
@@ -3688,6 +3786,7 @@
             // 
             // groupBox26
             // 
+            this.groupBox26.Controls.Add(this.lstTrainerPlayerlist);
             this.groupBox26.Enabled = false;
             this.groupBox26.Location = new System.Drawing.Point(18, 18);
             this.groupBox26.Name = "groupBox26";
@@ -3695,6 +3794,14 @@
             this.groupBox26.TabIndex = 0;
             this.groupBox26.TabStop = false;
             this.groupBox26.Text = "Available Players:";
+            // 
+            // lstTrainerPlayerlist
+            // 
+            this.lstTrainerPlayerlist.FormattingEnabled = true;
+            this.lstTrainerPlayerlist.Location = new System.Drawing.Point(14, 18);
+            this.lstTrainerPlayerlist.Name = "lstTrainerPlayerlist";
+            this.lstTrainerPlayerlist.Size = new System.Drawing.Size(158, 368);
+            this.lstTrainerPlayerlist.TabIndex = 0;
             // 
             // tcDebug
             // 
@@ -3883,6 +3990,18 @@
             this.icbMapUnit.TabIndex = 3;
             this.icbMapUnit.SelectedIndexChanged += new System.EventHandler(this.icbMapUnit_SelectedIndexChanged);
             // 
+            // chBxMapRemCamera
+            // 
+            this.chBxMapRemCamera.AutoSize = true;
+            this.chBxMapRemCamera.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chBxMapRemCamera.Location = new System.Drawing.Point(25, 270);
+            this.chBxMapRemCamera.Name = "chBxMapRemCamera";
+            this.chBxMapRemCamera.Size = new System.Drawing.Size(105, 17);
+            this.chBxMapRemCamera.TabIndex = 73;
+            this.chBxMapRemCamera.Text = "Remove Camera";
+            this.chBxMapRemCamera.UseVisualStyleBackColor = true;
+            this.chBxMapRemCamera.CheckedChanged += new System.EventHandler(this.chBxMapRemCamera_CheckedChanged);
+            // 
             // MainHandler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3984,8 +4103,11 @@
             this.groupBox10.PerformLayout();
             this.tcTrainer.ResumeLayout(false);
             this.tcTrainer.PerformLayout();
+            this.gpTrainerBasics.ResumeLayout(false);
+            this.gpTrainerBasics.PerformLayout();
             this.groupBox27.ResumeLayout(false);
             this.groupBox27.PerformLayout();
+            this.groupBox26.ResumeLayout(false);
             this.tcDebug.ResumeLayout(false);
             this.tcBugs.ResumeLayout(false);
             this.groupBox35.ResumeLayout(false);
@@ -4327,5 +4449,16 @@
         private System.Windows.Forms.GroupBox groupBox36;
         private System.Windows.Forms.RichTextBox rtbPublicInformation;
         private System.Windows.Forms.CheckBox chBxMaphackRemVisionArea;
+        private System.Windows.Forms.GroupBox gpTrainerBasics;
+        private System.Windows.Forms.TextBox txtTrainerMSupply;
+        private System.Windows.Forms.Label label123;
+        private System.Windows.Forms.TextBox txtTrainerCSupply;
+        private System.Windows.Forms.Label label122;
+        private System.Windows.Forms.TextBox txtTrainerGas;
+        private System.Windows.Forms.Label label121;
+        private System.Windows.Forms.TextBox txtTrainerMinerals;
+        private System.Windows.Forms.Label label120;
+        private System.Windows.Forms.ListBox lstTrainerPlayerlist;
+        private System.Windows.Forms.CheckBox chBxMapRemCamera;
     }
 }

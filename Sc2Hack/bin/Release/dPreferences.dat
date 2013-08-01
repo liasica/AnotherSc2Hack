@@ -260,6 +260,8 @@ Destination Line Color = Orange
 Color Def Structures = True
 ;Boolean
 Remove Vision Area = True
+;Boolean
+Remove Camera = True
 
 
 [Maphack Units]
