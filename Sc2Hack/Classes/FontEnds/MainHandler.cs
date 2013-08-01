@@ -1314,12 +1314,21 @@ namespace Sc2Hack.Classes.FontEnds
                     rtbPublicInformation.Text = downloadStringCompletedEventArgs.Result;
                 };
 
+            var iCounter = 0;
+            InvokeAgain:
             try
             {
                 Invoke(inv);
             }
 
-            catch {}
+            catch
+            {
+                if (iCounter >= 5)
+                    return;
+
+                iCounter++;
+                goto InvokeAgain;
+            }
         }
 
         #endregion

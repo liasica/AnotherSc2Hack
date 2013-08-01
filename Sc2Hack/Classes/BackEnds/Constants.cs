@@ -11,6 +11,7 @@ namespace Sc2Hack.Classes.BackEnds
     class Constants
     {
         public static String StrPreferencesFile = Application.StartupPath + "\\Preferences.dat";
+        public static String StrLogFile = Application.StartupPath + "\\AnotherLogFile.rtf";
         public static Pen PBlack1 = new Pen(Brushes.Black, 1);
         public static Pen PBlack2 = new Pen(Brushes.Black, 2);
         public static Pen PBlack3 = new Pen(Brushes.Black, 3);

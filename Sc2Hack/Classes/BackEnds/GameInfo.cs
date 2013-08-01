@@ -1108,6 +1108,8 @@ namespace Sc2Hack.Classes.BackEnds
         /* 4 Bytes */
         private Int32 GetGUnitReadUnitCount()
         {
+            return 4096;
+
             return
                (BitConverter.ToInt32(
                    InteropCalls.Help_ReadProcessMemory(_hStarcraft, _of.UnitTotal, sizeof(Int32)),

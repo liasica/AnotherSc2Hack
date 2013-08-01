@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Security;
 using System.Net.Mail;
+using System.Windows.Forms;
 
 namespace Sc2Hack.Classes.BackEnds
 {
@@ -49,6 +51,44 @@ namespace Sc2Hack.Classes.BackEnds
                     goto SendAgain;
                 }
             }
+        }
+        /* Just a logfile... */
+        public static void LogFile(String method, String title, Exception exc )
+        {
+            StreamWriter sw;
+
+            if (File.Exists(Constants.StrLogFile))
+                sw = File.AppendText(Constants.StrLogFile);
+
+            else
+            {
+                sw = new StreamWriter(Constants.StrLogFile);
+                MessageBox.Show("Error thrown and logfile created!");
+            }
+
+
+            sw.WriteLine();
+            sw.WriteLine();
+
+            sw.WriteLine(DateTime.Now.ToString());
+            sw.WriteLine("##############################");
+            sw.WriteLine("Method: " + method);
+            sw.WriteLine("Title: " + title);
+            sw.WriteLine("Exception:");
+            sw.WriteLine("          ----------          ");
+            sw.WriteLine("Data: " + exc.Data);
+            sw.WriteLine("HResult: " + exc.HResult);
+            sw.WriteLine("HelpLink: " + exc.HelpLink);
+            sw.WriteLine("Inner Exception: " + exc.InnerException);
+            sw.WriteLine("Message: " + exc.Message);
+            sw.WriteLine("Source: " + exc.Source);
+            sw.WriteLine("Stack Trace: " + exc.StackTrace);
+            sw.WriteLine("Target Site: " + exc.TargetSite);
+            sw.WriteLine("          ----------          ");
+
+            sw.Close();
+
+            
         }
     }
 }

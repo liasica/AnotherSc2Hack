@@ -904,7 +904,7 @@ namespace Sc2Hack.Classes.BackEnds
                 StructUnit = (int)starcraft.MainModule.BaseAddress + 0x03665140; //V
                 UnitPosX = StructUnit + 0x4C; //V
                 UnitPosY = StructUnit + 0x50; //V
-                UnitTargetFilter = StructUnit + 0x18; //?
+                UnitTargetFilter = StructUnit + 0x14; //?
                 UnitTotal = (int)starcraft.MainModule.BaseAddress + 0x036650E8; //?
                 UnitDestinationX = StructUnit + 0x80; //V
                 UnitDestinationY = StructUnit + 0x84; //V
@@ -927,7 +927,7 @@ namespace Sc2Hack.Classes.BackEnds
                 RawUnitPosY = 0x50;
                 RawUnitDestinationX = 0x80;
                 RawUnitDestinationY = 0x84;
-                RawUnitTargetFilter = 0x18;
+                RawUnitTargetFilter = 0x14;
                 RawUnitDamageTaken = 0x114;
                 RawUnitEnergy = 0x11C;
                 RawUnitOwner = 0x41;

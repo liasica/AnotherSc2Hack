@@ -2657,912 +2657,1108 @@ namespace Sc2Hack.Classes.FontEnds
         /* Draw the curretn Resources */
         private void DrawResources(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            var iValidPlayerCount = GInfo._IValidPlayerCount;
-
-            if (iValidPlayerCount == 0)
-                return;   
-
-            Opacity = _hMainHandler.PSettings.ResourceOpacity;
-            var iSingleHeight = Height/iValidPlayerCount;
-            var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
-            var fInternalFont = new Font(_hMainHandler.PSettings.ResourceFontName, fNewFontSize, FontStyle.Bold);
-            var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.ResourceHeight*iValidPlayerCount;
-                Width = _hMainHandler.PSettings.ResourceWidth;
-            }
 
-            var iCounter = 0;
-            for (var i = 0; i < LPlayer.Count; i++)
-            {
-                var clPlayercolor = LPlayer[i].Color;
+                if (!GInfo.IsIngame)
+                    return;
 
-                #region Teamcolor
+                var iValidPlayerCount = GInfo._IValidPlayerCount;
 
-                if (GInfo.IsTeamcolor)
+                if (iValidPlayerCount == 0)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.ResourceOpacity;
+                var iSingleHeight = Height/iValidPlayerCount;
+                var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
+                var fInternalFont = new Font(_hMainHandler.PSettings.ResourceFontName, fNewFontSize, FontStyle.Bold);
+                var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
+
+                if (!_bChangingPosition)
                 {
-                    if (LPlayer[i].Localplayer < LPlayer.Count)
+                    Height = _hMainHandler.PSettings.ResourceHeight*iValidPlayerCount;
+                    Width = _hMainHandler.PSettings.ResourceWidth;
+                }
+
+                var iCounter = 0;
+                for (var i = 0; i < LPlayer.Count; i++)
+                {
+                    var clPlayercolor = LPlayer[i].Color;
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
+                    {
+                        if (LPlayer[i].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Green;
+
+                            else if (LPlayer[i].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Yellow;
+
+                            else if (LPlayer[LPlayer[0].Localplayer].Team !=
+                                     LPlayer[i].Team)
+                                clPlayercolor = Color.Red;
+
+                            else
+                                clPlayercolor = Color.White;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Escape sequences
+
+                    if (_hMainHandler.PSettings.ResourceRemoveAi)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ResourceRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ResourceRemoveAllie)
+                    {
+                        if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
+                            !LPlayer[i].IsLocalplayer)
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ResourceRemoveLocalplayer)
                     {
                         if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
-
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
-
-                        else if (LPlayer[LPlayer[0].Localplayer].Team !=
-                                 LPlayer[i].Team)
-                            clPlayercolor = Color.Red;
-
-                        else
-                            clPlayercolor = Color.White;
+                            continue;
                     }
-                }
 
-                #endregion
 
-                #region Escape sequences
 
-                if (_hMainHandler.PSettings.ResourceRemoveAi)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                    if (LPlayer[i].Name.StartsWith("\0"))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ResourceRemoveNeutral)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ResourceRemoveAllie)
-                {
-                    if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
-                        !LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ResourceRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
                         continue;
+
+                    if (CheckIfGameheart(LPlayer[i]))
+                        continue;
+
+                    #endregion
+
+                    #region SetValidImages (Race)
+
+                    if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Terran;
+                        _imgGas = Properties.Resources.Gas_Terran;
+                        _imgSupply = Properties.Resources.Supply_Terran;
+                        _imgWorker = Properties.Resources.T_SCV;
+                    }
+
+                    else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Protoss;
+                        _imgGas = Properties.Resources.Gas_Protoss;
+                        _imgSupply = Properties.Resources.Supply_Protoss;
+                        _imgWorker = Properties.Resources.P_Probe;
+                    }
+
+                    else
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Zerg;
+                        _imgGas = Properties.Resources.Gas_Zerg;
+                        _imgSupply = Properties.Resources.Supply_Zerg;
+                        _imgWorker = Properties.Resources.Z_Drone;
+                    }
+
+                    #endregion
+
+                    #region Draw Bounds and Background
+
+                    if (_hMainHandler.PSettings.ResourceDrawBackground)
+                    {
+                        /* Background */
+                        g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2,
+                                                 iSingleHeight - 2);
+
+                        /* Border */
+                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1,
+                                                 1 + (iSingleHeight*iCounter),
+                                                 Width - 2, iSingleHeight - 2);
+                    }
+
+                    #endregion
+
+                    #region Content Drawing
+
+                    #region Name
+
+                    g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
+                                          new SolidBrush(clPlayercolor), (float) ((1.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Team
+
+                    g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((21.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Minerals
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgMinerals, (float) ((30.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(LPlayer[i].Minerals.ToString(CultureInfo.InvariantCulture),
+                                          fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((36.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Gas
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgGas, (float) ((50.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Gas Count */
+                    g.Graphics.DrawString(LPlayer[i].Gas.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((56.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Supply
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgSupply, (float) ((70.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(
+                        LPlayer[i].SupplyMin.ToString(CultureInfo.InvariantCulture) + " / " +
+                        LPlayer[i].SupplyMax, fInternalFontNormal,
+                        new SolidBrush(Color.White), (float) ((76.67/100)*Width),
+                        (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #endregion
+
+
+                    iCounter++;
                 }
 
-                
-
-                if (LPlayer[i].Name.StartsWith("\0"))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                #endregion
-
-                #region SetValidImages (Race)
-
-                if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Terran;
-                    _imgGas = Properties.Resources.Gas_Terran;
-                    _imgSupply = Properties.Resources.Supply_Terran;
-                    _imgWorker = Properties.Resources.T_SCV;
-                }
-
-                else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Protoss;
-                    _imgGas = Properties.Resources.Gas_Protoss;
-                    _imgSupply = Properties.Resources.Supply_Protoss;
-                    _imgWorker = Properties.Resources.P_Probe;
-                }
-
-                else
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Zerg;
-                    _imgGas = Properties.Resources.Gas_Zerg;
-                    _imgSupply = Properties.Resources.Supply_Zerg;
-                    _imgWorker = Properties.Resources.Z_Drone;
-                }
-
-                #endregion
-
-                #region Draw Bounds and Background
-
-                if (_hMainHandler.PSettings.ResourceDrawBackground)
-                {
-                    /* Background */
-                    g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2, iSingleHeight - 2);
-
-                    /* Border */
-                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1 + (iSingleHeight*iCounter),
-                                             Width - 2, iSingleHeight - 2);
-                }
-
-                #endregion
-
-                #region Content Drawing
-
-                #region Name
-
-                g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
-                                      new SolidBrush(clPlayercolor), (float)((1.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Team
-
-                g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((21.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Minerals
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgMinerals, (float)((30.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(LPlayer[i].Minerals.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((36.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Gas
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgGas, (float)((50.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Gas Count */
-                g.Graphics.DrawString(LPlayer[i].Gas.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((56.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Supply
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgSupply, (float)((70.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(
-                    LPlayer[i].SupplyMin.ToString(CultureInfo.InvariantCulture) + " / " +
-                    LPlayer[i].SupplyMax, fInternalFontNormal,
-                    new SolidBrush(Color.White), (float)((76.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #endregion
 
 
-                iCounter++;
+                ///* Test- style */
+                //g.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                //g.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+                //g.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                ///* Background */
+                //HelpFunctions.Help_Graphics.DrawRoundedRectangle(g.Graphics,
+                //                                                new Rectangle(2, 2,
+                //                                                              _hMainHandler.PSettings.ResourceWidth - 4,
+                //                                                              _hMainHandler.PSettings.ResourceHeight *
+                //                                                              iCounter - 4), 30, new Pen(Brushes.DarkGray, 4));
+
+                //HelpFunctions.Help_Graphics.DrawRoundedRectangle(g.Graphics,
+                //                                                 new Rectangle(2, 2,
+                //                                                               _hMainHandler.PSettings.ResourceWidth - 4,
+                //                                                               _hMainHandler.PSettings.ResourceHeight *
+                //                                                               iCounter - 4), 30, new Pen(Brushes.LightBlue, 2));
+
             }
 
+            catch (Exception ex)
+            {
+                Messages.LogFile("DrawResource", "Over all", ex);
+            }
 
-
-            ///* Test- style */
-            //g.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-            //g.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-            //g.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-            ///* Background */
-            //HelpFunctions.Help_Graphics.DrawRoundedRectangle(g.Graphics,
-            //                                                new Rectangle(2, 2,
-            //                                                              _hMainHandler.PSettings.ResourceWidth - 4,
-            //                                                              _hMainHandler.PSettings.ResourceHeight *
-            //                                                              iCounter - 4), 30, new Pen(Brushes.DarkGray, 4));
-
-            //HelpFunctions.Help_Graphics.DrawRoundedRectangle(g.Graphics,
-            //                                                 new Rectangle(2, 2,
-            //                                                               _hMainHandler.PSettings.ResourceWidth - 4,
-            //                                                               _hMainHandler.PSettings.ResourceHeight *
-            //                                                               iCounter - 4), 30, new Pen(Brushes.LightBlue, 2));
-            
-
-            
 
         }
 
         /* Draw Income */
         private void DrawIncome(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            var iValidPlayerCount = GInfo._IValidPlayerCount;
-
-            if (iValidPlayerCount == 0)
-                return;   
-
-            Opacity = _hMainHandler.PSettings.IncomeOpacity;
-            var iSingleHeight = Height / iValidPlayerCount;
-            var fNewFontSize = (float)((29.0 / 100) * iSingleHeight);
-            var fInternalFont = new Font(_hMainHandler.PSettings.IncomeFontName, fNewFontSize, FontStyle.Bold);
-            var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.IncomeHeight * iValidPlayerCount;
-                Width = _hMainHandler.PSettings.IncomeWidth;
-            }
 
-            var iCounter = 0;
-            for (var i = 0; i < LPlayer.Count; i++)
-            {
-                var clPlayercolor = LPlayer[i].Color;
+                if (!GInfo.IsIngame)
+                    return;
 
-                #region Teamcolor
+                var iValidPlayerCount = GInfo._IValidPlayerCount;
 
-                if (GInfo.IsTeamcolor)
+                if (iValidPlayerCount == 0)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.IncomeOpacity;
+                var iSingleHeight = Height/iValidPlayerCount;
+                var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
+                var fInternalFont = new Font(_hMainHandler.PSettings.IncomeFontName, fNewFontSize, FontStyle.Bold);
+                var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
+
+                if (!_bChangingPosition)
                 {
-                    if (LPlayer[i].Localplayer < LPlayer.Count)
+                    Height = _hMainHandler.PSettings.IncomeHeight*iValidPlayerCount;
+                    Width = _hMainHandler.PSettings.IncomeWidth;
+                }
+
+                var iCounter = 0;
+                for (var i = 0; i < LPlayer.Count; i++)
+                {
+                    var clPlayercolor = LPlayer[i].Color;
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
+                    {
+                        if (LPlayer[i].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Green;
+
+                            else if (LPlayer[i].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Yellow;
+
+                            else if (LPlayer[LPlayer[0].Localplayer].Team !=
+                                     LPlayer[i].Team)
+                                clPlayercolor = Color.Red;
+
+                            else
+                                clPlayercolor = Color.White;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Escape sequences
+
+                    if (_hMainHandler.PSettings.IncomeRemoveAi)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.IncomeRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.IncomeRemoveAllie)
+                    {
+                        if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
+                            !LPlayer[i].IsLocalplayer)
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.IncomeRemoveLocalplayer)
                     {
                         if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
-
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
-
-                        else if (LPlayer[LPlayer[0].Localplayer].Team !=
-                                 LPlayer[i].Team)
-                            clPlayercolor = Color.Red;
-
-                        else
-                            clPlayercolor = Color.White;
+                            continue;
                     }
-                }
 
-                #endregion
-
-                #region Escape sequences
-
-                if (_hMainHandler.PSettings.IncomeRemoveAi)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                    if (LPlayer[i].Name.StartsWith("\0"))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.IncomeRemoveNeutral)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.IncomeRemoveAllie)
-                {
-                    if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
-                        !LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.IncomeRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
                         continue;
+
+                    if (CheckIfGameheart(LPlayer[i]))
+                        continue;
+
+                    #endregion
+
+                    #region SetValidImages (Race)
+
+                    if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Terran;
+                        _imgGas = Properties.Resources.Gas_Terran;
+                        _imgSupply = Properties.Resources.Supply_Terran;
+                        _imgWorker = Properties.Resources.T_SCV;
+                    }
+
+                    else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Protoss;
+                        _imgGas = Properties.Resources.Gas_Protoss;
+                        _imgSupply = Properties.Resources.Supply_Protoss;
+                        _imgWorker = Properties.Resources.P_Probe;
+                    }
+
+                    else
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Zerg;
+                        _imgGas = Properties.Resources.Gas_Zerg;
+                        _imgSupply = Properties.Resources.Supply_Zerg;
+                        _imgWorker = Properties.Resources.Z_Drone;
+                    }
+
+                    #endregion
+
+                    #region Draw Bounds and Background
+
+                    if (_hMainHandler.PSettings.IncomeDrawBackground)
+                    {
+                        /* Background */
+                        g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2,
+                                                 iSingleHeight - 2);
+
+                        /* Border */
+                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1,
+                                                 1 + (iSingleHeight*iCounter),
+                                                 Width - 2, iSingleHeight - 2);
+                    }
+
+
+                    #endregion
+
+                    #region Content Drawing
+
+                    #region Name
+
+                    g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
+                                          new SolidBrush(clPlayercolor), (float) ((1.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Team
+
+                    g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((21.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Minerals
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgMinerals, (float) ((30.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(LPlayer[i].MineralsIncome.ToString(CultureInfo.InvariantCulture),
+                                          fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((36.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Gas
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgGas, (float) ((50.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Gas Count */
+                    g.Graphics.DrawString(LPlayer[i].GasIncome.ToString(CultureInfo.InvariantCulture),
+                                          fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((56.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Workers
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgWorker, (float) ((70.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(
+                        LPlayer[i].Worker.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
+                        new SolidBrush(Color.White), (float) ((76.67/100)*Width),
+                        (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #endregion
+
+
+                    iCounter++;
                 }
+            }
 
-                if (LPlayer[i].Name.StartsWith("\0"))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                #endregion
-
-                #region SetValidImages (Race)
-
-                if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Terran;
-                    _imgGas = Properties.Resources.Gas_Terran;
-                    _imgSupply = Properties.Resources.Supply_Terran;
-                    _imgWorker = Properties.Resources.T_SCV;
-                }
-
-                else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Protoss;
-                    _imgGas = Properties.Resources.Gas_Protoss;
-                    _imgSupply = Properties.Resources.Supply_Protoss;
-                    _imgWorker = Properties.Resources.P_Probe;
-                }
-
-                else
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Zerg;
-                    _imgGas = Properties.Resources.Gas_Zerg;
-                    _imgSupply = Properties.Resources.Supply_Zerg;
-                    _imgWorker = Properties.Resources.Z_Drone;
-                }
-
-                #endregion
-
-                #region Draw Bounds and Background
-
-                if (_hMainHandler.PSettings.IncomeDrawBackground)
-                {
-                    /* Background */
-                    g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2, iSingleHeight - 2);
-
-                    /* Border */
-                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1 + (iSingleHeight*iCounter),
-                                             Width - 2, iSingleHeight - 2);
-                }
-
-
-                #endregion
-
-                #region Content Drawing
-
-                #region Name
-
-                g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
-                                      new SolidBrush(clPlayercolor), (float)((1.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Team
-
-                g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((21.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Minerals
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgMinerals, (float)((30.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(LPlayer[i].MineralsIncome.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((36.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Gas
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgGas, (float)((50.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Gas Count */
-                g.Graphics.DrawString(LPlayer[i].GasIncome.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((56.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Workers
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgWorker, (float)((70.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(
-                    LPlayer[i].Worker.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                    new SolidBrush(Color.White), (float)((76.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #endregion
-
-
-                iCounter++;
+            catch (Exception ex)
+            {
+                Messages.LogFile("DrawIncome", "Over all", ex);
             }
         }
 
         /* Draw Army */
         private void DrawArmy(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            var iValidPlayerCount = GInfo._IValidPlayerCount;
-
-            if (iValidPlayerCount == 0)
-                return;   
-
-            Opacity = _hMainHandler.PSettings.ArmyOpacity;
-            var iSingleHeight = Height / iValidPlayerCount;
-            var fNewFontSize = (float)((29.0 / 100) * iSingleHeight);
-            var fInternalFont = new Font(_hMainHandler.PSettings.ArmyFontName, fNewFontSize, FontStyle.Bold);
-            var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.ArmyHeight * iValidPlayerCount;
-                Width = _hMainHandler.PSettings.ArmyWidth;
-            }
 
-            var iCounter = 0;
-            for (var i = 0; i < LPlayer.Count; i++)
-            {
-                var clPlayercolor = LPlayer[i].Color;
+                if (!GInfo.IsIngame)
+                    return;
 
-                #region Teamcolor
+                var iValidPlayerCount = GInfo._IValidPlayerCount;
 
-                if (GInfo.IsTeamcolor)
+                if (iValidPlayerCount == 0)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.ArmyOpacity;
+                var iSingleHeight = Height/iValidPlayerCount;
+                var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
+                var fInternalFont = new Font(_hMainHandler.PSettings.ArmyFontName, fNewFontSize, FontStyle.Bold);
+                var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
+
+                if (!_bChangingPosition)
                 {
-                    if (LPlayer[i].Localplayer < LPlayer.Count)
+                    Height = _hMainHandler.PSettings.ArmyHeight*iValidPlayerCount;
+                    Width = _hMainHandler.PSettings.ArmyWidth;
+                }
+
+                var iCounter = 0;
+                for (var i = 0; i < LPlayer.Count; i++)
+                {
+                    var clPlayercolor = LPlayer[i].Color;
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
+                    {
+                        if (LPlayer[i].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Green;
+
+                            else if (LPlayer[i].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Yellow;
+
+                            else if (LPlayer[LPlayer[0].Localplayer].Team !=
+                                     LPlayer[i].Team)
+                                clPlayercolor = Color.Red;
+
+                            else
+                                clPlayercolor = Color.White;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Escape sequences
+
+                    if (_hMainHandler.PSettings.ArmyRemoveAi)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ArmyRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ArmyRemoveAllie)
+                    {
+                        if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
+                            !LPlayer[i].IsLocalplayer)
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ArmyRemoveLocalplayer)
                     {
                         if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
-
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
-
-                        else if (LPlayer[LPlayer[0].Localplayer].Team !=
-                                 LPlayer[i].Team)
-                            clPlayercolor = Color.Red;
-
-                        else
-                            clPlayercolor = Color.White;
+                            continue;
                     }
-                }
 
-                #endregion
-
-                #region Escape sequences
-
-                if (_hMainHandler.PSettings.ArmyRemoveAi)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                    if (LPlayer[i].Name.StartsWith("\0"))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ArmyRemoveNeutral)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ArmyRemoveAllie)
-                {
-                    if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
-                        !LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ArmyRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
                         continue;
+
+                    if (CheckIfGameheart(LPlayer[i]))
+                        continue;
+
+                    #endregion
+
+                    #region SetValidImages (Race)
+
+                    if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Terran;
+                        _imgGas = Properties.Resources.Gas_Terran;
+                        _imgSupply = Properties.Resources.Supply_Terran;
+                        _imgWorker = Properties.Resources.T_SCV;
+                    }
+
+                    else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Protoss;
+                        _imgGas = Properties.Resources.Gas_Protoss;
+                        _imgSupply = Properties.Resources.Supply_Protoss;
+                        _imgWorker = Properties.Resources.P_Probe;
+                    }
+
+                    else
+                    {
+                        _imgMinerals = Properties.Resources.Mineral_Zerg;
+                        _imgGas = Properties.Resources.Gas_Zerg;
+                        _imgSupply = Properties.Resources.Supply_Zerg;
+                        _imgWorker = Properties.Resources.Z_Drone;
+                    }
+
+                    #endregion
+
+                    #region Draw Bounds and Background
+
+                    if (_hMainHandler.PSettings.ArmyDrawBackground)
+                    {
+                        /* Background */
+                        g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2,
+                                                 iSingleHeight - 2);
+
+                        /* Border */
+                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1,
+                                                 1 + (iSingleHeight*iCounter),
+                                                 Width - 2, iSingleHeight - 2);
+                    }
+
+                    #endregion
+
+                    #region Content Drawing
+
+                    #region Name
+
+                    g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
+                                          new SolidBrush(clPlayercolor), (float) ((1.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Team
+
+                    g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((21.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Minerals
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgMinerals, (float) ((30.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(LPlayer[i].MineralsArmy.ToString(CultureInfo.InvariantCulture),
+                                          fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((36.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Gas
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgGas, (float) ((50.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Gas Count */
+                    g.Graphics.DrawString(LPlayer[i].GasArmy.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((56.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Supply
+
+                    /* Icon */
+                    g.Graphics.DrawImage(_imgSupply, (float) ((70.0/100)*Width),
+                                         (float) ((14.0/100)*iSingleHeight) + (Height/iValidPlayerCount)*iCounter,
+                                         (float) ((70.0/100)*iSingleHeight), (float) ((70.0/100)*iSingleHeight));
+
+                    /* Mineral Count */
+                    g.Graphics.DrawString(
+                        LPlayer[i].SupplyMin.ToString(CultureInfo.InvariantCulture) + " / " +
+                        LPlayer[i].SupplyMax, fInternalFontNormal,
+                        new SolidBrush(Color.White), (float) ((76.67/100)*Width),
+                        (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #endregion
+
+
+                    iCounter++;
                 }
+            }
 
-                if (LPlayer[i].Name.StartsWith("\0"))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                #endregion
-
-                #region SetValidImages (Race)
-
-                if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Terran))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Terran;
-                    _imgGas = Properties.Resources.Gas_Terran;
-                    _imgSupply = Properties.Resources.Supply_Terran;
-                    _imgWorker = Properties.Resources.T_SCV;
-                }
-
-                else if (LPlayer[i].Race.Equals(PredefinedTypes.Race.Protoss))
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Protoss;
-                    _imgGas = Properties.Resources.Gas_Protoss;
-                    _imgSupply = Properties.Resources.Supply_Protoss;
-                    _imgWorker = Properties.Resources.P_Probe;
-                }
-
-                else
-                {
-                    _imgMinerals = Properties.Resources.Mineral_Zerg;
-                    _imgGas = Properties.Resources.Gas_Zerg;
-                    _imgSupply = Properties.Resources.Supply_Zerg;
-                    _imgWorker = Properties.Resources.Z_Drone;
-                }
-
-                #endregion
-
-                #region Draw Bounds and Background
-
-                if (_hMainHandler.PSettings.ArmyDrawBackground)
-                {
-                    /* Background */
-                    g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2, iSingleHeight - 2);
-
-                    /* Border */
-                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1 + (iSingleHeight*iCounter),
-                                             Width - 2, iSingleHeight - 2);
-                }
-
-                #endregion
-
-                #region Content Drawing
-
-                #region Name
-
-                g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
-                                      new SolidBrush(clPlayercolor), (float)((1.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Team
-
-                g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((21.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Minerals
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgMinerals, (float)((30.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(LPlayer[i].MineralsArmy.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((36.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Gas
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgGas, (float)((50.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Gas Count */
-                g.Graphics.DrawString(LPlayer[i].GasArmy.ToString(CultureInfo.InvariantCulture), fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((56.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Supply
-
-                /* Icon */
-                g.Graphics.DrawImage(_imgSupply, (float)((70.0 / 100) * Width), (float)((14.0 / 100) * iSingleHeight) + (Height / iValidPlayerCount) * iCounter, (float)((70.0 / 100) * iSingleHeight), (float)((70.0 / 100) * iSingleHeight));
-
-                /* Mineral Count */
-                g.Graphics.DrawString(
-                    LPlayer[i].SupplyMin.ToString(CultureInfo.InvariantCulture) + " / " +
-                    LPlayer[i].SupplyMax, fInternalFontNormal,
-                    new SolidBrush(Color.White), (float)((76.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #endregion
-
-
-                iCounter++;
+            catch (Exception ex)
+            {
+                Messages.LogFile("DrawArmy", "Over all", ex);
             }
         }
 
         /* Draw Apm */
         private void DrawApm(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            var iValidPlayerCount = GInfo._IValidPlayerCount;
-
-            if (iValidPlayerCount == 0)
-                return;   
-
-            Opacity = _hMainHandler.PSettings.ApmOpacity;
-            var iSingleHeight = Height / iValidPlayerCount;
-            var fNewFontSize = (float)((29.0 / 100) * iSingleHeight);
-            var fInternalFont = new Font(_hMainHandler.PSettings.ApmFontName, fNewFontSize, FontStyle.Bold);
-            var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.ApmHeight * iValidPlayerCount;
-                Width = _hMainHandler.PSettings.ApmWidth;
-            }
 
-            var iCounter = 0;
-            for (var i = 0; i < LPlayer.Count; i++)
-            {
-                var clPlayercolor = LPlayer[i].Color;
+                if (!GInfo.IsIngame)
+                    return;
 
-                #region Teamcolor
+                var iValidPlayerCount = GInfo._IValidPlayerCount;
 
-                if (GInfo.IsTeamcolor)
+                if (iValidPlayerCount == 0)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.ApmOpacity;
+                var iSingleHeight = Height/iValidPlayerCount;
+                var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
+                var fInternalFont = new Font(_hMainHandler.PSettings.ApmFontName, fNewFontSize, FontStyle.Bold);
+                var fInternalFontNormal = new Font(fInternalFont.Name, fNewFontSize, FontStyle.Regular);
+
+                if (!_bChangingPosition)
                 {
-                    if (LPlayer[i].Localplayer < LPlayer.Count)
+                    Height = _hMainHandler.PSettings.ApmHeight*iValidPlayerCount;
+                    Width = _hMainHandler.PSettings.ApmWidth;
+                }
+
+                var iCounter = 0;
+                for (var i = 0; i < LPlayer.Count; i++)
+                {
+                    var clPlayercolor = LPlayer[i].Color;
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
+                    {
+                        if (LPlayer[i].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Green;
+
+                            else if (LPlayer[i].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[i].IsLocalplayer)
+                                clPlayercolor = Color.Yellow;
+
+                            else if (LPlayer[LPlayer[0].Localplayer].Team !=
+                                     LPlayer[i].Team)
+                                clPlayercolor = Color.Red;
+
+                            else
+                                clPlayercolor = Color.White;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Escape sequences
+
+                    if (_hMainHandler.PSettings.ApmRemoveAi)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ApmRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ApmRemoveAllie)
+                    {
+                        if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
+                            !LPlayer[i].IsLocalplayer)
+                            continue;
+                    }
+
+                    if (_hMainHandler.PSettings.ApmRemoveLocalplayer)
                     {
                         if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
-
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
-
-                        else if (LPlayer[LPlayer[0].Localplayer].Team !=
-                                 LPlayer[i].Team)
-                            clPlayercolor = Color.Red;
-
-                        else
-                            clPlayercolor = Color.White;
+                            continue;
                     }
-                }
 
-                #endregion
-
-                #region Escape sequences
-
-                if (_hMainHandler.PSettings.ApmRemoveAi)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                    if (LPlayer[i].Name.StartsWith("\0"))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ApmRemoveNeutral)
-                {
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ApmRemoveAllie)
-                {
-                    if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
-                        !LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
                         continue;
-                }
 
-                if (_hMainHandler.PSettings.ApmRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
+                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
                         continue;
+
+                    if (CheckIfGameheart(LPlayer[i]))
+                        continue;
+
+                    #endregion
+
+                    #region Draw Bounds and Background
+
+                    if (_hMainHandler.PSettings.ApmDrawBackground)
+                    {
+                        /* Background */
+                        g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2,
+                                                 iSingleHeight - 2);
+
+                        /* Border */
+                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1,
+                                                 1 + (iSingleHeight*iCounter),
+                                                 Width - 2, iSingleHeight - 2);
+                    }
+
+                    #endregion
+
+                    #region Content Drawing
+
+                    #region Name
+
+                    g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
+                                          new SolidBrush(clPlayercolor), (float) ((1.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Team
+
+                    g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((21.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Apm
+
+                    /* Apm */
+                    g.Graphics.DrawString("APM [" + LPlayer[i].Apm + "]", fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((30.0/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #region Epm
+
+                    /* EPM Count */
+                    g.Graphics.DrawString("EPM [" + LPlayer[i].Epm + "]", fInternalFontNormal,
+                                          new SolidBrush(Color.White), (float) ((56.67/100)*Width),
+                                          (float) ((24.0/100)*iSingleHeight) + iSingleHeight*iCounter);
+
+                    #endregion
+
+                    #endregion
+
+
+                    iCounter++;
                 }
 
-                if (LPlayer[i].Name.StartsWith("\0"))
-                    continue;
+            }
 
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                    continue;
-
-                if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                #endregion
-
-                #region Draw Bounds and Background
-
-                if (_hMainHandler.PSettings.ApmDrawBackground)
-                {
-                    /* Background */
-                    g.Graphics.FillRectangle(Brushes.Gray, 1, 1 + (iSingleHeight*iCounter), Width - 2, iSingleHeight - 2);
-
-                    /* Border */
-                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1 + (iSingleHeight*iCounter),
-                                             Width - 2, iSingleHeight - 2);
-                }
-
-                #endregion
-
-                #region Content Drawing
-
-                #region Name
-
-                g.Graphics.DrawString(LPlayer[i].Name, fInternalFont,
-                                      new SolidBrush(clPlayercolor), (float)((1.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Team
-
-                g.Graphics.DrawString("#" + LPlayer[i].Team, fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((21.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Apm
-
-                /* Apm */
-                g.Graphics.DrawString("APM [" + LPlayer[i].Apm + "]", fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((30.0 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #region Epm
-
-                /* EPM Count */
-                g.Graphics.DrawString("EPM [" + LPlayer[i].Epm + "]", fInternalFontNormal,
-                                      new SolidBrush(Color.White), (float)((56.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) + iSingleHeight * iCounter);
-
-                #endregion
-
-                #endregion
-
-
-                iCounter++;
+            catch (Exception ex)
+            {
+                Messages.LogFile("DrawApm", "Over all", ex);
             }
         }
 
         /* Draw Worker */
         private void DrawWorker(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            Opacity = _hMainHandler.PSettings.WorkerOpacity;
-            var iSingleHeight = Height;
-            var fNewFontSize = (float)((29.0 / 100) * iSingleHeight);
-            var fInternalFont = new Font(_hMainHandler.PSettings.WorkerFontName, fNewFontSize, FontStyle.Bold);
-
-            Color clPlayercolor;
-
-            if (LPlayer[0].Localplayer < LPlayer.Count)
-                clPlayercolor = LPlayer[LPlayer[0].Localplayer].Color;
-
-            else 
-                return;
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.WorkerHeight;
-                Width = _hMainHandler.PSettings.WorkerWidth;
+
+                if (!GInfo.IsIngame)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.WorkerOpacity;
+                var iSingleHeight = Height;
+                var fNewFontSize = (float) ((29.0/100)*iSingleHeight);
+                var fInternalFont = new Font(_hMainHandler.PSettings.WorkerFontName, fNewFontSize, FontStyle.Bold);
+
+                Color clPlayercolor;
+
+                if (LPlayer[0].Localplayer < LPlayer.Count)
+                    clPlayercolor = LPlayer[LPlayer[0].Localplayer].Color;
+
+                else
+                    return;
+
+                if (!_bChangingPosition)
+                {
+                    Height = _hMainHandler.PSettings.WorkerHeight;
+                    Width = _hMainHandler.PSettings.WorkerWidth;
+                }
+
+                #region Teamcolor
+
+                if (GInfo.IsTeamcolor)
+                    clPlayercolor = Color.Green;
+
+                #endregion
+
+                #region Draw Bounds and Background
+
+                if (_hMainHandler.PSettings.WorkerDrawBackground)
+                {
+                    /* Background */
+                    g.Graphics.FillRectangle(Brushes.Gray, 1, 1, Width - 2, iSingleHeight - 2);
+
+                    /* Border */
+                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1, Width - 2,
+                                             iSingleHeight - 2);
+                }
+
+                #endregion
+
+                #region Worker
+
+                /* Text */
+                g.Graphics.DrawString(LPlayer[LPlayer[0].Localplayer].Worker + "   Workers", fInternalFont,
+                                      new SolidBrush(clPlayercolor), (float) ((16.67/100)*Width),
+                                      (float) ((24.0/100)*iSingleHeight));
+
+                #endregion
+
             }
 
-            #region Teamcolor
-
-            if (GInfo.IsTeamcolor)
-                clPlayercolor = Color.Green;
-
-            #endregion
-
-            #region Draw Bounds and Background
-
-            if (_hMainHandler.PSettings.WorkerDrawBackground)
+            catch (Exception ex)
             {
-                /* Background */
-                g.Graphics.FillRectangle(Brushes.Gray, 1, 1, Width - 2, iSingleHeight - 2);
-
-                /* Border */
-                g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), 1, 1, Width - 2, iSingleHeight - 2);
+                Messages.LogFile("DrawWorker", "Over all", ex);
             }
-
-            #endregion
-
-            #region Worker
-
-            /* Text */
-            g.Graphics.DrawString(LPlayer[LPlayer[0].Localplayer].Worker + "   Workers", fInternalFont,
-                                  new SolidBrush(clPlayercolor), (float)((16.67 / 100) * Width), (float)((24.0 / 100) * iSingleHeight) );
-
-            #endregion
 
         }
 
         /* Imitates the Minimap */
         private void DrawMinimap(BufferedGraphics g)
         {
-            if (!GInfo.IsIngame)
-                return;
-
-            Opacity = _hMainHandler.PSettings.MaphackOpacity;
-
-            if (!_bChangingPosition)
+            try
             {
-                Height = _hMainHandler.PSettings.MaphackHeigth;
-                Width = _hMainHandler.PSettings.MaphackWidth;
-            }
+                if (!GInfo.IsIngame)
+                    return;
 
-            #region Introduction
+                Opacity = _hMainHandler.PSettings.MaphackOpacity;
 
-            #region Variables
+                if (!_bChangingPosition)
+                {
+                    Height = _hMainHandler.PSettings.MaphackHeigth;
+                    Width = _hMainHandler.PSettings.MaphackWidth;
+                }
 
-            float iScale,
-                  iX,
-                  iY;
+                #region Introduction
 
-            #endregion
+                #region Variables
 
-            #region Get minimap Bounds
+                float iScale,
+                      iX,
+                      iY;
 
-            double fa = Height / (float)Width;
-            double fb = ((float)GMap.PlayableHeight / GMap.PlayableWidth);
+                #endregion
 
-            if (fa >= fb)
-            {
-                iScale = (float)Width / GMap.PlayableWidth;
-                iX = 0;
-                iY = (Height - iScale * GMap.PlayableHeight) / 2;
-            }
-            else
-            {
-                iScale = (float)Height / GMap.PlayableHeight;
-                iY = 0;
-                iX = (Width - iScale * GMap.PlayableWidth) / 2;
-            }
+                #region Get minimap Bounds
+
+                double fa = Height/(float) Width;
+                double fb = ((float) GMap.PlayableHeight/GMap.PlayableWidth);
+
+                if (fa >= fb)
+                {
+                    iScale = (float) Width/GMap.PlayableWidth;
+                    iX = 0;
+                    iY = (Height - iScale*GMap.PlayableHeight)/2;
+                }
+                else
+                {
+                    iScale = (float) Height/GMap.PlayableHeight;
+                    iY = 0;
+                    iX = (Width - iScale*GMap.PlayableWidth)/2;
+                }
 
 
-           
-            #endregion
 
-            #region Draw Bounds
+                #endregion
 
-            if (!_hMainHandler.PSettings.MaphackRemoveVisionArea)
-            {
-                /* Draw Rectangle */
-                g.Graphics.DrawRectangle(Constants.PBound, 0, 0, Width - Constants.PBound.Width,
-                                         Height - Constants.PBound.Width);
+                #region Draw Bounds
 
-                /* Draw Playable Area */
-                g.Graphics.DrawRectangle(Constants.PArea, iX, iY, Width - iX*2 - Constants.PArea.Width,
-                                         Height - iY*2 - Constants.PArea.Width);
-            }
+                if (!_hMainHandler.PSettings.MaphackRemoveVisionArea)
+                {
+                    /* Draw Rectangle */
+                    g.Graphics.DrawRectangle(Constants.PBound, 0, 0, Width - Constants.PBound.Width,
+                                             Height - Constants.PBound.Width);
 
-            #endregion
+                    /* Draw Playable Area */
+                    g.Graphics.DrawRectangle(Constants.PArea, iX, iY, Width - iX*2 - Constants.PArea.Width,
+                                             Height - iY*2 - Constants.PArea.Width);
+                }
 
-            #endregion
+                #endregion
 
-            #region Actual Drawing
+                #endregion
 
-            #region Draw Unit- destination
+                #region Actual Drawing
 
-            if (!_hMainHandler.PSettings.MaphackDisableDestinationLine)
-            {
+                #region Draw Unit- destination
+
+                if (!_hMainHandler.PSettings.MaphackDisableDestinationLine)
+                {
+                    for (var i = 0; i < LUnit.Count; i++)
+                    {
+                        var clDestination = _hMainHandler.PSettings.MaphackDestinationColor;
+
+                        #region Scalling (Unitposition + UnitDestination)
+
+                        var iUnitPosX = (LUnit[i].PositionX - GMap.Left)*iScale + iX;
+                        var iUnitPosY = (GMap.Top - LUnit[i].PositionY)*iScale + iY;
+
+                        var iUnitDestPosX = (LUnit[i].DestinationPositionX - GMap.Left)*iScale +
+                                            iX;
+                        var iUnitDestPosY = (GMap.Top - LUnit[i].DestinationPositionY)*iScale +
+                                            iY;
+
+                        if (float.IsNaN(iUnitPosX) ||
+                            float.IsNaN(iUnitPosY) ||
+                            float.IsNaN(iUnitDestPosX) ||
+                            float.IsNaN(iUnitDestPosY))
+                        {
+                            continue;
+                        }
+
+
+                        #endregion
+
+                        #region Escape Sequences
+
+                        /* Ai */
+                        if (_hMainHandler.PSettings.MaphackRemoveAi)
+                        {
+                            if (
+                                LPlayer[LUnit[i].Owner].Type.Equals(
+                                    PredefinedTypes.PlayerType.Ai))
+                                continue;
+                        }
+
+                        /* Allie */
+                        if (_hMainHandler.PSettings.MaphackRemoveAllie)
+                        {
+                            if (LPlayer[0].Localplayer < LPlayer.Count)
+                            {
+                                if (LPlayer[LUnit[i].Owner].Team ==
+                                    LPlayer[LPlayer[0].Localplayer].Team &&
+                                    !LPlayer[LUnit[i].Owner].IsLocalplayer)
+                                    continue;
+                            }
+                        }
+
+                        /* Localplayer Units */
+                        if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
+                        {
+                            if (LUnit[i].Owner == LPlayer[0].Localplayer)
+                                continue;
+                        }
+
+                        /* Neutral Units */
+                        if (_hMainHandler.PSettings.MaphackRemoveNeutral)
+                        {
+                            if (
+                                LPlayer[LUnit[i].Owner].Type.Equals(
+                                    PredefinedTypes.PlayerType.Neutral))
+                                continue;
+                        }
+
+                        /* Dead Units */
+                        if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
+                            continue;
+
+
+                        /* Moving- state */
+                        if (LUnit[i].Movestate.Equals(0))
+                            continue;
+
+
+
+
+                        #endregion
+
+                        g.Graphics.CompositingQuality = CompositingQuality.HighQuality;
+                        g.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                        g.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+
+                        /* Draws the Line */
+                        if (LUnit[i].DestinationPositionX > 10 &&
+                            LUnit[i].DestinationPositionY > 10)
+                            g.Graphics.DrawLine(new Pen(new SolidBrush(clDestination)), iUnitPosX, iUnitPosY,
+                                                iUnitDestPosX,
+                                                iUnitDestPosY);
+
+                        g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                        g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                        g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+
+                    }
+                }
+
+                #endregion
+
+                #region Draw Unit (Border/ outer Rectangle)
+
                 for (var i = 0; i < LUnit.Count; i++)
                 {
-                    var clDestination = _hMainHandler.PSettings.MaphackDestinationColor;
+                    var clUnitBound = Color.Black;
 
-                    #region Scalling (Unitposition + UnitDestination)
+                    if (LUnit[i].Owner >= (LPlayer.Count))
+                        continue;
+
+                    #region Scalling (Unitposition)
 
                     var iUnitPosX = (LUnit[i].PositionX - GMap.Left)*iScale + iX;
                     var iUnitPosY = (GMap.Top - LUnit[i].PositionY)*iScale + iY;
 
-                    var iUnitDestPosX = (LUnit[i].DestinationPositionX - GMap.Left)*iScale +
-                                        iX;
-                    var iUnitDestPosY = (GMap.Top - LUnit[i].DestinationPositionY)*iScale +
-                                        iY;
 
                     if (float.IsNaN(iUnitPosX) ||
-                        float.IsNaN(iUnitPosY) ||
-                        float.IsNaN(iUnitDestPosX) ||
-                        float.IsNaN(iUnitDestPosY))
+                        float.IsNaN(iUnitPosY))
                     {
                         continue;
                     }
@@ -3575,9 +3771,7 @@ namespace Sc2Hack.Classes.FontEnds
                     /* Ai */
                     if (_hMainHandler.PSettings.MaphackRemoveAi)
                     {
-                        if (
-                            LPlayer[LUnit[i].Owner].Type.Equals(
-                                PredefinedTypes.PlayerType.Ai))
+                        if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
                             continue;
                     }
 
@@ -3603,19 +3797,151 @@ namespace Sc2Hack.Classes.FontEnds
                     /* Neutral Units */
                     if (_hMainHandler.PSettings.MaphackRemoveNeutral)
                     {
-                        if (
-                            LPlayer[LUnit[i].Owner].Type.Equals(
-                                PredefinedTypes.PlayerType.Neutral))
+                        if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
                             continue;
                     }
+
 
                     /* Dead Units */
                     if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
                         continue;
+                 
+                   
 
-                    
-                    /* Moving- state */
-                    if (LUnit[i].Movestate.Equals(0))
+
+
+
+                    #endregion
+
+
+                    var fUnitSize = LUnit[i].CustomStruct.Size;
+                    var size = 2.0f;
+
+                    if (fUnitSize >= 0.875)
+                        size = 4;
+
+                    if (fUnitSize >= 1.5)
+                        size = 6;
+
+                    if (fUnitSize >= 2.0)
+                        size = 8;
+
+                    if (fUnitSize >= 2.5)
+                        size = 10;
+
+                    size += 0.5f;
+
+
+                    #region Border special Units
+
+                    g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+
+
+                    g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBound)), iUnitPosX - size/2,
+                                             iUnitPosY - size/2, size, size);
+
+
+                    g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+
+                    #endregion
+                }
+
+                #endregion
+
+                #region Draw Unit (Inner Rectangle)
+
+                for (var i = 0; i < LUnit.Count; i++)
+                {
+                    //Color clUnit = LUnit[i].Owner > LPlayer.Count ? Color.Transparent : LPlayer[LUnit[i].Owner].Color;
+
+                    if (LUnit[i].Owner >= LPlayer.Count)
+                        continue;
+
+
+                    var clUnit = LPlayer[LUnit[i].Owner].Color;
+                   
+
+
+                    #region Teamcolor
+
+                    if (GInfo.IsTeamcolor)
+                    {
+                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[LUnit[i].Owner].IsLocalplayer)
+                                clUnit = Color.Green;
+
+                            else if (LPlayer[LUnit[i].Owner].Team ==
+                                     LPlayer[LPlayer[0].Localplayer].Team &&
+                                     !LPlayer[LUnit[i].Owner].IsLocalplayer)
+                                clUnit = Color.Yellow;
+
+                            else if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                                clUnit = Color.White;
+
+                            else
+                                clUnit = Color.Red;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Scalling (Unitposition)
+
+                    var iUnitPosX = (LUnit[i].PositionX - GMap.Left)*iScale + iX;
+                    var iUnitPosY = (GMap.Top - LUnit[i].PositionY)*iScale + iY;
+
+
+                    if (float.IsNaN(iUnitPosX) ||
+                        float.IsNaN(iUnitPosY))
+                    {
+                        continue;
+                    }
+
+                    #endregion
+
+                    #region Escape Sequences
+
+                    /* Ai */
+                    if (_hMainHandler.PSettings.MaphackRemoveAi)
+                    {
+                        if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                            continue;
+                    }
+
+                    /* Allie */
+                    if (_hMainHandler.PSettings.MaphackRemoveAllie)
+                    {
+                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        {
+                            if (LPlayer[LUnit[i].Owner].Team ==
+                                LPlayer[LPlayer[0].Localplayer].Team &&
+                                !LPlayer[LUnit[i].Owner].IsLocalplayer)
+                                continue;
+                        }
+                    }
+
+                    /* Localplayer Units */
+                    if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
+                    {
+                        if (LUnit[i].Owner == LPlayer[0].Localplayer)
+                            continue;
+                    }
+
+                    /* Neutral Units */
+                    if (_hMainHandler.PSettings.MaphackRemoveNeutral)
+                    {
+                        if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                            continue;
+                    }
+
+
+                    /* Dead Units */
+                    if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
                         continue;
 
 
@@ -3623,279 +3949,53 @@ namespace Sc2Hack.Classes.FontEnds
 
                     #endregion
 
-                    g.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-                    g.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                    g.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    var fUnitSize = LUnit[i].CustomStruct.Size;
+                    var size = 2.0f;
 
-                    /* Draws the Line */
-                    if (LUnit[i].DestinationPositionX > 10 &&
-                        LUnit[i].DestinationPositionY > 10)
-                        g.Graphics.DrawLine(new Pen(new SolidBrush(clDestination)), iUnitPosX, iUnitPosY, iUnitDestPosX,
-                                            iUnitDestPosY);
+                    if (fUnitSize >= 0.875)
+                        size = 4;
 
-                    g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+                    if (fUnitSize >= 1.5)
+                        size = 6;
+
+                    if (fUnitSize >= 2.0)
+                        size = 8;
+
+                    if (fUnitSize >= 2.5)
+                        size = 10;
+
+                    size -= 0.5f;
+
+
                     g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
                     g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-                }
-            }
+                    /* Draw the Unit (Actual Unit) */
+                    g.Graphics.FillRectangle(new SolidBrush(clUnit), iUnitPosX - size/2, iUnitPosY - size/2, size, size);
 
-            #endregion
+                    g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+                    g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                    g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-            #region Draw Unit (Border/ outer Rectangle)
-
-            for (var i = 0; i < LUnit.Count; i++)
-            {
-                var clUnitBound = Color.Black;
-
-                if (LUnit[i].Owner >= (LPlayer.Count))
-                    continue; //clUnitBound = Color.Transparent;
-
-                #region Scalling (Unitposition)
-
-                var iUnitPosX = (LUnit[i].PositionX - GMap.Left) * iScale + iX;
-                var iUnitPosY = (GMap.Top - LUnit[i].PositionY) * iScale + iY;
-
-
-                if (float.IsNaN(iUnitPosX) ||
-                    float.IsNaN(iUnitPosY))
-                {
-                    continue;
-                }
-
-
-                #endregion
-
-                #region Escape Sequences
-
-                /* Ai */
-                if (_hMainHandler.PSettings.MaphackRemoveAi)
-                {
-                    if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
-                        continue;
-                }
-
-                /* Allie */
-                if (_hMainHandler.PSettings.MaphackRemoveAllie)
-                {
-                    if (LPlayer[0].Localplayer < LPlayer.Count)
-                    {
-                        if (LPlayer[LUnit[i].Owner].Team ==
-                            LPlayer[LPlayer[0].Localplayer].Team &&
-                            !LPlayer[LUnit[i].Owner].IsLocalplayer)
-                            continue;
-                    }
-                }
-
-                /* Localplayer Units */
-                if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
-                {
-                    if (LUnit[i].Owner == LPlayer[0].Localplayer)
-                        continue;
-                }
-
-                /* Neutral Units */
-                if (_hMainHandler.PSettings.MaphackRemoveNeutral)
-                {
-                    if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
-                        continue;
-                }
-
-
-                /* Dead Units */
-                if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                    continue; // clUnitBound = Color.Transparent;
-                
-
-
-
-
-                #endregion
-
-
-                var fUnitSize = LUnit[i].CustomStruct.Size;
-                var size = 2.0f;
-
-                if (fUnitSize >= 0.875)
-                    size = 4;
-
-                if (fUnitSize >= 1.5)
-                    size = 6;
-
-                if (fUnitSize >= 2.0)
-                    size = 8;
-
-                if (fUnitSize >= 2.5)
-                    size = 10;
-
-                size += 0.5f;
-
-
-                #region Border special Units
-
-                g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-
-                
-                g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBound)), iUnitPosX - size/2,
-                                            iUnitPosY - size/2, size, size);
-
-
-                g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-
-                #endregion
-            }
-
-            #endregion
-
-            #region Draw Unit (Inner Rectangle)
-
-            for (var i = 0; i < LUnit.Count; i++)
-            {
-                //Color clUnit = LUnit[i].Owner > LPlayer.Count ? Color.Transparent : LPlayer[LUnit[i].Owner].Color;
-                
-                if (LUnit[i].Owner > LPlayer.Count)
-                    continue;
-
-                Color clUnit = LPlayer[LUnit[i].Owner].Color;
-
-
-
-                #region Teamcolor
-
-                if (GInfo.IsTeamcolor)
-                {
-                    if (LPlayer[0].Localplayer < LPlayer.Count)
-                    {
-                        if (LPlayer[LUnit[i].Owner].IsLocalplayer)
-                            clUnit = Color.Green;
-
-                        else if (LPlayer[LUnit[i].Owner].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[LUnit[i].Owner].IsLocalplayer)
-                            clUnit = Color.Yellow;
-
-                        else if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
-                            clUnit = Color.White;
-
-                        else
-                            clUnit = Color.Red;
-                    }
                 }
 
                 #endregion
 
-                #region Scalling (Unitposition)
-
-                var iUnitPosX = (LUnit[i].PositionX - GMap.Left) * iScale + iX;
-                var iUnitPosY = (GMap.Top - LUnit[i].PositionY) * iScale + iY;
-
-
-                if (float.IsNaN(iUnitPosX) ||
-                    float.IsNaN(iUnitPosY))
-                {
-                    continue;
-                }
-
-                #endregion
-
-                #region Escape Sequences
-
-                /* Ai */
-                if (_hMainHandler.PSettings.MaphackRemoveAi)
-                {
-                    if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
-                        continue;
-                }
-
-                /* Allie */
-                if (_hMainHandler.PSettings.MaphackRemoveAllie)
-                {
-                    if (LPlayer[0].Localplayer < LPlayer.Count)
-                    {
-                        if (LPlayer[LUnit[i].Owner].Team ==
-                            LPlayer[LPlayer[0].Localplayer].Team &&
-                            !LPlayer[LUnit[i].Owner].IsLocalplayer)
-                            continue;
-                    }
-                }
-
-                /* Localplayer Units */
-                if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
-                {
-                    if (LUnit[i].Owner == LPlayer[0].Localplayer)
-                        continue;
-                }
-
-                /* Neutral Units */
-                if (_hMainHandler.PSettings.MaphackRemoveNeutral)
-                {
-                    if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
-                        continue;
-                }
-
-
-                /* Dead Units */
-                if ((LUnit[i].TargetFilter & (ulong)PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                {
-                    continue; //clUnit = Color.Transparent;
-                }
-
-
-
-
-                #endregion
-
-                var fUnitSize = LUnit[i].CustomStruct.Size;
-                var size = 2.0f;
-
-                if (fUnitSize >= 0.875)
-                    size = 4;
-
-                if (fUnitSize >= 1.5)
-                    size = 6;
-
-                if (fUnitSize >= 2.0)
-                    size = 8;
-
-                if (fUnitSize >= 2.5)
-                    size = 10;
-
-                size -= 0.5f;
-
-
-                g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-
-                /* Draw the Unit (Actual Unit) */
-                g.Graphics.FillRectangle(new SolidBrush(clUnit), iUnitPosX - size / 2, iUnitPosY - size / 2, size, size);
-
-                g.Graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-                g.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
-                g.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
-
-            }
-
-            #endregion
-
-            #region Draw Border of special Units
+                #region Draw Border of special Units
 
                 for (var i = 0; i < LUnit.Count; i++)
                 {
                     var clUnitBoundBorder = Color.Black;
 
                     if (LUnit[i].Owner >= (LPlayer.Count))
-                        continue; //clUnitBoundBorder = Color.Transparent;
-                    
+                        continue;
+
 
                     #region Scalling (Unitposition)
 
-                    var iUnitPosX = (LUnit[i].PositionX - GMap.Left) * iScale + iX;
-                    var iUnitPosY = (GMap.Top - LUnit[i].PositionY) * iScale + iY;
+                    var iUnitPosX = (LUnit[i].PositionX - GMap.Left)*iScale + iX;
+                    var iUnitPosY = (GMap.Top - LUnit[i].PositionY)*iScale + iY;
 
 
                     if (float.IsNaN(iUnitPosX) ||
@@ -3913,7 +4013,7 @@ namespace Sc2Hack.Classes.FontEnds
                     {
                         if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Ai))
                             continue; //clUnitBoundBorder = Color.Transparent;
-                       
+
                     }
 
                     /* Allie */
@@ -3925,7 +4025,7 @@ namespace Sc2Hack.Classes.FontEnds
                                 LPlayer[LPlayer[0].Localplayer].Team &&
                                 !LPlayer[LUnit[i].Owner].IsLocalplayer)
                                 continue; //clUnitBoundBorder = Color.Transparent;
-                            
+
                         }
                     }
 
@@ -3934,7 +4034,7 @@ namespace Sc2Hack.Classes.FontEnds
                     {
                         if (LUnit[i].Owner == LPlayer[0].Localplayer)
                             continue; //clUnitBoundBorder = Color.Transparent;
-                        
+
                     }
 
                     /* Neutral Units */
@@ -3942,14 +4042,14 @@ namespace Sc2Hack.Classes.FontEnds
                     {
                         if (LPlayer[LUnit[i].Owner].Type.Equals(PredefinedTypes.PlayerType.Neutral))
                             continue; //clUnitBoundBorder = Color.Transparent;
-                        
+
                     }
 
 
                     /* Dead Units */
                     if ((LUnit[i].TargetFilter & (ulong) PredefinedTypes.TargetFilterFlag.Dead) > 0)
-                        continue; //clUnitBoundBorder = Color.Transparent;
-                    
+                        continue;
+
 
 
 
@@ -3988,21 +4088,21 @@ namespace Sc2Hack.Classes.FontEnds
                             {
                                 var clUnit = _hMainHandler.PSettings.MaphackUnitColors[j];
                                 if (!LUnit[i].IsAlive)
-                                    clUnit = Color.Transparent;
+                                    continue;
 
                                 if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
                                 {
                                     if (LUnit[i].Owner == LPlayer[0].Localplayer)
-                                        clUnit = Color.Transparent;
+                                        continue;
                                 }
 
                                 g.Graphics.DrawRectangle(
                                     new Pen(new SolidBrush(clUnit), 1.5f),
-                                    (iUnitPosX - size / 2), (iUnitPosY - size / 2), size, size);
+                                    (iUnitPosX - size/2), (iUnitPosY - size/2), size, size);
 
                                 g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBoundBorder)),
-                                                         iUnitPosX - ((size / 2) + 0.75f),
-                                                         iUnitPosY - ((size / 2) + 0.75f), size + 1.75f, size + 1.75f);
+                                                         iUnitPosX - ((size/2) + 0.75f),
+                                                         iUnitPosY - ((size/2) + 0.75f), size + 1.75f, size + 1.75f);
                             }
                         }
                     }
@@ -4011,13 +4111,14 @@ namespace Sc2Hack.Classes.FontEnds
 
                     #region CreepTumors
 
-                    if (LUnit[i].CustomStruct.Id == (int)PredefinedTypes.UnitId.ZbCreeptumor)
+                    if (LUnit[i].CustomStruct.Id == (int) PredefinedTypes.UnitId.ZbCreeptumor)
                     {
                         g.Graphics.DrawRectangle(new Pen(new SolidBrush(Color.Gray), 1.5f),
-                                                    (iUnitPosX - size / 2), (iUnitPosY - size / 2), size, size);
+                                                 (iUnitPosX - size/2), (iUnitPosY - size/2), size, size);
 
-                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBoundBorder)), iUnitPosX - ((size / 2) + 0.75f),
-                                                     iUnitPosY - ((size / 2) + 0.75f), size + 1.75f, size + 1.75f);
+                        g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBoundBorder)),
+                                                 iUnitPosX - ((size/2) + 0.75f),
+                                                 iUnitPosY - ((size/2) + 0.75f), size + 1.75f, size + 1.75f);
                     }
 
                     #endregion
@@ -4040,23 +4141,20 @@ namespace Sc2Hack.Classes.FontEnds
 
                             if ((LUnit[i].TargetFilter & (UInt64) PredefinedTypes.TargetFilterFlag.Dead) > 0)
                                 continue;
-                                //clUnitBound = Color.Transparent;
-                                //clUnitBoundBorder = Color.Transparent;
-                            
+
 
                             if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
                             {
                                 if (LUnit[i].Owner == LPlayer[0].Localplayer)
                                     continue;
-                                    //clUnitBound = Color.Transparent;
-                                    //clUnitBoundBorder = Color.Transparent;
-                                
+
                             }
 
                             g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBound), 1.5f),
                                                      (iUnitPosX - size/2), (iUnitPosY - size/2), size, size);
 
-                            g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBoundBorder)), iUnitPosX - ((size/2) + 0.75f),
+                            g.Graphics.DrawRectangle(new Pen(new SolidBrush(clUnitBoundBorder)),
+                                                     iUnitPosX - ((size/2) + 0.75f),
                                                      iUnitPosY - ((size/2) + 0.75f), size + 1.75f, size + 1.75f);
                         }
                     }
@@ -4064,15 +4162,168 @@ namespace Sc2Hack.Classes.FontEnds
                     #endregion
 
                     #endregion
-                
+
+                }
+
+                #endregion
+
+                #region Draw Player camera
+
+                if (!_hMainHandler.PSettings.MaphackRemoveCamera)
+                {
+                    for (var i = 0; i < LPlayer.Count; i++)
+                    {
+                        var clPlayercolor = LPlayer[i].Color;
+
+                        #region Teamcolor
+
+                        if (GInfo.IsTeamcolor)
+                        {
+                            if (LPlayer[0].Localplayer < LPlayer.Count)
+                            {
+                                if (LPlayer[i].IsLocalplayer)
+                                    clPlayercolor = Color.Green;
+
+                                else if (LPlayer[i].Team ==
+                                         LPlayer[LPlayer[0].Localplayer].Team &&
+                                         !LPlayer[i].IsLocalplayer)
+                                    clPlayercolor = Color.Yellow;
+
+                                else
+                                    clPlayercolor = Color.Red;
+                            }
+                        }
+
+                        #endregion
+
+                        #region Escape Sequences
+
+                        /* Ai - Works */
+                        if (_hMainHandler.PSettings.MaphackRemoveAi)
+                        {
+                            if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
+                                continue;
+                        }
+
+                        /* Observer */
+                        if (_hMainHandler.PSettings.MaphackRemoveObserver)
+                        {
+                            if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
+                                continue;
+                        }
+
+                        /* Referee */
+                        if (_hMainHandler.PSettings.MaphackRemoveReferee)
+                        {
+                            if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
+                                continue;
+                        }
+
+                        /* Localplayer - Works */
+                        if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
+                        {
+                            if (LPlayer[i].IsLocalplayer)
+                                continue;
+                        }
+
+                        /* Allie */
+                        if (_hMainHandler.PSettings.MaphackRemoveAllie)
+                        {
+                            if (LPlayer[0].Localplayer < LPlayer.Count)
+                            {
+                                if (LPlayer[i].Team ==
+                                    LPlayer[LPlayer[i].Localplayer].Team &&
+                                    !LPlayer[i].IsLocalplayer)
+                                    continue;
+                            }
+                        }
+
+                        /* Neutral */
+                        if (_hMainHandler.PSettings.MaphackRemoveNeutral)
+                        {
+                            if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                                continue;
+                        }
+
+                        /* Hosile */
+                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
+                            continue;
+
+                        if (float.IsInfinity(iScale))
+                            continue;
+
+                        if (CheckIfGameheart(LPlayer[i]))
+                            continue;
+
+                        #endregion
+
+                        #region Drawing
+
+                        //The actrual position of the Cameras
+                        var iPlayerX = (LPlayer[i].CameraPositionX - GMap.Left)*iScale + iX;
+                        var iPlayerY = (GMap.Top - LPlayer[i].CameraPositionY)*iScale + iY;
+
+                        if (iPlayerX <= 0 || iPlayerX >= Width ||
+                            iPlayerY <= 0 || iPlayerY >= Height)
+                            continue;
+
+                        //if (iPlayerX <= 0 ||
+                        //    iPlayerY <= 0)
+                        //    continue;
+
+                        var ptPoints = new PointF[4];
+                        ptPoints[0] = new PointF((int) iPlayerX - 35, (int) iPlayerY - 24);
+                        ptPoints[1] = new PointF((int) iPlayerX + 35, (int) iPlayerY - 24);
+                        ptPoints[2] = new PointF((int) iPlayerX + 24, (int) iPlayerY + 10);
+                        ptPoints[3] = new PointF((int) iPlayerX - 24, (int) iPlayerY + 10);
+
+
+
+
+                        g.Graphics.DrawPolygon(new Pen(new SolidBrush(clPlayercolor), 2), ptPoints);
+
+                        #endregion
+
+                    }
+                }
+
+                #endregion
+
+                #endregion
+
             }
 
-            #endregion
-
-            #region Draw Player camera
-
-            if (!_hMainHandler.PSettings.MaphackRemoveCamera)
+            catch (Exception ex)
             {
+                Messages.LogFile("DrawMinimap", "Over all", ex);
+            }
+        }
+
+        /* Count the Units/ structures */
+        private void DrawUnits(BufferedGraphics g)
+        {
+            try
+            {
+
+                if (!GInfo.IsIngame)
+                    return;
+
+                Opacity = _hMainHandler.PSettings.UnitTabOpacity;
+
+                /* Add the feature that the window (in case you have all races and more units than your display can hold) 
+                 * will split the units to the next line */
+
+                /* Count all included units */
+                CountUnits(PredefinedTypes.TargetFilterFlag.Dead);
+
+                var iHavetoadd = 0; //Adds +1 when a neutral player is on position 0
+                const Int32 iSize = 45;
+                var iPosY = 30;
+                var iPosX = 0;
+                var iMaximumWidth = 0;
+
+
+                /* Fix the size of the icons to 25x25 */
                 for (var i = 0; i < LPlayer.Count; i++)
                 {
                     var clPlayercolor = LPlayer[i].Color;
@@ -4081,7 +4332,7 @@ namespace Sc2Hack.Classes.FontEnds
 
                     if (GInfo.IsTeamcolor)
                     {
-                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        if (LPlayer[i].Localplayer < LPlayer.Count)
                         {
                             if (LPlayer[i].IsLocalplayer)
                                 clPlayercolor = Color.Green;
@@ -4098,384 +4349,304 @@ namespace Sc2Hack.Classes.FontEnds
 
                     #endregion
 
-                    #region Escape Sequences
+                    #region Exceptions - Throw out players
 
-                    /* Ai - Works */
-                    if (_hMainHandler.PSettings.MaphackRemoveAi)
+                    /* Remove Ai - Works */
+                    if (_hMainHandler.PSettings.UnitTabRemoveAi)
                     {
-                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Ai))
-                            continue;
-                    }
-
-                    /* Observer */
-                    if (_hMainHandler.PSettings.MaphackRemoveObserver)
-                    {
-                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Observer))
-                            continue;
-                    }
-
-                    /* Referee */
-                    if (_hMainHandler.PSettings.MaphackRemoveReferee)
-                    {
-                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Referee))
-                            continue;
-                    }
-
-                    /* Localplayer - Works */
-                    if (_hMainHandler.PSettings.MaphackRemoveLocalplayer)
-                    {
-                        if (LPlayer[i].IsLocalplayer)
-                            continue;
-                    }
-
-                    /* Allie */
-                    if (_hMainHandler.PSettings.MaphackRemoveAllie)
-                    {
-                        if (LPlayer[0].Localplayer < LPlayer.Count)
+                        if (LPlayer[i].Type == PredefinedTypes.PlayerType.Ai)
                         {
-                            if (LPlayer[i].Team ==
-                                LPlayer[LPlayer[i].Localplayer].Team &&
-                                !LPlayer[i].IsLocalplayer)
-                                continue;
+                            continue;
                         }
                     }
 
-                    /* Neutral */
-                    if (_hMainHandler.PSettings.MaphackRemoveNeutral)
+                    /* Remove Referee - Not Tested */
+                    if (_hMainHandler.PSettings.UnitTabRemoveReferee)
                     {
-                        if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Neutral))
+                        if (LPlayer[i].Type == PredefinedTypes.PlayerType.Referee)
+                        {
                             continue;
+                        }
                     }
 
-                    /* Hosile */
-                    if (LPlayer[i].Type.Equals(PredefinedTypes.PlayerType.Hostile))
+                    /* Remove Observer - Not Tested */
+                    if (_hMainHandler.PSettings.UnitTabRemoveObserver)
+                    {
+                        if (LPlayer[i].Type == PredefinedTypes.PlayerType.Observer)
+                        {
+                            continue;
+                        }
+                    }
+
+                    /* Remove Neutral - Works */
+                    if (_hMainHandler.PSettings.UnitTabRemoveNeutral)
+                    {
+                        if (LPlayer[i].Type == PredefinedTypes.PlayerType.Neutral)
+                        {
+                            continue;
+                        }
+                    }
+
+                    /* Remove Localplayer - Works */
+                    if (_hMainHandler.PSettings.UnitTabRemoveLocalplayer)
+                    {
+                        if (LPlayer[i].IsLocalplayer)
+                        {
+                            continue;
+                        }
+                    }
+
+                    /* Remove Allie - Works */
+                    if (_hMainHandler.PSettings.UnitTabRemoveAllie)
+                    {
+                        if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
+                            !LPlayer[i].IsLocalplayer)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (LPlayer[i].Type == PredefinedTypes.PlayerType.Hostile)
                         continue;
 
-                    if (float.IsInfinity(iScale))
+
+
+                    #endregion
+
+                    if (LPlayer[i].Name.Length <= 0 ||
+                        LPlayer[i].Name.StartsWith("\0"))
                         continue;
 
                     if (CheckIfGameheart(LPlayer[i]))
                         continue;
 
+                    iPosX = 0;
+
+                    /* Draw Name in front of Icons */
+                    g.Graphics.DrawString(LPlayer[i].Name, Constants.FArial1, new SolidBrush(clPlayercolor), iPosX + 10,
+                                          iPosY + 10);
+                    iPosX = 150;
+
+                    #region Draw Units
+
+                    /* Terran */
+                    Helper_DrawUnits(_lTuScv[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuMarine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuMarauder[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarauder, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTuReaper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuGhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuMule[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuHellion[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuHellbat[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuWidowMine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuWidowMine, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTuSiegetank[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuSiegetank, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTuThor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuMedivac[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuBanshee[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuViking[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuRaven[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuBattlecruiser[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBattlecruiser, g,
+                                     clPlayercolor);
+
+                    /* Protoss */
+                    Helper_DrawUnits(_lPuProbe[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuZealot[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuStalker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuSentry[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuDt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuHt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuArchon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuImmortal[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuImmortal, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPuColossus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuColossus, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPuObserver[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuObserver, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPuWarpprism[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuWapprism, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPuPhoenix[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuVoidray[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuOracle[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuCarrier[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuTempest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuMothershipcore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothershipcore, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPuMothership[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothership, g,
+                                     clPlayercolor);
+
+                    /* Zerg */
+                    Helper_DrawUnits(_lZuLarva[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuDrone[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuOverlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverlord, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuQueen[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuZergling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuZergling, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuBaneling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBaneling, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuBanelingCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBanelingCocoon, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuRoach[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuHydra[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuMutalisk[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuMutalisk, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuInfestor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuInfestor, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuOverseer[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverseer, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuOverseerCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOvserseerCocoon, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuSwarmhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuSwarmhost, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuUltralist[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuViper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuCorruptor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuCorruptor, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuBroodlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlord, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZuBroodlordCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlordCocoon,
+                                     g, clPlayercolor);
+
                     #endregion
 
-                    #region Drawing
+                    #region - Split Units and Buildings -
 
-                    //The actrual position of the Cameras
-                    var iPlayerX = (LPlayer[i].CameraPositionX - GMap.Left)*iScale + iX;
-                    var iPlayerY = (GMap.Top - LPlayer[i].CameraPositionY)*iScale + iY;
-
-                    if (iPlayerX <= 0 || iPlayerX >= Width ||
-                        iPlayerY <= 0 || iPlayerY >= Height)
-                        continue;
-
-                    //if (iPlayerX <= 0 ||
-                    //    iPlayerY <= 0)
-                    //    continue;
-
-                    var ptPoints = new PointF[4];
-                    ptPoints[0] = new PointF((int) iPlayerX - 35, (int) iPlayerY - 24);
-                    ptPoints[1] = new PointF((int) iPlayerX + 35, (int) iPlayerY - 24);
-                    ptPoints[2] = new PointF((int) iPlayerX + 24, (int) iPlayerY + 10);
-                    ptPoints[3] = new PointF((int) iPlayerX - 24, (int) iPlayerY + 10);
+                    if (_hMainHandler.PSettings.UnitTabSplitUnitsAndBuildings)
+                    {
+                        iHavetoadd = 0;
 
 
+                        if (LPlayer[0].Type == PredefinedTypes.PlayerType.Neutral)
+                            iHavetoadd += 1;
 
+                        if (i == iHavetoadd)
+                        {
+                            iPosY += iSize + 2;
+                            iPosX = 150;
+                        }
 
-                    g.Graphics.DrawPolygon(new Pen(new SolidBrush(clPlayercolor), 2), ptPoints);
+                        else if (i > iHavetoadd)
+                        {
+                            iPosY += iSize + 2;
+                            iPosX = 150;
+                        }
+                    }
 
                     #endregion
 
+                    #region Draw Buildings
+
+                    /* Terran */
+                    Helper_DrawUnits(_lTbCommandCenter[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbCc, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbOrbitalCommand[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbOc, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbPlanetaryFortress[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbPf, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbSupply[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbRefinery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbRefinery, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbBunker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbTechlab[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbReactor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbTurrent[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbSensorTower[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSensorTower, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbEbay[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbGhostAcademy[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbGhostacademy, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbArmory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbFusionCore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFusioncore, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbBarracks[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBarracks, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lTbFactory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor);
+                    Helper_DrawUnits(_lTbStarport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbStarport, g,
+                                     clPlayercolor);
+
+                    /* Protoss */
+                    Helper_DrawUnits(_lPbNexus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbPylong[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbAssimilator[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbAssimilator, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbCannon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbDarkshrine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbDarkShrine, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbTemplarArchives[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTemplarArchives,
+                                     g, clPlayercolor);
+                    Helper_DrawUnits(_lPbTwilight[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTwillightCouncil, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbCybercore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCybercore, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbForge[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbFleetbeacon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbFleetBeacon, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbRoboticsSupport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRoboticsSupport,
+                                     g, clPlayercolor);
+                    Helper_DrawUnits(_lPbGateway[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbWarpgate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbWarpgate, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbStargate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbStargate, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lPbRobotics[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRobotics, g,
+                                     clPlayercolor);
+
+                    /* Zerg */
+                    Helper_DrawUnits(_lZbHatchery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHatchery, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbLair[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor);
+                    Helper_DrawUnits(_lZbHive[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor);
+                    Helper_DrawUnits(_lZbSpawningpool[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpawningpool, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbEvochamber[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbEvochamber, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbExtractor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbExtractor, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbSpine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpinecrawler, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbSpore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSporecrawler, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbHydraden[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHydraden, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbRoachwarren[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbRoachwarren, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbSpire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor);
+                    Helper_DrawUnits(_lZbGreaterspire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbGreaterspire, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbUltracavern[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbUltracavern, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbInfestationpit[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbInfestationpit, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbBanelingnest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbBanelingnest, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbNydusbegin[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusNetwork, g,
+                                     clPlayercolor);
+                    Helper_DrawUnits(_lZbNydusend[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusWorm, g,
+                                     clPlayercolor);
+
+                    #endregion
+
+                    iPosY += iSize + 2;
+
+                    if (iPosX + iSize >= iMaximumWidth)
+                        iMaximumWidth = iPosX + iSize;
+
+                    if (iHavetoadd > 0)
+                        iMaximumWidth += iSize;
                 }
+
+                Width = iMaximumWidth + 1;
+                Height = iPosY + iSize;
+
             }
 
-            #endregion
-
-            #endregion
-        }
-
-        /* Count the Units/ structures */
-        private void DrawUnits(BufferedGraphics g)
-        {
-            if (!GInfo.IsIngame)
-                return;
-
-            Opacity = _hMainHandler.PSettings.UnitTabOpacity;
-
-            /* Add the feature that the window (in case you have all races and more units than your display can hold) 
-             * will split the units to the next line */
-
-            /* Count all included units */
-            CountUnits(PredefinedTypes.TargetFilterFlag.Dead);
-
-            var iHavetoadd = 0;           //Adds +1 when a neutral player is on position 0
-            const Int32 iSize = 45;
-            var iPosY = 30;
-            var iPosX = 0;
-            var iMaximumWidth = 0;
-
-
-            /* Fix the size of the icons to 25x25 */
-            for (var i = 0; i < LPlayer.Count; i++)
+            catch (Exception ex)
             {
-                var clPlayercolor = LPlayer[i].Color;
-
-                #region Teamcolor
-
-                if (GInfo.IsTeamcolor)
-                {
-                    if (LPlayer[i].Localplayer < LPlayer.Count)
-                    {
-                        if (LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Green;
-
-                        else if (LPlayer[i].Team ==
-                                 LPlayer[LPlayer[0].Localplayer].Team &&
-                                 !LPlayer[i].IsLocalplayer)
-                            clPlayercolor = Color.Yellow;
-
-                        else
-                            clPlayercolor = Color.Red;
-                    }
-                }
-
-                #endregion
-
-                #region Exceptions - Throw out players
-
-                /* Remove Ai - Works */
-                if (_hMainHandler.PSettings.UnitTabRemoveAi)
-                {
-                    if (LPlayer[i].Type == PredefinedTypes.PlayerType.Ai)
-                    {
-                        continue;
-                    }
-                }
-
-                /* Remove Referee - Not Tested */
-                if (_hMainHandler.PSettings.UnitTabRemoveReferee)
-                {
-                    if (LPlayer[i].Type == PredefinedTypes.PlayerType.Referee)
-                    {
-                        continue;
-                    }
-                }
-
-                /* Remove Observer - Not Tested */
-                if (_hMainHandler.PSettings.UnitTabRemoveObserver)
-                {
-                    if (LPlayer[i].Type == PredefinedTypes.PlayerType.Observer)
-                    {
-                        continue;
-                    }
-                }
-
-                /* Remove Neutral - Works */
-                if (_hMainHandler.PSettings.UnitTabRemoveNeutral)
-                {
-                    if (LPlayer[i].Type == PredefinedTypes.PlayerType.Neutral)
-                    {
-                        continue;
-                    }
-                }
-
-                /* Remove Localplayer - Works */
-                if (_hMainHandler.PSettings.UnitTabRemoveLocalplayer)
-                {
-                    if (LPlayer[i].IsLocalplayer)
-                    {
-                        continue;
-                    }
-                }
-
-                /* Remove Allie - Works */
-                if (_hMainHandler.PSettings.UnitTabRemoveAllie)
-                {
-                    if (LPlayer[i].Team == LPlayer[LPlayer[i].Localplayer].Team &&
-                        !LPlayer[i].IsLocalplayer)
-                    {
-                        continue;
-                    }
-                }
-
-                if (LPlayer[i].Type == PredefinedTypes.PlayerType.Hostile)
-                    continue;
-
-
-
-                #endregion
-
-                if (LPlayer[i].Name.Length <= 0 ||
-                    LPlayer[i].Name.StartsWith("\0"))
-                    continue;
-
-                if (CheckIfGameheart(LPlayer[i]))
-                    continue;
-
-                iPosX = 0;
-
-                /* Draw Name in front of Icons */
-                g.Graphics.DrawString(LPlayer[i].Name, Constants.FArial1, new SolidBrush(clPlayercolor), iPosX + 10, iPosY + 10);
-                iPosX = 150;
-
-                #region Draw Units
-
-                /* Terran */
-                Helper_DrawUnits(_lTuScv[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMarine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMarauder[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarauder, g, clPlayercolor);
-                Helper_DrawUnits(_lTuReaper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor);
-                Helper_DrawUnits(_lTuGhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMule[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor);
-                Helper_DrawUnits(_lTuHellion[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor);
-                Helper_DrawUnits(_lTuHellbat[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor);
-                Helper_DrawUnits(_lTuWidowMine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuWidowMine, g, clPlayercolor);
-                Helper_DrawUnits(_lTuSiegetank[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuSiegetank, g, clPlayercolor);
-                Helper_DrawUnits(_lTuThor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMedivac[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor);
-                Helper_DrawUnits(_lTuBanshee[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor);
-                Helper_DrawUnits(_lTuViking[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor);
-                Helper_DrawUnits(_lTuRaven[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor);
-                Helper_DrawUnits(_lTuBattlecruiser[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBattlecruiser, g, clPlayercolor);
-
-                /* Protoss */
-                Helper_DrawUnits(_lPuProbe[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor);
-                Helper_DrawUnits(_lPuZealot[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor);
-                Helper_DrawUnits(_lPuStalker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor);
-                Helper_DrawUnits(_lPuSentry[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor);
-                Helper_DrawUnits(_lPuDt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor);
-                Helper_DrawUnits(_lPuHt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor);
-                Helper_DrawUnits(_lPuArchon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor);
-                Helper_DrawUnits(_lPuImmortal[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuImmortal, g, clPlayercolor);
-                Helper_DrawUnits(_lPuColossus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuColossus, g, clPlayercolor);
-                Helper_DrawUnits(_lPuObserver[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuObserver, g, clPlayercolor);
-                Helper_DrawUnits(_lPuWarpprism[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuWapprism, g, clPlayercolor);
-                Helper_DrawUnits(_lPuPhoenix[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor);
-                Helper_DrawUnits(_lPuVoidray[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor);
-                Helper_DrawUnits(_lPuOracle[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor);
-                Helper_DrawUnits(_lPuCarrier[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor);
-                Helper_DrawUnits(_lPuTempest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor);
-                Helper_DrawUnits(_lPuMothershipcore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothershipcore, g, clPlayercolor);
-                Helper_DrawUnits(_lPuMothership[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothership, g, clPlayercolor);
-
-                /* Zerg */
-                Helper_DrawUnits(_lZuLarva[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor);
-                Helper_DrawUnits(_lZuDrone[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor);
-                Helper_DrawUnits(_lZuOverlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverlord, g, clPlayercolor);
-                Helper_DrawUnits(_lZuQueen[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor);
-                Helper_DrawUnits(_lZuZergling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuZergling, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBaneling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBaneling, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBanelingCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBanelingCocoon, g, clPlayercolor);
-                Helper_DrawUnits(_lZuRoach[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor);
-                Helper_DrawUnits(_lZuHydra[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor);
-                Helper_DrawUnits(_lZuMutalisk[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuMutalisk, g, clPlayercolor);
-                Helper_DrawUnits(_lZuInfestor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuInfestor, g, clPlayercolor);
-                Helper_DrawUnits(_lZuOverseer[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverseer, g, clPlayercolor);
-                Helper_DrawUnits(_lZuOverseerCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOvserseerCocoon, g, clPlayercolor);
-                Helper_DrawUnits(_lZuSwarmhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuSwarmhost, g, clPlayercolor);
-                Helper_DrawUnits(_lZuUltralist[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor);
-                Helper_DrawUnits(_lZuViper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor);
-                Helper_DrawUnits(_lZuCorruptor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuCorruptor, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBroodlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlord, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBroodlordCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlordCocoon, g, clPlayercolor);
-
-                #endregion
-
-                #region - Split Units and Buildings -
-
-                if (_hMainHandler.PSettings.UnitTabSplitUnitsAndBuildings)
-                {
-                    iHavetoadd = 0;
-
-
-                    if (LPlayer[0].Type == PredefinedTypes.PlayerType.Neutral)
-                        iHavetoadd += 1;
-
-                    if (i == iHavetoadd)
-                    {
-                        iPosY += iSize + 2;
-                        iPosX = 150;
-                    }
-
-                    else if (i > iHavetoadd)
-                    {
-                        iPosY += iSize + 2;
-                        iPosX = 150;
-                    }
-                }
-
-                #endregion
-
-                #region Draw Buildings
-
-                /* Terran */
-                Helper_DrawUnits(_lTbCommandCenter[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbCc, g, clPlayercolor);
-                Helper_DrawUnits(_lTbOrbitalCommand[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbOc, g, clPlayercolor);
-                Helper_DrawUnits(_lTbPlanetaryFortress[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbPf, g, clPlayercolor);
-                Helper_DrawUnits(_lTbSupply[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor);
-                Helper_DrawUnits(_lTbRefinery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbRefinery, g, clPlayercolor);
-                Helper_DrawUnits(_lTbBunker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor);
-                Helper_DrawUnits(_lTbTechlab[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor);
-                Helper_DrawUnits(_lTbReactor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor);
-                Helper_DrawUnits(_lTbTurrent[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor);
-                Helper_DrawUnits(_lTbSensorTower[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSensorTower, g, clPlayercolor);
-                Helper_DrawUnits(_lTbEbay[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor);
-                Helper_DrawUnits(_lTbGhostAcademy[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbGhostacademy, g, clPlayercolor);
-                Helper_DrawUnits(_lTbArmory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor);
-                Helper_DrawUnits(_lTbFusionCore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFusioncore, g, clPlayercolor);
-                Helper_DrawUnits(_lTbBarracks[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBarracks, g, clPlayercolor);
-                Helper_DrawUnits(_lTbFactory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor);
-                Helper_DrawUnits(_lTbStarport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbStarport, g, clPlayercolor);
-
-                /* Protoss */
-                Helper_DrawUnits(_lPbNexus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor);
-                Helper_DrawUnits(_lPbPylong[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor);
-                Helper_DrawUnits(_lPbAssimilator[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbAssimilator, g, clPlayercolor);
-                Helper_DrawUnits(_lPbCannon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor);
-                Helper_DrawUnits(_lPbDarkshrine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbDarkShrine, g, clPlayercolor);
-                Helper_DrawUnits(_lPbTemplarArchives[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTemplarArchives, g, clPlayercolor);
-                Helper_DrawUnits(_lPbTwilight[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTwillightCouncil, g, clPlayercolor);
-                Helper_DrawUnits(_lPbCybercore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCybercore, g, clPlayercolor);
-                Helper_DrawUnits(_lPbForge[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor);
-                Helper_DrawUnits(_lPbFleetbeacon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbFleetBeacon, g, clPlayercolor);
-                Helper_DrawUnits(_lPbRoboticsSupport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRoboticsSupport, g, clPlayercolor);
-                Helper_DrawUnits(_lPbGateway[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor);
-                Helper_DrawUnits(_lPbWarpgate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbWarpgate, g, clPlayercolor);
-                Helper_DrawUnits(_lPbStargate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbStargate, g, clPlayercolor);
-                Helper_DrawUnits(_lPbRobotics[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRobotics, g, clPlayercolor);
-
-                /* Zerg */
-                Helper_DrawUnits(_lZbHatchery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHatchery, g, clPlayercolor);
-                Helper_DrawUnits(_lZbLair[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor);
-                Helper_DrawUnits(_lZbHive[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor);
-                Helper_DrawUnits(_lZbSpawningpool[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpawningpool, g, clPlayercolor);
-                Helper_DrawUnits(_lZbEvochamber[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbEvochamber, g, clPlayercolor);
-                Helper_DrawUnits(_lZbExtractor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbExtractor, g, clPlayercolor);
-                Helper_DrawUnits(_lZbSpine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpinecrawler, g, clPlayercolor);
-                Helper_DrawUnits(_lZbSpore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSporecrawler, g, clPlayercolor);
-                Helper_DrawUnits(_lZbHydraden[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHydraden, g, clPlayercolor);
-                Helper_DrawUnits(_lZbRoachwarren[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbRoachwarren, g, clPlayercolor);
-                Helper_DrawUnits(_lZbSpire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor);
-                Helper_DrawUnits(_lZbGreaterspire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbGreaterspire, g, clPlayercolor);
-                Helper_DrawUnits(_lZbUltracavern[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbUltracavern, g, clPlayercolor);
-                Helper_DrawUnits(_lZbInfestationpit[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbInfestationpit, g, clPlayercolor);
-                Helper_DrawUnits(_lZbBanelingnest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbBanelingnest, g, clPlayercolor);
-                Helper_DrawUnits(_lZbNydusbegin[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusNetwork, g, clPlayercolor);
-                Helper_DrawUnits(_lZbNydusend[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusWorm, g, clPlayercolor);
-
-                #endregion
-
-                iPosY += iSize + 2;
-
-                if (iPosX + iSize >= iMaximumWidth)
-                    iMaximumWidth = iPosX + iSize;
-
-                if (iHavetoadd > 0)
-                    iMaximumWidth += iSize;
+                Messages.LogFile("DrawUnits", "Over all", ex);
             }
-
-            Width = iMaximumWidth + 1;
-            Height = iPosY + iSize;
         }
 
         /* Draws the productionpanel */
@@ -4754,11 +4925,7 @@ namespace Sc2Hack.Classes.FontEnds
         /* Refresges the drawing */
         private void tmrRefreshGraphic_Tick(object sender, EventArgs e)
         {
-            if (_bInvalidate)
-            {
-                //Invalidate();
-                Refresh();
-            }
+            Invalidate();
 
 
             ChangeWindowStyle();

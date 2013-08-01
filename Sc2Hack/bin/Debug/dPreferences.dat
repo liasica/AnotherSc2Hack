@@ -11,9 +11,9 @@ Drawing Refresh = 33
 
 [Resource]
 ;Int32
-PosX = 500
+PosX = 1319
 ;Int32
-PosY = 50
+PosY = 40
 ;Int32
 Width = 600
 ;Int32
@@ -48,9 +48,9 @@ Draw Background = True
 
 [Income]
 ;Int32
-PosX = 503
+PosX = 1312
 ;Int32
-PosY = 152
+PosY = 156
 ;Int32
 Width = 600
 ;Int32
@@ -85,7 +85,7 @@ Draw Background = True
 
 [Apm]
 ;Int32
-PosX = 500
+PosX = 37
 ;Int32
 PosY = 50
 ;Int32
@@ -122,9 +122,9 @@ Draw Background = True
 
 [Army]
 ;Int32
-PosX = 500
+PosX = 1321
 ;Int32
-PosY = 300
+PosY = 281
 ;Int32
 Width = 600
 ;Int32
@@ -159,9 +159,9 @@ Draw Background = True
 
 [Worker]
 ;Int32
-PosX = 500
+PosX = 1303
 ;Int32
-PosY = 300
+PosY = 814
 ;Int32
 Width = 200
 ;Int32
@@ -188,13 +188,13 @@ Draw Background = True
 
 [UnitTab]
 ;Int32
-PosX = 50
+PosX = 55
 ;Int32
-PosY = 50
+PosY = 169
 ;Int32
-Width = 300
+Width = 331
 ;Int32
-Height = 50
+Height = 263
 ;Boolean
 Remove Ai = False
 ;Boolean
@@ -266,18 +266,10 @@ Remove Camera = False
 
 [Maphack Units]
 ;UnitId
-UnitId = ZuDrone
+UnitId = PuStalker
 ;Color
 Unit Color = #004040
 ;UnitId
-UnitId = PuStalker
-;Color
-Unit Color = #8000FF
-;UnitId
 UnitId = TuThor
 ;Color
-Unit Color = #FF8000
-;UnitId
-UnitId = TuScv
-;Color
-Unit Color = Red
+Unit Color = #8000FF
