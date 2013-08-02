@@ -570,6 +570,8 @@ namespace Sc2Hack.Classes.BackEnds
 
         public static PredefinedTypes.Preferences LoadPreferences()
         {
+            bool bUnitTabPictureSizeSet = false;
+
             #region Introduction
 
 
@@ -2072,6 +2074,8 @@ namespace Sc2Hack.Classes.BackEnds
                     Int32.TryParse(strInnerValue, out iPictureSize);
 
                     pSettings.UnitPictureSize = iPictureSize;
+
+                    bUnitTabPictureSizeSet = true;
                 }
 
 
@@ -2522,6 +2526,15 @@ namespace Sc2Hack.Classes.BackEnds
 
                 
             }
+
+            #endregion
+
+
+            #region Check if a setting was not called
+
+            /* [UnitTab] Picturesize */
+            if (!bUnitTabPictureSizeSet)
+                pSettings.UnitPictureSize = 45;
 
             #endregion
 
