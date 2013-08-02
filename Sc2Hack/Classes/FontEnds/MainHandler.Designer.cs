@@ -182,6 +182,7 @@
             this.imgUnits = new System.Windows.Forms.ImageList(this.components);
             this.lstMapUnits = new System.Windows.Forms.ListBox();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.chBxMapRemCamera = new System.Windows.Forms.CheckBox();
             this.chBxMaphackRemVisionArea = new System.Windows.Forms.CheckBox();
             this.chBxMaphackColorDefensiveStructuresYellow = new System.Windows.Forms.CheckBox();
             this.lblMapOpacity = new System.Windows.Forms.Label();
@@ -367,8 +368,12 @@
             this.tcCredits = new System.Windows.Forms.TabPage();
             this.label92 = new System.Windows.Forms.Label();
             this.btnProduction = new System.Windows.Forms.Button();
+            this.groupBox37 = new System.Windows.Forms.GroupBox();
+            this.label124 = new System.Windows.Forms.Label();
+            this.txtUnitPictureSize = new System.Windows.Forms.TextBox();
             this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
-            this.chBxMapRemCamera = new System.Windows.Forms.CheckBox();
+            this.pcBxUnitPreview = new System.Windows.Forms.PictureBox();
+            this.label125 = new System.Windows.Forms.Label();
             this.tcMainTab.SuspendLayout();
             this.tcGlobal.SuspendLayout();
             this.groupBox36.SuspendLayout();
@@ -426,6 +431,8 @@
             this.groupBox35.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.tcCredits.SuspendLayout();
+            this.groupBox37.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrGatherInformation
@@ -2097,6 +2104,18 @@
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Basic Panel Options";
             // 
+            // chBxMapRemCamera
+            // 
+            this.chBxMapRemCamera.AutoSize = true;
+            this.chBxMapRemCamera.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chBxMapRemCamera.Location = new System.Drawing.Point(25, 270);
+            this.chBxMapRemCamera.Name = "chBxMapRemCamera";
+            this.chBxMapRemCamera.Size = new System.Drawing.Size(105, 17);
+            this.chBxMapRemCamera.TabIndex = 73;
+            this.chBxMapRemCamera.Text = "Remove Camera";
+            this.chBxMapRemCamera.UseVisualStyleBackColor = true;
+            this.chBxMapRemCamera.CheckedChanged += new System.EventHandler(this.chBxMapRemCamera_CheckedChanged);
+            // 
             // chBxMaphackRemVisionArea
             // 
             this.chBxMaphackRemVisionArea.AutoSize = true;
@@ -3190,6 +3209,7 @@
             // tcUnitTab
             // 
             this.tcUnitTab.BackColor = System.Drawing.SystemColors.Control;
+            this.tcUnitTab.Controls.Add(this.groupBox37);
             this.tcUnitTab.Controls.Add(this.groupBox34);
             this.tcUnitTab.Controls.Add(this.groupBox23);
             this.tcUnitTab.Controls.Add(this.groupBox16);
@@ -3303,7 +3323,7 @@
             this.groupBox23.Controls.Add(this.cmBxUniRemLocalplayer);
             this.groupBox23.Location = new System.Drawing.Point(30, 18);
             this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(291, 254);
+            this.groupBox23.Size = new System.Drawing.Size(291, 270);
             this.groupBox23.TabIndex = 59;
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Basic Panel Options";
@@ -3448,7 +3468,7 @@
             this.groupBox16.Controls.Add(this.label88);
             this.groupBox16.Controls.Add(this.label89);
             this.groupBox16.Controls.Add(this.label90);
-            this.groupBox16.Location = new System.Drawing.Point(331, 150);
+            this.groupBox16.Location = new System.Drawing.Point(331, 165);
             this.groupBox16.Name = "groupBox16";
             this.groupBox16.Size = new System.Drawing.Size(246, 122);
             this.groupBox16.TabIndex = 58;
@@ -3976,6 +3996,36 @@
             this.btnProduction.Visible = false;
             this.btnProduction.Click += new System.EventHandler(this.btnProduction_Click);
             // 
+            // groupBox37
+            // 
+            this.groupBox37.Controls.Add(this.label125);
+            this.groupBox37.Controls.Add(this.pcBxUnitPreview);
+            this.groupBox37.Controls.Add(this.txtUnitPictureSize);
+            this.groupBox37.Controls.Add(this.label124);
+            this.groupBox37.Location = new System.Drawing.Point(590, 180);
+            this.groupBox37.Name = "groupBox37";
+            this.groupBox37.Size = new System.Drawing.Size(196, 108);
+            this.groupBox37.TabIndex = 61;
+            this.groupBox37.TabStop = false;
+            this.groupBox37.Text = "Picturesize";
+            // 
+            // label124
+            // 
+            this.label124.AutoSize = true;
+            this.label124.Location = new System.Drawing.Point(12, 30);
+            this.label124.Name = "label124";
+            this.label124.Size = new System.Drawing.Size(30, 13);
+            this.label124.TabIndex = 0;
+            this.label124.Text = "Size:";
+            // 
+            // txtUnitPictureSize
+            // 
+            this.txtUnitPictureSize.Location = new System.Drawing.Point(89, 27);
+            this.txtUnitPictureSize.Name = "txtUnitPictureSize";
+            this.txtUnitPictureSize.Size = new System.Drawing.Size(83, 20);
+            this.txtUnitPictureSize.TabIndex = 1;
+            this.txtUnitPictureSize.TextChanged += new System.EventHandler(this.txtUnitPictureSize_TextChanged);
+            // 
             // icbMapUnit
             // 
             this.icbMapUnit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
@@ -3990,17 +4040,24 @@
             this.icbMapUnit.TabIndex = 3;
             this.icbMapUnit.SelectedIndexChanged += new System.EventHandler(this.icbMapUnit_SelectedIndexChanged);
             // 
-            // chBxMapRemCamera
+            // pcBxUnitPreview
             // 
-            this.chBxMapRemCamera.AutoSize = true;
-            this.chBxMapRemCamera.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chBxMapRemCamera.Location = new System.Drawing.Point(25, 270);
-            this.chBxMapRemCamera.Name = "chBxMapRemCamera";
-            this.chBxMapRemCamera.Size = new System.Drawing.Size(105, 17);
-            this.chBxMapRemCamera.TabIndex = 73;
-            this.chBxMapRemCamera.Text = "Remove Camera";
-            this.chBxMapRemCamera.UseVisualStyleBackColor = true;
-            this.chBxMapRemCamera.CheckedChanged += new System.EventHandler(this.chBxMapRemCamera_CheckedChanged);
+            this.pcBxUnitPreview.Image = global::Sc2Hack.Properties.Resources.tu_Mule;
+            this.pcBxUnitPreview.Location = new System.Drawing.Point(89, 53);
+            this.pcBxUnitPreview.Name = "pcBxUnitPreview";
+            this.pcBxUnitPreview.Size = new System.Drawing.Size(45, 45);
+            this.pcBxUnitPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pcBxUnitPreview.TabIndex = 2;
+            this.pcBxUnitPreview.TabStop = false;
+            // 
+            // label125
+            // 
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(12, 60);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(48, 13);
+            this.label125.TabIndex = 3;
+            this.label125.Text = "Preview:";
             // 
             // MainHandler
             // 
@@ -4115,6 +4172,9 @@
             this.groupBox25.PerformLayout();
             this.tcCredits.ResumeLayout(false);
             this.tcCredits.PerformLayout();
+            this.groupBox37.ResumeLayout(false);
+            this.groupBox37.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4460,5 +4520,10 @@
         private System.Windows.Forms.Label label120;
         private System.Windows.Forms.ListBox lstTrainerPlayerlist;
         private System.Windows.Forms.CheckBox chBxMapRemCamera;
+        private System.Windows.Forms.GroupBox groupBox37;
+        private System.Windows.Forms.TextBox txtUnitPictureSize;
+        private System.Windows.Forms.Label label124;
+        private System.Windows.Forms.Label label125;
+        private System.Windows.Forms.PictureBox pcBxUnitPreview;
     }
 }

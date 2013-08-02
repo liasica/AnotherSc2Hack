@@ -412,6 +412,7 @@ namespace Sc2Hack.Classes.BackEnds
             public Int32 UnitTabWidth;
             public Int32 UnitTabHeigth;
             public Double UnitTabOpacity;
+            public Int32 UnitPictureSize;
             public Boolean MaphackRemoveAi;
             public Boolean MaphackRemoveAllie;
             public Boolean MaphackRemoveReferee;

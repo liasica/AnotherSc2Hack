@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -787,6 +788,40 @@ namespace Sc2Hack.Classes.FontEnds
             e.SuppressKeyPress = true;
         }
 
+        private void txtUnitPictureSize_TextChanged(object sender, EventArgs e)
+        {
+            if (txtUnitPictureSize.Text.Length <= 0)
+                return;
+
+            int iPictureSize = 0;
+
+            if (Int32.TryParse(txtUnitPictureSize.Text, out iPictureSize))
+            {
+                if (iPictureSize < 1)
+                {
+                    iPictureSize = 1;
+                    txtUnitPictureSize.Text = "1";
+                }
+
+                if (iPictureSize >= Screen.PrimaryScreen.Bounds.Width)
+                {
+                    iPictureSize = Screen.PrimaryScreen.Bounds.Width - 1;
+                    txtUnitPictureSize.Text = (Screen.PrimaryScreen.Bounds.Width - 1).ToString();
+                }
+
+                PSettings.UnitPictureSize = iPictureSize;
+
+                pcBxUnitPreview.Size = new Size(iPictureSize, iPictureSize);
+            }
+
+            /* Remove non- digits */
+            if (!char.IsDigit(txtUnitPictureSize.Text[txtUnitPictureSize.Text.Length - 1]))
+            {
+                txtUnitPictureSize.Text = txtUnitPictureSize.Text.Remove(txtUnitPictureSize.Text.Length - 1);
+                txtUnitPictureSize.Select(txtUnitPictureSize.Text.Length, 0);
+            }
+        }
+
         #endregion
 
         #region Maphack
@@ -1112,6 +1147,13 @@ namespace Sc2Hack.Classes.FontEnds
                 _gInformation.CSleepTime = iDummy;
                 tmrGatherInformation.Interval = iDummy;
             }
+
+            /* Remove non- digits */
+            if (!char.IsDigit(txtDataInterval.Text[txtDataInterval.Text.Length - 1]))
+            {
+                txtDataInterval.Text = txtDataInterval.Text.Remove(txtDataInterval.Text.Length - 1);
+                txtDataInterval.Select(txtDataInterval.Text.Length, 0);
+            }
         }
         
         private void txtDrawingInterval_TextChanged(object sender, EventArgs e)
@@ -1141,6 +1183,13 @@ namespace Sc2Hack.Classes.FontEnds
                 SetDrawingRefresh(_rUnit, iDummy);
                 SetDrawingRefresh(_rWorker, iDummy);
 
+            }
+
+            /* Remove non- digits */
+            if (!char.IsDigit(txtDrawingInterval.Text[txtDrawingInterval.Text.Length - 1]))
+            {
+                txtDrawingInterval.Text = txtDrawingInterval.Text.Remove(txtDrawingInterval.Text.Length - 1);
+                txtDrawingInterval.Select(txtDrawingInterval.Text.Length, 0);
             }
         }
 
@@ -1646,6 +1695,7 @@ namespace Sc2Hack.Classes.FontEnds
             txtUnitHotkey1.Text = PSettings.UnitHotkey1.ToString();
             txtUnitHotkey2.Text = PSettings.UnitHotkey2.ToString();
             txtUnitHotkey3.Text = PSettings.UnitHotkey3.ToString();
+            txtUnitPictureSize.Text = PSettings.UnitPictureSize.ToString(CultureInfo.InvariantCulture);
 
             /* Trainer */
             chBxTrainerStealUnits.Checked = PSettings.StealUnits;
@@ -2137,12 +2187,6 @@ namespace Sc2Hack.Classes.FontEnds
 
         #endregion
 
-       
-
-        
-
         #endregion
-
-       
     }
 }

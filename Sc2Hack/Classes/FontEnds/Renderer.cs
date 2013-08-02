@@ -2678,6 +2678,8 @@ namespace Sc2Hack.Classes.FontEnds
                 {
                     Height = _hMainHandler.PSettings.ResourceHeight*iValidPlayerCount;
                     Width = _hMainHandler.PSettings.ResourceWidth;
+
+                    
                 }
 
                 var iCounter = 0;
@@ -2897,6 +2899,15 @@ namespace Sc2Hack.Classes.FontEnds
             }
 
 
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Draw Income */
@@ -3118,6 +3129,16 @@ namespace Sc2Hack.Classes.FontEnds
             {
                 Messages.LogFile("DrawIncome", "Over all", ex);
             }
+
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Draw Army */
@@ -3338,6 +3359,16 @@ namespace Sc2Hack.Classes.FontEnds
             {
                 Messages.LogFile("DrawArmy", "Over all", ex);
             }
+
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Draw Apm */
@@ -3504,6 +3535,16 @@ namespace Sc2Hack.Classes.FontEnds
             {
                 Messages.LogFile("DrawApm", "Over all", ex);
             }
+
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Draw Worker */
@@ -3513,7 +3554,10 @@ namespace Sc2Hack.Classes.FontEnds
             {
 
                 if (!GInfo.IsIngame)
+                {
+                    g.Graphics.Clear(BackColor);
                     return;
+                }
 
                 Opacity = _hMainHandler.PSettings.WorkerOpacity;
                 var iSingleHeight = Height;
@@ -3571,6 +3615,15 @@ namespace Sc2Hack.Classes.FontEnds
                 Messages.LogFile("DrawWorker", "Over all", ex);
             }
 
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Imitates the Minimap */
@@ -3579,7 +3632,10 @@ namespace Sc2Hack.Classes.FontEnds
             try
             {
                 if (!GInfo.IsIngame)
+                {
+                    g.Graphics.Clear(BackColor);
                     return;
+                }
 
                 Opacity = _hMainHandler.PSettings.MaphackOpacity;
 
@@ -4297,6 +4353,16 @@ namespace Sc2Hack.Classes.FontEnds
             {
                 Messages.LogFile("DrawMinimap", "Over all", ex);
             }
+
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
+            }
         }
 
         /* Count the Units/ structures */
@@ -4317,7 +4383,7 @@ namespace Sc2Hack.Classes.FontEnds
                 CountUnits(PredefinedTypes.TargetFilterFlag.Dead);
 
                 var iHavetoadd = 0; //Adds +1 when a neutral player is on position 0
-                const Int32 iSize = 45;
+                Int32 iSize = _hMainHandler.PSettings.UnitPictureSize;
                 var iPosY = 30;
                 var iPosX = 0;
                 var iMaximumWidth = 0;
@@ -4646,6 +4712,16 @@ namespace Sc2Hack.Classes.FontEnds
             catch (Exception ex)
             {
                 Messages.LogFile("DrawUnits", "Over all", ex);
+            }
+
+            /* Draw a final bound around the panel */
+            if (_bChangingPosition)
+            {
+                g.Graphics.DrawRectangle(Constants.PYellowGreen2,
+                                            1,
+                                            1,
+                                            Width - 2,
+                                            Height - 2);
             }
         }
 
@@ -5020,6 +5096,9 @@ namespace Sc2Hack.Classes.FontEnds
                 InteropCalls.SetWindowLong(Handle, (Int32) InteropCalls.Gwl.ExStyle,
                                             (IntPtr) (initial | (Int32) InteropCalls.Ws.ExTransparent));
                 _bSurpressForeground = false;
+
+                if (!_bMouseDown)
+                    _bChangingPosition = false;
             }
            
         }
@@ -5871,9 +5950,12 @@ namespace Sc2Hack.Classes.FontEnds
             }
         }
 
+        private Boolean _bMouseDown = false;
         private void Renderer_2_MouseDown(object sender, MouseEventArgs e)
         {
             _ptMousePosition = new Point(e.X, e.Y);
+
+            _bMouseDown = true;
         }
 
         private void Renderer_2_MouseUp(object sender, MouseEventArgs e)
@@ -5986,6 +6068,7 @@ namespace Sc2Hack.Classes.FontEnds
             }
 
             _bChangingPosition = false;
+            _bMouseDown = false;
         }
 
         private void Renderer_2_MouseWheel(object sender, MouseEventArgs e)

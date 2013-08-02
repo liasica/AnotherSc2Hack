@@ -23,6 +23,7 @@ namespace Sc2Hack.Classes.BackEnds
         public static Pen PGray4 = new Pen(Brushes.Gray, 4);
         public static Pen PGray5 = new Pen(Brushes.Gray, 5);
         public static Pen PRed2 = new Pen(Brushes.Red, 2);
+        public static Pen PYellowGreen2 = new Pen(Brushes.YellowGreen, 2);
         public static Pen PBound = new Pen(Brushes.Black);
         public static Pen PArea = new Pen(Brushes.Red);
         public static Font FArial1 = new Font("Arial", 12, FontStyle.Bold);

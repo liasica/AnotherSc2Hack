@@ -420,6 +420,7 @@ namespace Sc2Hack.Classes.BackEnds
                     UnitTabWidth = 300,
                     UnitTabHeigth = 50,
                     UnitTabOpacity = 1,
+                    UnitPictureSize = 45,
                     MaphackRemoveAi = false,
                     MaphackRemoveAllie = false,
                     MaphackRemoveReferee = true,
@@ -2060,6 +2061,19 @@ namespace Sc2Hack.Classes.BackEnds
                     pSettings.UnitTabHeigth = iHeight;
                 }
 
+                /* Picture Size */
+                if (strInnerValue.StartsWith("Picture Size"))
+                {
+                    strInnerValue = strInnerValue.Substring("Picture Size".Length,
+                                                            strInnerValue.Length -
+                                                            "Picture Size".Length);
+
+                    Int32 iPictureSize;
+                    Int32.TryParse(strInnerValue, out iPictureSize);
+
+                    pSettings.UnitPictureSize = iPictureSize;
+                }
+
 
                 #endregion
 
@@ -2762,6 +2776,8 @@ namespace Sc2Hack.Classes.BackEnds
             sw.WriteLine("Width = " + pSettings.UnitTabWidth.ToString(CultureInfo.InvariantCulture));
             sw.WriteLine(";Int32");
             sw.WriteLine("Height = " + pSettings.UnitTabHeigth.ToString(CultureInfo.InvariantCulture));
+            sw.WriteLine(";Int32");
+            sw.WriteLine("Picture Size = " + pSettings.UnitPictureSize.ToString(CultureInfo.InvariantCulture));
             sw.WriteLine(";Boolean");
             sw.WriteLine("Remove Ai = " + pSettings.UnitTabRemoveAi);
             sw.WriteLine(";Boolean");
@@ -2786,6 +2802,7 @@ namespace Sc2Hack.Classes.BackEnds
             sw.WriteLine("Hotkey 3 = " + pSettings.UnitHotkey3);
             sw.WriteLine(";Boolean");
             sw.WriteLine("Split Buildings/ Units = " + pSettings.UnitTabSplitUnitsAndBuildings);
+            
 
             #endregion
 
