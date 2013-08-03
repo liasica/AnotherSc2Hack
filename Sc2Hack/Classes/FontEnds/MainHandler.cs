@@ -295,14 +295,26 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void btnResFontName_Click(object sender, EventArgs e)
         {
-            var fd = new FontDialog();
-            fd.Font = new Font(btnResFontName.Text, 15);
-            var result = fd.ShowDialog();
+        FontAgain:
 
-            if (result.Equals(DialogResult.OK))
+            try
             {
-                btnResFontName.Text = fd.Font.Name;
-                PSettings.ResourceFontName = fd.Font.Name;
+                var fd = new FontDialog();
+                fd.Font = new Font(btnResFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnResFontName.Text = fd.Font.Name;
+                    btnResFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.ResourceFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
             }
         }
 
@@ -387,14 +399,26 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void btnIncFontName_Click(object sender, EventArgs e)
         {
-            var fd = new FontDialog();
-            fd.Font = new Font(btnIncFontName.Text, 15);
-            var result = fd.ShowDialog();
+        FontAgain:
 
-            if (result.Equals(DialogResult.OK))
+            try
             {
-                btnIncFontName.Text = fd.Font.Name;
-                PSettings.IncomeFontName = fd.Font.Name;
+                var fd = new FontDialog();
+                fd.Font = new Font(btnIncFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnIncFontName.Text = fd.Font.Name;
+                    btnIncFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.IncomeFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
             }
         }
 
@@ -459,14 +483,26 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void btnWorFontName_Click(object sender, EventArgs e)
         {
-            var fd = new FontDialog();
-            fd.Font = new Font(btnWorFontName.Text, 15);
-            var result = fd.ShowDialog();
+        FontAgain:
 
-            if (result.Equals(DialogResult.OK))
+            try
             {
-                btnWorFontName.Text = fd.Font.Name;
-                PSettings.WorkerFontName = fd.Font.Name;
+                var fd = new FontDialog();
+                fd.Font = new Font(btnWorFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnWorFontName.Text = fd.Font.Name;
+                    btnWorFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.WorkerFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
             }
         }
 
@@ -551,14 +587,27 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void btnApmFontName_Click(object sender, EventArgs e)
         {
-            var fd = new FontDialog();
-            fd.Font = new Font(btnApmFontName.Text, 15);
-            var result = fd.ShowDialog();
 
-            if (result.Equals(DialogResult.OK))
+        FontAgain:
+
+            try
             {
-                btnApmFontName.Text = fd.Font.Name;
-                PSettings.ApmFontName = fd.Font.Name;
+                var fd = new FontDialog();
+                fd.Font = new Font(btnApmFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnApmFontName.Text = fd.Font.Name;
+                    btnApmFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.ApmFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
             }
         }
 
@@ -643,14 +692,26 @@ namespace Sc2Hack.Classes.FontEnds
 
         private void btnArmFontName_Click(object sender, EventArgs e)
         {
-            var fd = new FontDialog();
-            fd.Font = new Font(btnArmFontName.Text, 15);
-            var result = fd.ShowDialog();
+        FontAgain:
 
-            if (result.Equals(DialogResult.OK))
+            try
             {
-                btnArmFontName.Text = fd.Font.Name;
-                PSettings.ArmyFontName = fd.Font.Name;
+                var fd = new FontDialog();
+                fd.Font = new Font(btnArmFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnArmFontName.Text = fd.Font.Name;
+                    btnArmFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.ArmyFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
             }
         }
 
@@ -812,6 +873,10 @@ namespace Sc2Hack.Classes.FontEnds
                 PSettings.UnitPictureSize = iPictureSize;
 
                 pcBxUnitPreview.Size = new Size(iPictureSize, iPictureSize);
+                pcBxUnitPreview.DrawingBrush = Brushes.White;
+                pcBxUnitPreview.DrawingFont = new Font(PSettings.UnitTabFontName, (PSettings.UnitPictureSize / 4.5f));
+                pcBxUnitPreview.DrawingPoint = new PointF(5, 5);
+                pcBxUnitPreview.DrawingText = "42";
             }
 
             /* Remove non- digits */
@@ -821,6 +886,32 @@ namespace Sc2Hack.Classes.FontEnds
                 txtUnitPictureSize.Select(txtUnitPictureSize.Text.Length, 0);
             }
         }
+
+        private void btnUniFontName_Click(object sender, EventArgs e)
+        {
+            FontAgain:
+
+            try
+            {
+                var fd = new FontDialog();
+                fd.Font = new Font(btnUniFontName.Text, 15);
+                var result = fd.ShowDialog();
+
+                if (result.Equals(DialogResult.OK))
+                {
+                    btnUniFontName.Text = fd.Font.Name;
+                    btnUniFontName.Font = new Font(fd.Font.Name, Font.Size, FontStyle.Regular);
+                    PSettings.UnitTabFontName = fd.Font.Name;
+                }
+            }
+
+            catch
+            {
+                MessageBox.Show("Only TrueType Fonts are allowed!");
+                goto FontAgain;
+            }
+        }
+
 
         #endregion
 
@@ -1577,6 +1668,7 @@ namespace Sc2Hack.Classes.FontEnds
             cmBxResRemNeutral.Text = PSettings.ResourceRemoveNeutral.ToString();
             cmBxResRemLocalplayer.Text = PSettings.ResourceRemoveLocalplayer.ToString();
             btnResFontName.Text = PSettings.ResourceFontName;
+            btnResFontName.Font = new Font(PSettings.ResourceFontName, Font.Size);
             tbResOpacity.Value = (Int32)(PSettings.ResourceOpacity*100);
             lblResOpacity.Text = "Opacity: " + tbResOpacity.Value.ToString() + "%";
             txtResTogglePanel.Text = PSettings.ResourceTogglePanel;
@@ -1593,6 +1685,7 @@ namespace Sc2Hack.Classes.FontEnds
             cmBxIncRemNeutral.Text = PSettings.IncomeRemoveNeutral.ToString();
             cmBxIncRemLocalplayer.Text = PSettings.IncomeRemoveLocalplayer.ToString();
             btnIncFontName.Text = PSettings.IncomeFontName;
+            btnIncFontName.Font = new Font(PSettings.IncomeFontName, Font.Size);
             tbIncOpacity.Value = (Int32)(PSettings.IncomeOpacity * 100);
             lblIncOpacity.Text = "Opacity: " + tbIncOpacity.Value.ToString() + "%";
             txtIncTogglePanel.Text = PSettings.IncomeTogglePanel;
@@ -1609,6 +1702,7 @@ namespace Sc2Hack.Classes.FontEnds
             cmBxArmRemNeutral.Text = PSettings.ArmyRemoveNeutral.ToString();
             cmBxArmRemLocalplayer.Text = PSettings.ArmyRemoveLocalplayer.ToString();
             btnArmFontName.Text = PSettings.ArmyFontName;
+            btnArmFontName.Font = new Font(PSettings.ArmyFontName, Font.Size);
             tbArmOpacity.Value = (Int32)(PSettings.ArmyOpacity * 100);
             lblArmOpacity.Text = "Opacity: " + tbArmOpacity.Value.ToString() + "%";
             txtArmTogglePanel.Text = PSettings.ArmyTogglePanel;
@@ -1625,6 +1719,7 @@ namespace Sc2Hack.Classes.FontEnds
             cmBxApmRemNeutral.Text = PSettings.ApmRemoveNeutral.ToString();
             cmBxApmRemLocalplayer.Text = PSettings.ApmRemoveLocalplayer.ToString();
             btnApmFontName.Text = PSettings.ApmFontName;
+            btnApmFontName.Font = new Font(PSettings.ApmFontName, Font.Size);
             tbApmOpacity.Value = (Int32)(PSettings.ApmOpacity * 100);
             lblApmOpacity.Text = "Opacity: " + tbApmOpacity.Value.ToString() + "%";
             txtApmTogglePanel.Text = PSettings.ApmTogglePanel;
@@ -1637,6 +1732,7 @@ namespace Sc2Hack.Classes.FontEnds
 
             /* Worker */
             btnWorFontName.Text = PSettings.WorkerFontName;
+            btnWorFontName.Font = new Font(PSettings.WorkerFontName, Font.Size);
             tbWorOpacity.Value = (Int32)(PSettings.WorkerOpacity * 100);
             lblWorOpacity.Text = "Opacity: " + tbWorOpacity.Value.ToString() + "%";
             txtWorTogglePanel.Text = PSettings.WorkerTogglePanel;
@@ -1696,6 +1792,8 @@ namespace Sc2Hack.Classes.FontEnds
             txtUnitHotkey2.Text = PSettings.UnitHotkey2.ToString();
             txtUnitHotkey3.Text = PSettings.UnitHotkey3.ToString();
             txtUnitPictureSize.Text = PSettings.UnitPictureSize.ToString(CultureInfo.InvariantCulture);
+            btnUniFontName.Text = PSettings.UnitTabFontName;
+            btnUniFontName.Font = new Font(PSettings.UnitTabFontName, Font.Size);
 
             /* Trainer */
             chBxTrainerStealUnits.Checked = PSettings.StealUnits;
@@ -2187,6 +2285,7 @@ namespace Sc2Hack.Classes.FontEnds
 
         #endregion
 
+        
         #endregion
     }
 }

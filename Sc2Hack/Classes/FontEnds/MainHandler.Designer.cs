@@ -179,6 +179,7 @@
             this.groupBox28 = new System.Windows.Forms.GroupBox();
             this.btnMapAddUnit = new System.Windows.Forms.Button();
             this.btnMapUnitColor = new System.Windows.Forms.Button();
+            this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
             this.imgUnits = new System.Windows.Forms.ImageList(this.components);
             this.lstMapUnits = new System.Windows.Forms.ListBox();
             this.groupBox20 = new System.Windows.Forms.GroupBox();
@@ -292,6 +293,11 @@
             this.label68 = new System.Windows.Forms.Label();
             this.label69 = new System.Windows.Forms.Label();
             this.tcUnitTab = new System.Windows.Forms.TabPage();
+            this.groupBox37 = new System.Windows.Forms.GroupBox();
+            this.label125 = new System.Windows.Forms.Label();
+            this.pcBxUnitPreview = new Sc2Hack.Classes.FontEnds.Custom_PictureBox();
+            this.txtUnitPictureSize = new System.Windows.Forms.TextBox();
+            this.label124 = new System.Windows.Forms.Label();
             this.groupBox34 = new System.Windows.Forms.GroupBox();
             this.txtUniHeight = new System.Windows.Forms.TextBox();
             this.txtUniWidth = new System.Windows.Forms.TextBox();
@@ -302,6 +308,8 @@
             this.label118 = new System.Windows.Forms.Label();
             this.label119 = new System.Windows.Forms.Label();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.label126 = new System.Windows.Forms.Label();
+            this.btnUniFontName = new System.Windows.Forms.Button();
             this.label43 = new System.Windows.Forms.Label();
             this.label42 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
@@ -368,12 +376,6 @@
             this.tcCredits = new System.Windows.Forms.TabPage();
             this.label92 = new System.Windows.Forms.Label();
             this.btnProduction = new System.Windows.Forms.Button();
-            this.groupBox37 = new System.Windows.Forms.GroupBox();
-            this.label124 = new System.Windows.Forms.Label();
-            this.txtUnitPictureSize = new System.Windows.Forms.TextBox();
-            this.icbMapUnit = new Sc2Hack.Classes.FontEnds.ImageCombobox();
-            this.pcBxUnitPreview = new System.Windows.Forms.PictureBox();
-            this.label125 = new System.Windows.Forms.Label();
             this.tcMainTab.SuspendLayout();
             this.tcGlobal.SuspendLayout();
             this.groupBox36.SuspendLayout();
@@ -417,6 +419,8 @@
             this.groupBox15.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.tcUnitTab.SuspendLayout();
+            this.groupBox37.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).BeginInit();
             this.groupBox34.SuspendLayout();
             this.groupBox23.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbUniOpacity)).BeginInit();
@@ -431,8 +435,6 @@
             this.groupBox35.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.tcCredits.SuspendLayout();
-            this.groupBox37.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // tmrGatherInformation
@@ -1958,6 +1960,20 @@
             this.btnMapUnitColor.UseVisualStyleBackColor = true;
             this.btnMapUnitColor.MouseDown += new System.Windows.Forms.MouseEventHandler(this.btnMapUnitColor_MouseDown);
             // 
+            // icbMapUnit
+            // 
+            this.icbMapUnit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.icbMapUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.icbMapUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.icbMapUnit.FormattingEnabled = true;
+            this.icbMapUnit.ImageList = this.imgUnits;
+            this.icbMapUnit.ItemHeight = 30;
+            this.icbMapUnit.Location = new System.Drawing.Point(158, 53);
+            this.icbMapUnit.Name = "icbMapUnit";
+            this.icbMapUnit.Size = new System.Drawing.Size(175, 36);
+            this.icbMapUnit.TabIndex = 3;
+            this.icbMapUnit.SelectedIndexChanged += new System.EventHandler(this.icbMapUnit_SelectedIndexChanged);
+            // 
             // imgUnits
             // 
             this.imgUnits.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgUnits.ImageStream")));
@@ -3221,6 +3237,58 @@
             this.tcUnitTab.TabIndex = 1;
             this.tcUnitTab.Text = "UnitTab";
             // 
+            // groupBox37
+            // 
+            this.groupBox37.Controls.Add(this.label125);
+            this.groupBox37.Controls.Add(this.pcBxUnitPreview);
+            this.groupBox37.Controls.Add(this.txtUnitPictureSize);
+            this.groupBox37.Controls.Add(this.label124);
+            this.groupBox37.Location = new System.Drawing.Point(590, 180);
+            this.groupBox37.Name = "groupBox37";
+            this.groupBox37.Size = new System.Drawing.Size(196, 108);
+            this.groupBox37.TabIndex = 61;
+            this.groupBox37.TabStop = false;
+            this.groupBox37.Text = "Picturesize";
+            // 
+            // label125
+            // 
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(12, 60);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(48, 13);
+            this.label125.TabIndex = 3;
+            this.label125.Text = "Preview:";
+            // 
+            // pcBxUnitPreview
+            // 
+            this.pcBxUnitPreview.DrawingFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pcBxUnitPreview.DrawingPoint = ((System.Drawing.PointF)(resources.GetObject("pcBxUnitPreview.DrawingPoint")));
+            this.pcBxUnitPreview.DrawingText = "";
+            this.pcBxUnitPreview.Image = global::Sc2Hack.Properties.Resources.tu_Mule;
+            this.pcBxUnitPreview.Location = new System.Drawing.Point(89, 53);
+            this.pcBxUnitPreview.Name = "pcBxUnitPreview";
+            this.pcBxUnitPreview.Size = new System.Drawing.Size(45, 45);
+            this.pcBxUnitPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pcBxUnitPreview.TabIndex = 2;
+            this.pcBxUnitPreview.TabStop = false;
+            // 
+            // txtUnitPictureSize
+            // 
+            this.txtUnitPictureSize.Location = new System.Drawing.Point(89, 27);
+            this.txtUnitPictureSize.Name = "txtUnitPictureSize";
+            this.txtUnitPictureSize.Size = new System.Drawing.Size(83, 20);
+            this.txtUnitPictureSize.TabIndex = 1;
+            this.txtUnitPictureSize.TextChanged += new System.EventHandler(this.txtUnitPictureSize_TextChanged);
+            // 
+            // label124
+            // 
+            this.label124.AutoSize = true;
+            this.label124.Location = new System.Drawing.Point(12, 30);
+            this.label124.Name = "label124";
+            this.label124.Size = new System.Drawing.Size(30, 13);
+            this.label124.TabIndex = 0;
+            this.label124.Text = "Size:";
+            // 
             // groupBox34
             // 
             this.groupBox34.Controls.Add(this.txtUniHeight);
@@ -3308,6 +3376,8 @@
             // 
             // groupBox23
             // 
+            this.groupBox23.Controls.Add(this.label126);
+            this.groupBox23.Controls.Add(this.btnUniFontName);
             this.groupBox23.Controls.Add(this.label43);
             this.groupBox23.Controls.Add(this.label42);
             this.groupBox23.Controls.Add(this.label41);
@@ -3327,6 +3397,25 @@
             this.groupBox23.TabIndex = 59;
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Basic Panel Options";
+            // 
+            // label126
+            // 
+            this.label126.AutoSize = true;
+            this.label126.Location = new System.Drawing.Point(25, 180);
+            this.label126.Name = "label126";
+            this.label126.Size = new System.Drawing.Size(62, 13);
+            this.label126.TabIndex = 57;
+            this.label126.Text = "Font Name:";
+            // 
+            // btnUniFontName
+            // 
+            this.btnUniFontName.Location = new System.Drawing.Point(153, 175);
+            this.btnUniFontName.Name = "btnUniFontName";
+            this.btnUniFontName.Size = new System.Drawing.Size(121, 23);
+            this.btnUniFontName.TabIndex = 58;
+            this.btnUniFontName.Text = "FontName:";
+            this.btnUniFontName.UseVisualStyleBackColor = true;
+            this.btnUniFontName.Click += new System.EventHandler(this.btnUniFontName_Click);
             // 
             // label43
             // 
@@ -3358,7 +3447,7 @@
             // lblUniOpacity
             // 
             this.lblUniOpacity.AutoSize = true;
-            this.lblUniOpacity.Location = new System.Drawing.Point(150, 212);
+            this.lblUniOpacity.Location = new System.Drawing.Point(150, 242);
             this.lblUniOpacity.Name = "lblUniOpacity";
             this.lblUniOpacity.Size = new System.Drawing.Size(35, 13);
             this.lblUniOpacity.TabIndex = 56;
@@ -3375,7 +3464,7 @@
             // 
             // tbUniOpacity
             // 
-            this.tbUniOpacity.Location = new System.Drawing.Point(153, 180);
+            this.tbUniOpacity.Location = new System.Drawing.Point(153, 210);
             this.tbUniOpacity.Maximum = 100;
             this.tbUniOpacity.Name = "tbUniOpacity";
             this.tbUniOpacity.Size = new System.Drawing.Size(121, 45);
@@ -3397,7 +3486,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(25, 180);
+            this.label46.Location = new System.Drawing.Point(25, 210);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(46, 13);
             this.label46.TabIndex = 54;
@@ -3996,69 +4085,6 @@
             this.btnProduction.Visible = false;
             this.btnProduction.Click += new System.EventHandler(this.btnProduction_Click);
             // 
-            // groupBox37
-            // 
-            this.groupBox37.Controls.Add(this.label125);
-            this.groupBox37.Controls.Add(this.pcBxUnitPreview);
-            this.groupBox37.Controls.Add(this.txtUnitPictureSize);
-            this.groupBox37.Controls.Add(this.label124);
-            this.groupBox37.Location = new System.Drawing.Point(590, 180);
-            this.groupBox37.Name = "groupBox37";
-            this.groupBox37.Size = new System.Drawing.Size(196, 108);
-            this.groupBox37.TabIndex = 61;
-            this.groupBox37.TabStop = false;
-            this.groupBox37.Text = "Picturesize";
-            // 
-            // label124
-            // 
-            this.label124.AutoSize = true;
-            this.label124.Location = new System.Drawing.Point(12, 30);
-            this.label124.Name = "label124";
-            this.label124.Size = new System.Drawing.Size(30, 13);
-            this.label124.TabIndex = 0;
-            this.label124.Text = "Size:";
-            // 
-            // txtUnitPictureSize
-            // 
-            this.txtUnitPictureSize.Location = new System.Drawing.Point(89, 27);
-            this.txtUnitPictureSize.Name = "txtUnitPictureSize";
-            this.txtUnitPictureSize.Size = new System.Drawing.Size(83, 20);
-            this.txtUnitPictureSize.TabIndex = 1;
-            this.txtUnitPictureSize.TextChanged += new System.EventHandler(this.txtUnitPictureSize_TextChanged);
-            // 
-            // icbMapUnit
-            // 
-            this.icbMapUnit.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.icbMapUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.icbMapUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.icbMapUnit.FormattingEnabled = true;
-            this.icbMapUnit.ImageList = this.imgUnits;
-            this.icbMapUnit.ItemHeight = 30;
-            this.icbMapUnit.Location = new System.Drawing.Point(158, 53);
-            this.icbMapUnit.Name = "icbMapUnit";
-            this.icbMapUnit.Size = new System.Drawing.Size(175, 36);
-            this.icbMapUnit.TabIndex = 3;
-            this.icbMapUnit.SelectedIndexChanged += new System.EventHandler(this.icbMapUnit_SelectedIndexChanged);
-            // 
-            // pcBxUnitPreview
-            // 
-            this.pcBxUnitPreview.Image = global::Sc2Hack.Properties.Resources.tu_Mule;
-            this.pcBxUnitPreview.Location = new System.Drawing.Point(89, 53);
-            this.pcBxUnitPreview.Name = "pcBxUnitPreview";
-            this.pcBxUnitPreview.Size = new System.Drawing.Size(45, 45);
-            this.pcBxUnitPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pcBxUnitPreview.TabIndex = 2;
-            this.pcBxUnitPreview.TabStop = false;
-            // 
-            // label125
-            // 
-            this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(12, 60);
-            this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(48, 13);
-            this.label125.TabIndex = 3;
-            this.label125.Text = "Preview:";
-            // 
             // MainHandler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4149,6 +4175,9 @@
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             this.tcUnitTab.ResumeLayout(false);
+            this.groupBox37.ResumeLayout(false);
+            this.groupBox37.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).EndInit();
             this.groupBox34.ResumeLayout(false);
             this.groupBox34.PerformLayout();
             this.groupBox23.ResumeLayout(false);
@@ -4172,9 +4201,6 @@
             this.groupBox25.PerformLayout();
             this.tcCredits.ResumeLayout(false);
             this.tcCredits.PerformLayout();
-            this.groupBox37.ResumeLayout(false);
-            this.groupBox37.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pcBxUnitPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4524,6 +4550,8 @@
         private System.Windows.Forms.TextBox txtUnitPictureSize;
         private System.Windows.Forms.Label label124;
         private System.Windows.Forms.Label label125;
-        private System.Windows.Forms.PictureBox pcBxUnitPreview;
+        private Custom_PictureBox pcBxUnitPreview;
+        private System.Windows.Forms.Label label126;
+        private System.Windows.Forms.Button btnUniFontName;
     }
 }

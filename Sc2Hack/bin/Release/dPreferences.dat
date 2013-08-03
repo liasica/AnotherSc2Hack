@@ -208,6 +208,8 @@ Remove Localplayer = False
 ;float
 Opacity = 1
 ;String
+FontName = Century Gothic
+;String
 On/Off Text = /uni
 ;String
 Change Position Text = /ucp

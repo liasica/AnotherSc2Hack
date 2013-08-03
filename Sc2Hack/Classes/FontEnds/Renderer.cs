@@ -2622,24 +2622,24 @@ namespace Sc2Hack.Classes.FontEnds
         }
 
         /* Draw the units */
-        private void Helper_DrawUnits(Int32 counter, ref Int32 posX, Int32 posY, Int32 size, Image img, BufferedGraphics g, Color clPlayercolor)
+        private void Helper_DrawUnits(Int32 counter, ref Int32 posX, Int32 posY, Int32 size, Image img, BufferedGraphics g, Color clPlayercolor, Font font)
         {
             if (counter > 0)
             {
                 g.Graphics.DrawImage(img, posX, posY, size, size);
-                g.Graphics.DrawString(counter.ToString(CultureInfo.InvariantCulture), Font, Brushes.White, posX + 5, posY + 5);
+                g.Graphics.DrawString(counter.ToString(CultureInfo.InvariantCulture), font, Brushes.White, posX + 5, posY + 5);
                 g.Graphics.DrawRectangle(new Pen(new SolidBrush(clPlayercolor), 2), posX, posY, size, size);
                 posX += size;
             }
         }
 
         /* Draw the units with production- table */
-        private void Helper_DrawUnits(Int32 counter, ref Int32 posX, Int32 posY, Int32 size, Image img, BufferedGraphics g, Color clPlayercolor, float fProductionProcess)
+        private void Helper_DrawUnits(Int32 counter, ref Int32 posX, Int32 posY, Int32 size, Image img, BufferedGraphics g, Color clPlayercolor, float fProductionProcess, Font font)
         {
             if (counter > 0)
             {
                 g.Graphics.DrawImage(img, posX, posY, size, size);
-                g.Graphics.DrawString(counter.ToString(CultureInfo.InvariantCulture), Font, Brushes.White, posX + 5, posY + 5);
+                g.Graphics.DrawString(counter.ToString(CultureInfo.InvariantCulture), font, Brushes.White, posX + 5, posY + 5);
 
                 /* Adjust relative size */
                 float ftemp = size - 4;
@@ -4387,6 +4387,14 @@ namespace Sc2Hack.Classes.FontEnds
                 var iPosY = 30;
                 var iPosX = 0;
                 var iMaximumWidth = 0;
+                var fsize = (float) (_hMainHandler.PSettings.UnitPictureSize/4.5);
+
+                if (fsize < 1)
+                    fsize = 1;
+
+                var fStringFont = new Font(Font.Name, fsize, FontStyle.Regular);
+
+                
 
 
                 /* Fix the size of the icons to 25x25 */
@@ -4496,85 +4504,85 @@ namespace Sc2Hack.Classes.FontEnds
                     #region Draw Units
 
                     /* Terran */
-                    Helper_DrawUnits(_lTuScv[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuMarine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor);
+                    Helper_DrawUnits(_lTuScv[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuMarine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTuMarauder[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMarauder, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTuReaper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuGhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuMule[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuHellion[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuHellbat[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuReaper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuGhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuMule[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuHellion[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuHellbat[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTuWidowMine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuWidowMine, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTuSiegetank[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuSiegetank, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTuThor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuMedivac[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuBanshee[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuViking[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor);
-                    Helper_DrawUnits(_lTuRaven[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuThor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuMedivac[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuBanshee[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuViking[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTuRaven[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTuBattlecruiser[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTuBattlecruiser, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
 
                     /* Protoss */
-                    Helper_DrawUnits(_lPuProbe[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuZealot[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuStalker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuSentry[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuDt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuHt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuArchon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor);
+                    Helper_DrawUnits(_lPuProbe[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuZealot[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuStalker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuSentry[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuDt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuHt[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuArchon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuImmortal[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuImmortal, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuColossus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuColossus, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuObserver[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuObserver, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuWarpprism[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuWapprism, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lPuPhoenix[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuVoidray[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuOracle[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuCarrier[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor);
-                    Helper_DrawUnits(_lPuTempest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuPhoenix[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuVoidray[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuOracle[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuCarrier[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPuTempest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuMothershipcore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothershipcore, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPuMothership[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPuMothership, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
 
                     /* Zerg */
-                    Helper_DrawUnits(_lZuLarva[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor);
-                    Helper_DrawUnits(_lZuDrone[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor);
+                    Helper_DrawUnits(_lZuLarva[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuDrone[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuOverlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverlord, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lZuQueen[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuQueen[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuZergling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuZergling, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuBaneling[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBaneling, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuBanelingCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBanelingCocoon, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lZuRoach[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor);
-                    Helper_DrawUnits(_lZuHydra[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuRoach[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuHydra[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuMutalisk[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuMutalisk, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuInfestor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuInfestor, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuOverseer[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOverseer, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuOverseerCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuOvserseerCocoon, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuSwarmhost[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuSwarmhost, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lZuUltralist[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor);
-                    Helper_DrawUnits(_lZuViper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuUltralist[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZuViper[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuCorruptor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuCorruptor, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuBroodlord[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlord, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZuBroodlordCocoon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZuBroodlordCocoon,
-                                     g, clPlayercolor);
+                                     g, clPlayercolor, fStringFont);
 
                     #endregion
 
@@ -4607,91 +4615,91 @@ namespace Sc2Hack.Classes.FontEnds
 
                     /* Terran */
                     Helper_DrawUnits(_lTbCommandCenter[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbCc, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbOrbitalCommand[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbOc, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbPlanetaryFortress[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbPf, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTbSupply[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbSupply[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbRefinery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbRefinery, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTbBunker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor);
-                    Helper_DrawUnits(_lTbTechlab[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor);
-                    Helper_DrawUnits(_lTbReactor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor);
-                    Helper_DrawUnits(_lTbTurrent[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbBunker[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbTechlab[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbReactor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbTurrent[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbSensorTower[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbSensorTower, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTbEbay[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbEbay[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbGhostAcademy[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbGhostacademy, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTbArmory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbArmory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbFusionCore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFusioncore, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbBarracks[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbBarracks, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lTbFactory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lTbFactory[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lTbStarport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgTbStarport, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
 
                     /* Protoss */
-                    Helper_DrawUnits(_lPbNexus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor);
-                    Helper_DrawUnits(_lPbPylong[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor);
+                    Helper_DrawUnits(_lPbNexus[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPbPylong[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbAssimilator[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbAssimilator, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lPbCannon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPbCannon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbDarkshrine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbDarkShrine, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbTemplarArchives[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTemplarArchives,
-                                     g, clPlayercolor);
+                                     g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbTwilight[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbTwillightCouncil, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbCybercore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbCybercore, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lPbForge[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPbForge[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbFleetbeacon[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbFleetBeacon, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbRoboticsSupport[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRoboticsSupport,
-                                     g, clPlayercolor);
-                    Helper_DrawUnits(_lPbGateway[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor);
+                                     g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lPbGateway[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbWarpgate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbWarpgate, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbStargate[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbStargate, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lPbRobotics[i].UnitAmount, ref iPosX, iPosY, iSize, _imgPbRobotics, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
 
                     /* Zerg */
                     Helper_DrawUnits(_lZbHatchery[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHatchery, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lZbLair[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor);
-                    Helper_DrawUnits(_lZbHive[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZbLair[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZbHive[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbSpawningpool[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpawningpool, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbEvochamber[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbEvochamber, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbExtractor[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbExtractor, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbSpine[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpinecrawler, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbSpore[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSporecrawler, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbHydraden[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbHydraden, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbRoachwarren[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbRoachwarren, g,
-                                     clPlayercolor);
-                    Helper_DrawUnits(_lZbSpire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor);
+                                     clPlayercolor, fStringFont);
+                    Helper_DrawUnits(_lZbSpire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbGreaterspire[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbGreaterspire, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbUltracavern[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbUltracavern, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbInfestationpit[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbInfestationpit, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbBanelingnest[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbBanelingnest, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbNydusbegin[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusNetwork, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
                     Helper_DrawUnits(_lZbNydusend[i].UnitAmount, ref iPosX, iPosY, iSize, _imgZbNydusWorm, g,
-                                     clPlayercolor);
+                                     clPlayercolor, fStringFont);
 
                     #endregion
 
@@ -4735,11 +4743,17 @@ namespace Sc2Hack.Classes.FontEnds
             CountUnits(PredefinedTypes.TargetFilterFlag.UnderConstruction);
 
             var iHavetoadd = 0;           //Adds +1 when a neutral player is on position 0
-            const Int32 iSize = 45;
+            Int32 iSize = _hMainHandler.PSettings.UnitPictureSize;
             var iPosY = 30;
             var iPosX = 0;
             var iMaximumWidth = 0;
 
+            var fsize = (float)(_hMainHandler.PSettings.UnitPictureSize / 4.5);
+
+            if (fsize < 1)
+                fsize = 1;
+
+            var fStringFont = new Font(Font.Name, fsize, FontStyle.Regular);
 
             /* Fix the size of the icons to 25x25 */
             for (var i = 0; i < LPlayer.Count; i++)
@@ -4844,60 +4858,60 @@ namespace Sc2Hack.Classes.FontEnds
                 #region Draw Units
 
                 /* Terran */
-                Helper_DrawUnits(_lTuScv[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMarine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMarauder[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMarauder, g, clPlayercolor);
-                Helper_DrawUnits(_lTuReaper[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor);
-                Helper_DrawUnits(_lTuGhost[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMule[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor);
-                Helper_DrawUnits(_lTuHellion[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor);
-                Helper_DrawUnits(_lTuHellbat[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor);
-                Helper_DrawUnits(_lTuWidowMine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuWidowMine, g, clPlayercolor);
-                Helper_DrawUnits(_lTuSiegetank[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuSiegetank, g, clPlayercolor);
-                Helper_DrawUnits(_lTuThor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor);
-                Helper_DrawUnits(_lTuMedivac[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor);
-                Helper_DrawUnits(_lTuBanshee[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor);
-                Helper_DrawUnits(_lTuViking[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor);
-                Helper_DrawUnits(_lTuRaven[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor);
-                Helper_DrawUnits(_lTuBattlecruiser[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuBattlecruiser, g, clPlayercolor);
+                Helper_DrawUnits(_lTuScv[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuScv, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuMarine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMarine, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuMarauder[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMarauder, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuReaper[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuReaper, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuGhost[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuGhost, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuMule[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMule, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuHellion[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuHellion, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuHellbat[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuHellbat, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuWidowMine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuWidowMine, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuSiegetank[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuSiegetank, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuThor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuThor, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuMedivac[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuMedivac, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuBanshee[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuBanshee, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuViking[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuViking, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuRaven[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuRaven, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lTuBattlecruiser[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTuBattlecruiser, g, clPlayercolor, fStringFont);
 
                 /* Protoss */
-                Helper_DrawUnits(_lPuProbe[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor);
-                Helper_DrawUnits(_lPuZealot[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor);
-                Helper_DrawUnits(_lPuStalker[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor);
-                Helper_DrawUnits(_lPuSentry[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor);
-                Helper_DrawUnits(_lPuDt[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor);
-                Helper_DrawUnits(_lPuHt[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor);
-                Helper_DrawUnits(_lPuArchon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor);
-                Helper_DrawUnits(_lPuImmortal[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuImmortal, g, clPlayercolor);
-                Helper_DrawUnits(_lPuColossus[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuColossus, g, clPlayercolor);
-                Helper_DrawUnits(_lPuObserver[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuObserver, g, clPlayercolor);
-                Helper_DrawUnits(_lPuWarpprism[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuWapprism, g, clPlayercolor);
-                Helper_DrawUnits(_lPuPhoenix[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor);
-                Helper_DrawUnits(_lPuVoidray[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor);
-                Helper_DrawUnits(_lPuOracle[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor);
-                Helper_DrawUnits(_lPuCarrier[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor);
-                Helper_DrawUnits(_lPuTempest[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor);
-                Helper_DrawUnits(_lPuMothershipcore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuMothershipcore, g, clPlayercolor);
-                Helper_DrawUnits(_lPuMothership[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuMothership, g, clPlayercolor);
+                Helper_DrawUnits(_lPuProbe[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuProbe, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuZealot[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuZealot, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuStalker[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuStalker, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuSentry[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuSentry, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuDt[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuDarkTemplar, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuHt[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuHighTemplar, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuArchon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuArchon, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuImmortal[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuImmortal, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuColossus[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuColossus, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuObserver[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuObserver, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuWarpprism[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuWapprism, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuPhoenix[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuPhoenix, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuVoidray[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuVoidray, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuOracle[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuOracle, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuCarrier[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuCarrier, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuTempest[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuTempest, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuMothershipcore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuMothershipcore, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lPuMothership[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPuMothership, g, clPlayercolor, fStringFont);
 
                 /* Zerg */
-                Helper_DrawUnits(_lZuLarva[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor);
-                Helper_DrawUnits(_lZuDrone[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor);
-                Helper_DrawUnits(_lZuOverlord[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuOverlord, g, clPlayercolor);
-                Helper_DrawUnits(_lZuQueen[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor);
-                Helper_DrawUnits(_lZuZergling[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuZergling, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBaneling[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuBaneling, g, clPlayercolor);
-                Helper_DrawUnits(_lZuRoach[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor);
-                Helper_DrawUnits(_lZuHydra[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor);
-                Helper_DrawUnits(_lZuMutalisk[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuMutalisk, g, clPlayercolor);
-                Helper_DrawUnits(_lZuInfestor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuInfestor, g, clPlayercolor);
-                Helper_DrawUnits(_lZuOverseer[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuOverseer, g, clPlayercolor);
-                Helper_DrawUnits(_lZuSwarmhost[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuSwarmhost, g, clPlayercolor);
-                Helper_DrawUnits(_lZuUltralist[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor);
-                Helper_DrawUnits(_lZuViper[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor);
-                Helper_DrawUnits(_lZuCorruptor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuCorruptor, g, clPlayercolor);
-                Helper_DrawUnits(_lZuBroodlord[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuBroodlord, g, clPlayercolor);
+                Helper_DrawUnits(_lZuLarva[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuLarva, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuDrone[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuDrone, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuOverlord[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuOverlord, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuQueen[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuQueen, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuZergling[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuZergling, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuBaneling[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuBaneling, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuRoach[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuRoach, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuHydra[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuHydra, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuMutalisk[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuMutalisk, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuInfestor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuInfestor, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuOverseer[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuOverseer, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuSwarmhost[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuSwarmhost, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuUltralist[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuUltra, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuViper[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuViper, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuCorruptor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuCorruptor, g, clPlayercolor, fStringFont);
+                Helper_DrawUnits(_lZuBroodlord[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZuBroodlord, g, clPlayercolor, fStringFont);
 
                 #endregion
 
@@ -4929,59 +4943,59 @@ namespace Sc2Hack.Classes.FontEnds
                 #region Draw Buildings
 
                 /* Terran */
-                Helper_DrawUnits(_lTbCommandCenter[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbCc, g, clPlayercolor, _lTbCommandCenter[i].ConstructionState);
-                Helper_DrawUnits(_lTbOrbitalCommand[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbOc, g, clPlayercolor, _lTbOrbitalCommand[i].ConstructionState);
-                Helper_DrawUnits(_lTbPlanetaryFortress[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbPf, g, clPlayercolor, _lTbPlanetaryFortress[i].ConstructionState);
-                Helper_DrawUnits(_lTbSupply[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor, _lTbSupply[i].ConstructionState);
-                Helper_DrawUnits(_lTbRefinery[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbRefinery, g, clPlayercolor, _lTbRefinery[i].ConstructionState);
-                Helper_DrawUnits(_lTbBunker[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor, _lTbBunker[i].ConstructionState);
-                Helper_DrawUnits(_lTbTechlab[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor, _lTbTechlab[i].ConstructionState);
-                Helper_DrawUnits(_lTbReactor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor, _lTbReactor[i].ConstructionState);
-                Helper_DrawUnits(_lTbTurrent[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor, _lTbTurrent[i].ConstructionState);
-                Helper_DrawUnits(_lTbSensorTower[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbSensorTower, g, clPlayercolor, _lTbSensorTower[i].ConstructionState);
-                Helper_DrawUnits(_lTbEbay[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor, _lTbEbay[i].ConstructionState);
-                Helper_DrawUnits(_lTbGhostAcademy[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbGhostacademy, g, clPlayercolor, _lTbGhostAcademy[i].ConstructionState);
-                Helper_DrawUnits(_lTbArmory[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor, _lTbArmory[i].ConstructionState);
-                Helper_DrawUnits(_lTbFusionCore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbFusioncore, g, clPlayercolor, _lTbFusionCore[i].ConstructionState);
-                Helper_DrawUnits(_lTbBarracks[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbBarracks, g, clPlayercolor, _lTbBarracks[i].ConstructionState);
-                Helper_DrawUnits(_lTbFactory[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor, _lTbFactory[i].ConstructionState);
-                Helper_DrawUnits(_lTbStarport[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbStarport, g, clPlayercolor, _lTbStarport[i].ConstructionState);
+                Helper_DrawUnits(_lTbCommandCenter[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbCc, g, clPlayercolor, _lTbCommandCenter[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbOrbitalCommand[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbOc, g, clPlayercolor, _lTbOrbitalCommand[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbPlanetaryFortress[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbPf, g, clPlayercolor, _lTbPlanetaryFortress[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbSupply[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbSupply, g, clPlayercolor, _lTbSupply[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbRefinery[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbRefinery, g, clPlayercolor, _lTbRefinery[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbBunker[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbBunker, g, clPlayercolor, _lTbBunker[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbTechlab[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbTechlab, g, clPlayercolor, _lTbTechlab[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbReactor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbReactor, g, clPlayercolor, _lTbReactor[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbTurrent[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbTurrent, g, clPlayercolor, _lTbTurrent[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbSensorTower[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbSensorTower, g, clPlayercolor, _lTbSensorTower[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbEbay[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbEbay, g, clPlayercolor, _lTbEbay[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbGhostAcademy[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbGhostacademy, g, clPlayercolor, _lTbGhostAcademy[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbArmory[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbArmory, g, clPlayercolor, _lTbArmory[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbFusionCore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbFusioncore, g, clPlayercolor, _lTbFusionCore[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbBarracks[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbBarracks, g, clPlayercolor, _lTbBarracks[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbFactory[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbFactory, g, clPlayercolor, _lTbFactory[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lTbStarport[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgTbStarport, g, clPlayercolor, _lTbStarport[i].ConstructionState, fStringFont);
 
                 /* Protoss */
-                Helper_DrawUnits(_lPbNexus[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor, _lPbNexus[i].ConstructionState);
-                Helper_DrawUnits(_lPbPylong[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor, _lPbPylong[i].ConstructionState);
-                Helper_DrawUnits(_lPbAssimilator[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbAssimilator, g, clPlayercolor, _lPbAssimilator[i].ConstructionState);
-                Helper_DrawUnits(_lPbCannon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor, _lPbCannon[i].ConstructionState);
-                Helper_DrawUnits(_lPbDarkshrine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbDarkShrine, g, clPlayercolor, _lPbDarkshrine[i].ConstructionState);
-                Helper_DrawUnits(_lPbTemplarArchives[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbTemplarArchives, g, clPlayercolor, _lPbTemplarArchives[i].ConstructionState);
-                Helper_DrawUnits(_lPbTwilight[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbTwillightCouncil, g, clPlayercolor, _lPbTwilight[i].ConstructionState);
-                Helper_DrawUnits(_lPbCybercore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbCybercore, g, clPlayercolor, _lPbCybercore[i].ConstructionState);
-                Helper_DrawUnits(_lPbForge[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor, _lPbForge[i].ConstructionState);
-                Helper_DrawUnits(_lPbFleetbeacon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbFleetBeacon, g, clPlayercolor, _lPbFleetbeacon[i].ConstructionState);
-                Helper_DrawUnits(_lPbRoboticsSupport[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbRoboticsSupport, g, clPlayercolor, _lPbRoboticsSupport[i].ConstructionState);
-                Helper_DrawUnits(_lPbGateway[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor, _lPbGateway[i].ConstructionState);
-                Helper_DrawUnits(_lPbWarpgate[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbWarpgate, g, clPlayercolor, _lPbWarpgate[i].ConstructionState);
-                Helper_DrawUnits(_lPbStargate[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbStargate, g, clPlayercolor, _lPbStargate[i].ConstructionState);
-                Helper_DrawUnits(_lPbRobotics[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbRobotics, g, clPlayercolor, _lPbRobotics[i].ConstructionState);
+                Helper_DrawUnits(_lPbNexus[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbNexus, g, clPlayercolor, _lPbNexus[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbPylong[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbPylon, g, clPlayercolor, _lPbPylong[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbAssimilator[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbAssimilator, g, clPlayercolor, _lPbAssimilator[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbCannon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbCannon, g, clPlayercolor, _lPbCannon[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbDarkshrine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbDarkShrine, g, clPlayercolor, _lPbDarkshrine[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbTemplarArchives[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbTemplarArchives, g, clPlayercolor, _lPbTemplarArchives[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbTwilight[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbTwillightCouncil, g, clPlayercolor, _lPbTwilight[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbCybercore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbCybercore, g, clPlayercolor, _lPbCybercore[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbForge[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbForge, g, clPlayercolor, _lPbForge[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbFleetbeacon[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbFleetBeacon, g, clPlayercolor, _lPbFleetbeacon[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbRoboticsSupport[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbRoboticsSupport, g, clPlayercolor, _lPbRoboticsSupport[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbGateway[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbGateway, g, clPlayercolor, _lPbGateway[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbWarpgate[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbWarpgate, g, clPlayercolor, _lPbWarpgate[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbStargate[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbStargate, g, clPlayercolor, _lPbStargate[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lPbRobotics[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgPbRobotics, g, clPlayercolor, _lPbRobotics[i].ConstructionState, fStringFont);
 
                 /* Zerg */
-                Helper_DrawUnits(_lZbHatchery[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHatchery, g, clPlayercolor, _lZbHatchery[i].ConstructionState);
-                Helper_DrawUnits(_lZbLair[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor, _lZbLair[i].ConstructionState);
-                Helper_DrawUnits(_lZbHive[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor, _lZbHive[i].ConstructionState);
-                Helper_DrawUnits(_lZbSpawningpool[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpawningpool, g, clPlayercolor, _lZbSpawningpool[i].ConstructionState);
-                Helper_DrawUnits(_lZbEvochamber[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbEvochamber, g, clPlayercolor, _lZbEvochamber[i].ConstructionState);
-                Helper_DrawUnits(_lZbExtractor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbExtractor, g, clPlayercolor, _lZbExtractor[i].ConstructionState);
-                Helper_DrawUnits(_lZbSpine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpinecrawler, g, clPlayercolor, _lZbSpine[i].ConstructionState);
-                Helper_DrawUnits(_lZbSpore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSporecrawler, g, clPlayercolor, _lZbSpore[i].ConstructionState);
-                Helper_DrawUnits(_lZbHydraden[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHydraden, g, clPlayercolor, _lZbHydraden[i].ConstructionState);
-                Helper_DrawUnits(_lZbRoachwarren[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbRoachwarren, g, clPlayercolor, _lZbRoachwarren[i].ConstructionState);
-                Helper_DrawUnits(_lZbSpire[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor, _lZbSpire[i].ConstructionState);
-                Helper_DrawUnits(_lZbGreaterspire[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbGreaterspire, g, clPlayercolor, _lZbGreaterspire[i].ConstructionState);
-                Helper_DrawUnits(_lZbUltracavern[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbUltracavern, g, clPlayercolor, _lZbUltracavern[i].ConstructionState);
-                Helper_DrawUnits(_lZbInfestationpit[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbInfestationpit, g, clPlayercolor, _lZbInfestationpit[i].ConstructionState);
-                Helper_DrawUnits(_lZbBanelingnest[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbBanelingnest, g, clPlayercolor, _lZbBanelingnest[i].ConstructionState);
-                Helper_DrawUnits(_lZbNydusbegin[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbNydusNetwork, g, clPlayercolor, _lZbNydusbegin[i].ConstructionState);
-                Helper_DrawUnits(_lZbNydusend[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbNydusWorm, g, clPlayercolor, _lZbNydusend[i].ConstructionState);
+                Helper_DrawUnits(_lZbHatchery[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHatchery, g, clPlayercolor, _lZbHatchery[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbLair[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbLair, g, clPlayercolor, _lZbLair[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbHive[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHive, g, clPlayercolor, _lZbHive[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbSpawningpool[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpawningpool, g, clPlayercolor, _lZbSpawningpool[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbEvochamber[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbEvochamber, g, clPlayercolor, _lZbEvochamber[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbExtractor[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbExtractor, g, clPlayercolor, _lZbExtractor[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbSpine[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpinecrawler, g, clPlayercolor, _lZbSpine[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbSpore[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSporecrawler, g, clPlayercolor, _lZbSpore[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbHydraden[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbHydraden, g, clPlayercolor, _lZbHydraden[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbRoachwarren[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbRoachwarren, g, clPlayercolor, _lZbRoachwarren[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbSpire[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbSpire, g, clPlayercolor, _lZbSpire[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbGreaterspire[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbGreaterspire, g, clPlayercolor, _lZbGreaterspire[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbUltracavern[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbUltracavern, g, clPlayercolor, _lZbUltracavern[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbInfestationpit[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbInfestationpit, g, clPlayercolor, _lZbInfestationpit[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbBanelingnest[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbBanelingnest, g, clPlayercolor, _lZbBanelingnest[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbNydusbegin[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbNydusNetwork, g, clPlayercolor, _lZbNydusbegin[i].ConstructionState, fStringFont);
+                Helper_DrawUnits(_lZbNydusend[i].UnitUnderConsruction, ref iPosX, iPosY, iSize, _imgZbNydusWorm, g, clPlayercolor, _lZbNydusend[i].ConstructionState, fStringFont);
 
                 #endregion
 

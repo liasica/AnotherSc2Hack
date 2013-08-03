@@ -571,6 +571,7 @@ namespace Sc2Hack.Classes.BackEnds
         public static PredefinedTypes.Preferences LoadPreferences()
         {
             bool bUnitTabPictureSizeSet = false;
+            bool bUnitTabFontNameSet = false;
 
             #region Introduction
 
@@ -1661,7 +1662,7 @@ namespace Sc2Hack.Classes.BackEnds
                                                             Constants.StrPreferenceChangeSizeText.Length);
 
 
-                    pSettings.ArmyChangeSizePanel = strInnerValue.Length <= 0 ? "/rcs" : strInnerValue;
+                    pSettings.ArmyChangeSizePanel = strInnerValue.Length <= 0 ? "Century Gothic" : strInnerValue;
                 }
 
                 #endregion
@@ -2116,6 +2117,19 @@ namespace Sc2Hack.Classes.BackEnds
                     pSettings.UnitChangeSizePanel = strInnerValue.Length <= 0 ? "/rcs" : strInnerValue;
                 }
 
+                /* Fontname */
+                if (strInnerValue.StartsWith(Constants.StrPreferenceFontText))
+                {
+                    strInnerValue = strInnerValue.Substring(Constants.StrPreferenceFontText.Length,
+                                                            strInnerValue.Length -
+                                                            Constants.StrPreferenceFontText.Length);
+
+
+                    pSettings.UnitTabFontName = strInnerValue.Length <= 0 ? "Century Gothic" : strInnerValue;
+
+                    bUnitTabFontNameSet = true;
+                }
+
                 #endregion
 
                 #region Keys
@@ -2536,6 +2550,10 @@ namespace Sc2Hack.Classes.BackEnds
             if (!bUnitTabPictureSizeSet)
                 pSettings.UnitPictureSize = 45;
 
+            /* [UnitTab] Fontname */
+            if (!bUnitTabFontNameSet)
+                pSettings.UnitTabFontName = "Century Gothic";
+
             #endregion
 
             return pSettings;
@@ -2801,6 +2819,8 @@ namespace Sc2Hack.Classes.BackEnds
             sw.WriteLine("Remove Localplayer = " + pSettings.UnitTabRemoveLocalplayer);
             sw.WriteLine(";float");
             sw.WriteLine("Opacity = " + pSettings.UnitTabOpacity);
+            sw.WriteLine(";String");
+            sw.WriteLine("FontName = " + pSettings.UnitTabFontName);
             sw.WriteLine(";String");
             sw.WriteLine("On/Off Text = " + pSettings.UnitTogglePanel);
             sw.WriteLine(";String");
